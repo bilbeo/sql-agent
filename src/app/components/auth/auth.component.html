@@ -1,0 +1,29 @@
+<div class="container">
+  <div>
+    <form [formGroup]="loginForm">
+      <div>
+        <label>
+          Email address:
+          <input type="text" formControlName="email">
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Password:
+          <input type="password" formControlName="password">
+        </label>
+      </div>
+
+
+    </form>
+    <div>
+      <button (click)="signin()">Login</button>
+    </div>
+
+    <div *ngIf="message">
+        <small> {{message}}</small> 
+      </div>
+  </div>
+
+</div>

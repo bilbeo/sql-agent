@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
+import dotenv from 'dotenv';
+// require('dotenv').config();
 
 @Component({
   selector: 'app-root',
@@ -15,6 +17,9 @@ export class AppComponent {
     translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
 
+    // add .env variables in process.env
+    dotenv.config();
+    
     if (electronService.isElectron()) {
       console.log('Mode electron');
       console.log('Electron ipcRenderer', electronService.ipcRenderer);

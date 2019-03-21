@@ -76,5 +76,9 @@
     "wait-on": "3.2.0",
     "webdriver-manager": "12.1.0",
     "zone.js": "0.8.29"
+  },
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "electron-store": "^2.0.0"
   }
 }
