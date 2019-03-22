@@ -20,7 +20,7 @@ export class UserService {
     }
 
     signin(loginData) {
-        
+
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -30,8 +30,8 @@ export class UserService {
             .pipe(
                 map((result) => {
                     if (result['status'] === 'success') {
-                        this.sharedService.setInStorage('token', result['token'])
-                        this.sharedService.setInStorage('userId', result['id'])
+                        this.sharedService.setInStorage('token', result['token']);
+                        this.sharedService.setInStorage('userId', result['id']);
                     }
                     return result;
                 }),
@@ -43,7 +43,7 @@ export class UserService {
 
 
     signout() {
-        return Observable.create((observer) => {
+        return new Observable((observer) => {
             this.sharedService.removeFromStorage('userId'),
                 this.sharedService.removeFromStorage('token');
 

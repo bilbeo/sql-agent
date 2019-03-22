@@ -4,13 +4,13 @@ const Store = require('electron-store');
 @Injectable()
 export class SharedService {
     private storage;
-    
+
     constructor() {
         this.storage = new Store();
     }
 
     getFromStorage(key) {
-        return this.storage.get(key)
+        return this.storage.get(key);
     }
 
     setInStorage(key, value) {

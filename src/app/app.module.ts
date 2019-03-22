@@ -24,6 +24,8 @@ import { SharedService } from './providers/shared.service';
 import { UserService } from './providers/user.service';
 import { ElectronService } from './providers/electron.service';
 import { AuthGuardService } from './providers/auth-guard.service';
+import { DBMongoService } from './providers/db-mongo.service';
+import { DBMySqlService } from './providers/db-mysql.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -55,7 +57,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ElectronService,
     SharedService,
     UserService,
-    AuthGuardService
+    AuthGuardService,
+    DBMongoService,
+    DBMySqlService
   ],
   bootstrap: [AppComponent]
 })

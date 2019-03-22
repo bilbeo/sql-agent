@@ -1,7 +1,21 @@
 <div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+  <div>
+      <h1 class="title">
+          {{ 'PAGES.HOME.TITLE' | translate }}
+        </h1>
+      
+        <button (click)="signout()">Signout</button>
+      
+      
+        <div *ngIf="message">
+            {{message}}
+        </div>
+        <div *ngIf="output && output.length">
+          <div *ngFor="let item of output">
+              {{item | json}}
+          </div>
+          
+        </div>
+  </div>
 
-  <button (click)="signout()">Signout</button>
 </div>

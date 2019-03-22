@@ -14,10 +14,10 @@ export class AuthComponent implements OnInit {
   message: string;
   constructor(
     private sharedService: SharedService,
-    private router: Router, 
+    private router: Router,
     private fb: FormBuilder,
-    private userService: UserService) { 
-    
+    private userService: UserService) {
+
   }
 
   ngOnInit() {
@@ -25,35 +25,35 @@ export class AuthComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
-    })
+    });
   }
 
-  checkUserAuthenticated(){
+  checkUserAuthenticated() {
     if (this.sharedService.getFromStorage('token')) {
       this.router.navigate(['/home']);
     }
   }
 
 
-  signin(){
+  signin() {
     this.message = '';
-    
-    if(!this.loginForm.valid){
+
+    if (!this.loginForm.valid) {
       return;
     }
-    
+
     const payload = {
       mail: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value
     };
 
     this.userService.signin(payload).subscribe(
-      (res)=>{
-        this.router.navigate(['/home'])
+      (res) => {
+        this.router.navigate(['/home']);
       },
-      (errMessage)=>{
+      (errMessage) => {
         this.message = errMessage;
-      })
+      });
 
   }
 }
