@@ -1,21 +1,17 @@
 <div class="container">
-  <div>
-      <h1 class="title">
-          {{ 'PAGES.HOME.TITLE' | translate }}
-        </h1>
-      
-        <button (click)="signout()">Signout</button>
-      
-      
-        <div *ngIf="message">
-            {{message}}
-        </div>
-        <div *ngIf="output && output.length">
-          <div *ngFor="let item of output">
-              {{item | json}}
-          </div>
-          
-        </div>
+  <div *ngIf="user">
+    <!-- <h1 class="title">
+      {{ 'PAGES.HOME.TITLE' | translate }}
+    </h1> -->
+    <h1>Hello {{user.firstName}}! <button (click)="signout()">Signout</button></h1>
+
+    <div *ngFor="let workspace of user.workspacePermission; let i = index">
+      <span>{{i+1}}.</span>
+      {{ workspace.name}}
+    </div>
+
+
+
   </div>
 
 </div>

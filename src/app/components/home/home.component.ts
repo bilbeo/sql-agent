@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DBMongoService } from '../../providers/db-mongo.service';
 import { DBMySqlService } from '../../providers/db-mysql.service';
 import { DbCredentials } from '../../interfaces/db-credentials';
+import { User } from '../../interfaces/user';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,9 @@ import { DbCredentials } from '../../interfaces/db-credentials';
 export class HomeComponent implements OnInit {
   message;
   output;
+  user: User;
+  workspaces;
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -20,8 +24,32 @@ export class HomeComponent implements OnInit {
     private sqlService: DBMySqlService) { }
 
   ngOnInit() {
+    this.getUserDetails();
 
   }
+
+  getUserDetails() {
+    this.userService.getUser()
+      .subscribe(
+        (user) => {
+          this.user = user;
+        },
+        (err) => {
+          this.message = err;
+        }
+      )
+  }
+
+  signout() {
+    this.userService.signout().subscribe(
+      (result) => {
+        this.router.navigate(['/auth']);
+      },
+      (err) => { });
+  }
+
+
+  // db connection related functionality below
 
   connectMySql() {
 
@@ -49,7 +77,7 @@ export class HomeComponent implements OnInit {
     this.sqlService.queryDB(queryString)
       .subscribe(
         (result) => {
-          this.output = result.slice(0, 30);
+          this.output = result;
         },
         (err) => {
         });
@@ -93,12 +121,6 @@ export class HomeComponent implements OnInit {
         (err) => { });
   }
 
-  signout() {
-    this.userService.signout().subscribe(
-      (result) => {
-        this.router.navigate(['/auth']);
-      },
-      (err) => { });
-  }
+
 
 }
