@@ -1,0 +1,7 @@
+<h3>Workspace details</h3>
+
+<div *ngIf="workspace$ | async  as workspace">
+    <p>{{workspace.name}}</p>
+</div>
+
+<button (click)="goBack()">Back</button>

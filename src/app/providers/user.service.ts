@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SharedService } from './shared.service';
-import { AppConfig } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../interfaces/user';
-// import {toPromise} from 'rxjs';
 
 @Injectable()
 export class UserService {

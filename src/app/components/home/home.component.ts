@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
         (err) => {
           this.message = err;
         }
-      )
+      );
   }
 
   signout() {

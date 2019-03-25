@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -18,6 +18,8 @@ import { WebviewDirective } from './directives/webview.directive';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { WorkspacesComponent } from './components/workspaces/workspaces.component';
+import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -26,6 +28,8 @@ import { ElectronService } from './providers/electron.service';
 import { AuthGuardService } from './providers/auth-guard.service';
 import { DBMongoService } from './providers/db-mongo.service';
 import { DBMySqlService } from './providers/db-mysql.service';
+import { WorkspaceService } from './providers/workspace.service';
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,7 +41,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     WebviewDirective,
-    AuthComponent
+    AuthComponent,
+    WorkspacesComponent,
+    WorkspaceItemComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +65,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserService,
     AuthGuardService,
     DBMongoService,
-    DBMySqlService
+    DBMySqlService,
+    WorkspaceService
   ],
   bootstrap: [AppComponent]
 })

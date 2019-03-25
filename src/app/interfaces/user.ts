@@ -1,4 +1,4 @@
-import { WorkspacePermission } from "./workspace-permission";
+import { WorkspacePermission } from './workspace-permission';
 
 export interface User {
     _id: string;
@@ -9,10 +9,10 @@ export interface User {
     photoURL?: string;
     workspacePermission: Array<WorkspacePermission>;
     logoURL?: string;
-    webURL?: string,
+    webURL?: string;
     isOEM?: boolean;
     APIKey: string;
-    ownerId?: string,
+    ownerId?: string;
     custom?: any;
 }
 

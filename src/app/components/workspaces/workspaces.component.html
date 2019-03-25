@@ -1,0 +1,7 @@
+<div *ngFor="let workspace of user.workspacePermission; let i = index">
+  <div class="workspace-card" (click)="showWorkspaceDetails(workspace)">
+    <span>{{i+1}}.</span>
+    {{ workspace.name}}
+  </div>
+
+</div>

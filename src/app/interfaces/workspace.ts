@@ -1,14 +1,20 @@
-import { Datasource } from "./datasource";
+// import { Datasource } from './datasource';
 
 export interface Workspace {
-    _id: string;
+    id: string;
     name: string;
-    owner: string;
+    ownerId: string;
     startWeekMonday: boolean;
+    showLastValue: boolean;
+    isExcel: boolean;
+    isSql: boolean;
     breakdowns: Array<any>;
+    breakdownsIDs: any;
     dimensions: Array<any>;
+    dimensionsIDs: any;
     indicators: Array<any>;
-    dataSources: Array<Datasource>;
+    indicatorsIDs: any;
+    dataSource: any;
     permissionGroups: Array<any>;
 }
 

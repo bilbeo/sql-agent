@@ -5,12 +5,7 @@
     </h1> -->
     <h1>Hello {{user.firstName}}! <button (click)="signout()">Signout</button></h1>
 
-    <div *ngFor="let workspace of user.workspacePermission; let i = index">
-      <span>{{i+1}}.</span>
-      {{ workspace.name}}
-    </div>
-
-
+    <router-outlet></router-outlet>
 
   </div>
 
