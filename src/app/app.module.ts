@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-
+import { AceEditorModule } from 'ng2-ace-editor';
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -20,6 +20,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { WorkspacesComponent } from './components/workspaces/workspaces.component';
 import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
+import { DbConnectorComponent } from './components/db-connector/db-connector.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -29,6 +30,7 @@ import { AuthGuardService } from './providers/auth-guard.service';
 import { DBMongoService } from './providers/db-mongo.service';
 import { DBMySqlService } from './providers/db-mysql.service';
 import { WorkspaceService } from './providers/workspace.service';
+
 
 
 // AoT requires an exported function for factories
@@ -43,7 +45,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WebviewDirective,
     AuthComponent,
     WorkspacesComponent,
-    WorkspaceItemComponent
+    WorkspaceItemComponent,
+    DbConnectorComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
-    })
+    }),
+    AceEditorModule
   ],
   providers: [
     ElectronService,

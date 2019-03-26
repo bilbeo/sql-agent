@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 })
 export class WorkspaceItemComponent implements OnInit {
   workspace$: Observable<any>;
+  // hardcoded at the moment: Sat
+  dbType = 'mysql'; 
 
   constructor(private route: ActivatedRoute,
     private router: Router,

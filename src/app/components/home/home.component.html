@@ -1,12 +1,14 @@
 <div class="container">
-  <div *ngIf="user">
+  <div *ngIf="user" class="topbar">
     <!-- <h1 class="title">
       {{ 'PAGES.HOME.TITLE' | translate }}
     </h1> -->
-    <h1>Hello {{user.firstName}}! <button (click)="signout()">Signout</button></h1>
+    <div class="text-right">{{user.firstName}} {{user.lastName}} <span (click)="signout()" class="signout">Signout</span></div>
 
-    <router-outlet></router-outlet>
+   
 
   </div>
+
+  <router-outlet></router-outlet>
 
 </div>

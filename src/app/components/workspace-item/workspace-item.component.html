@@ -1,7 +1,10 @@
 <h3>Workspace details</h3>
+<button (click)="goBack()">Back</button>
 
 <div *ngIf="workspace$ | async  as workspace">
     <p>{{workspace.name}}</p>
 </div>
 
-<button (click)="goBack()">Back</button>
+<app-db-connector (dbType)="dbType"></app-db-connector>
+
+

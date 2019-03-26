@@ -49,39 +49,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-  // db connection related functionality below
-
-  connectMySql() {
-
-    const connectionDetails: DbCredentials = {
-      host: 'test',
-      port: 3306,
-      user: 'username',
-      password: 'password',
-      db: 'databaseName'
-    };
-
-    this.sqlService.connect(connectionDetails, (err) => {
-      console.log(err);
-      if (err) {
-        return;
-      }
-
-      this.queryMySql();
-    });
-  }
-
-  queryMySql(query?) {
-    const queryString = query || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
-
-    this.sqlService.queryDB(queryString)
-      .subscribe(
-        (result) => {
-          this.output = result;
-        },
-        (err) => {
-        });
-  }
 
   connectMongo() {
     const connectionDetails: DbCredentials = {
@@ -100,6 +67,7 @@ export class HomeComponent implements OnInit {
       this.queryMongo();
     });
   }
+  
 
   queryMongo(query?) {
 
