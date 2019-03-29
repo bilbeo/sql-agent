@@ -12,6 +12,7 @@ import { DBMySqlService } from '../../providers/db-mysql.service';
   styleUrls: ['./db-connector.component.scss']
 })
 export class DbConnectorComponent implements OnInit {
+
   @Input('dbType') dbType: string;
   selectedDb: any;
   dbForm: FormGroup

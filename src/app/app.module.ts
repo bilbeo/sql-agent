@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import '../polyfills';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +9,8 @@ import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common
 
 import { AppRoutingModule } from './app-routing.module';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { MaterialModule } from './material/material.module';
+
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -21,6 +24,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { WorkspacesComponent } from './components/workspaces/workspaces.component';
 import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
 import { DbConnectorComponent } from './components/db-connector/db-connector.component';
+import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -30,7 +34,7 @@ import { AuthGuardService } from './providers/auth-guard.service';
 import { DBMongoService } from './providers/db-mongo.service';
 import { DBMySqlService } from './providers/db-mysql.service';
 import { WorkspaceService } from './providers/workspace.service';
-
+import { DatasourceService } from './providers/datasource.service';
 
 
 // AoT requires an exported function for factories
@@ -46,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthComponent,
     WorkspacesComponent,
     WorkspaceItemComponent,
-    DbConnectorComponent
+    DbConnectorComponent,
+    CreateWorkspaceComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +66,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    AceEditorModule
+    AceEditorModule,
+    MaterialModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ElectronService,
@@ -70,7 +77,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthGuardService,
     DBMongoService,
     DBMySqlService,
-    WorkspaceService
+    WorkspaceService,
+    DatasourceService
   ],
   bootstrap: [AppComponent]
 })

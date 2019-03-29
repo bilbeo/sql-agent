@@ -5,6 +5,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { AuthGuardService } from './providers/auth-guard.service';
 import { WorkspacesComponent } from './components/workspaces/workspaces.component';
 import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
+import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 
 const routes: Routes = [
 
@@ -14,6 +15,10 @@ const routes: Routes = [
         canActivate: [AuthGuardService],
         canActivateChild: [AuthGuardService],
         children: [
+            {
+                path: 'create-workspace',
+                component: CreateWorkspaceComponent
+            },
             {
                 path: ':id',
                 component: WorkspaceItemComponent,

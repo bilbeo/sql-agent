@@ -11,9 +11,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class WorkspacesComponent implements OnInit {
   user: User;
+  workspaces: any;
+  loading: boolean;
 
   constructor(
     private userService: UserService,
+    private workspaceService: WorkspaceService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -22,22 +25,44 @@ export class WorkspacesComponent implements OnInit {
   }
 
   getUser() {
+    this.loading = true;
     this.userService.getUser()
       .subscribe(
         (userRes) => {
           this.user = userRes;
+          this.getWorkspaces();
         },
         (err) => {
+          this.loading = false;
           console.log(err);
         }
       );
   }
 
+  getWorkspaces() {
+
+    this.workspaceService.getDesktopWorkspaces()
+      .subscribe(
+        (res) => {
+          this.loading = false;
+          this.workspaces = res;
+        },
+        (err) => {
+          this.loading = false;
+          console.log(err);
+        }
+      )
+  }
+
   showWorkspaceDetails(workspaceItem) {
     console.log(workspaceItem);
-    //  TODO check if the subject user can get this information
+    this.router.navigate(['./', workspaceItem.id], { relativeTo: this.route });
 
-    this.router.navigate(['./', workspaceItem.workspaceId], { relativeTo: this.route });
+  }
+
+
+  newWorkspace() {
+    this.router.navigate(['home/create-workspace']);
 
   }
 

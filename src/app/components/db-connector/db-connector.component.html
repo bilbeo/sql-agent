@@ -38,7 +38,7 @@
 
   </form>
 
-  <button (click)="connectToDatabase()">Connect to Database</button>
+  <button (click)="connectToDatabase()" mat-raised-button color="primary">Connect to Database</button>
 
   <div>
     <span *ngIf="message">{{message}}</span>
@@ -93,7 +93,6 @@
   </div>
 
   <div class="ace-container" ace-editor 
-  [(text)]="queryString" 
-  [mode]="'sql'"></div>
+  [(text)]="queryString"></div>
 
 </div>

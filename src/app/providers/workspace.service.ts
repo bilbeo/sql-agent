@@ -41,6 +41,48 @@ export class WorkspaceService {
       );
   }
 
+  getDesktopWorkspaces(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+    var date = new Date();
+
+    return this.http.get(this.baseUrl + `/api/workspaces/desktop?foobar=${date.getTime()}`, httpOptions)
+      .pipe(
+        map((result) => {
+          
+          return result['data'];
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
+
+  createDesktopWorkspace(data){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+   
+
+    return this.http.post(this.baseUrl + `/api/oem/workspace/create`, data, httpOptions)
+      .pipe(
+        map((result) => {
+          return result;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
+
   updateWorkspace() {
 
   }
