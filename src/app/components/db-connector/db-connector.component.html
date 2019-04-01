@@ -1,40 +1,54 @@
 <div *ngIf="!dbConnected">
-  <h2>Connect to {{selectedDb.name}} database</h2>
+  <!-- <h2>Connect to {{selectedDb.name}} database</h2> -->
+
+  <h3>Connect to
+    <mat-form-field class="db-select">
+      <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)" >
+        <mat-option *ngFor="let db of allDbs" [value]="db">
+          {{db.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    database
+  </h3>
 
 
   <form [formGroup]="dbForm">
     <div>
-      <label>
-        Host
-        <input type="text" formControlName="host">
-      </label>
+      <mat-form-field>
+        <input matInput type="text" formControlName="host" placeholder="Host">
+      </mat-form-field>
     </div>
 
     <div>
-      <label>
-        Database Name:
-        <input type="text" formControlName="dbName">
-      </label>
-    </div>
-    <div>
-      <label>
-        Port:
-        <input type="number" formControlName="port">
-      </label>
-    </div>
-    <div>
-      <label>
-        User:
-        <input type="text" formControlName="user">
-      </label>
-    </div>
-    <div>
-      <label>
-        Password:
-        <input type="password" formControlName="dbPassword">
-      </label>
+      <mat-form-field>
+        <input matInput type="text" formControlName="dbName" placeholder="Database Name">
+      </mat-form-field>
     </div>
 
+    <div>
+      <mat-form-field>
+        <input matInput type="number" formControlName="port" placeholder="Port">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="text" formControlName="user" placeholder="User">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="password" formControlName="dbPassword" placeholder="Password">
+      </mat-form-field>
+    </div>
+
+    <div>
+
+      <mat-checkbox [(ngModel)]="saveLocal" [ngModelOptions]="{standalone: true}">Save the credentials locally</mat-checkbox>
+  
+    </div>
 
   </form>
 
@@ -47,8 +61,8 @@
 
 
 
-<div>
-    <!-- <div *ngIf="dbConnected"> -->
+<div *ngIf="dbConnected">
+  <!-- <div *ngIf="dbConnected"> -->
 
   <h2>Query your database</h2>
 
@@ -57,18 +71,19 @@
   </p>
   <ul>
     <li>
-        <span class="redText">value</span> : The KPI's value. The column must contain numbers.
+      <span class="redText">value</span> : The KPI's value. The column must contain numbers.
     </li>
     <li>
-        <span class="redText">date</span>: Non formatted SQL date of the value measured or ISO 8601.
+      <span class="redText">date</span>: Non formatted SQL date of the value measured or ISO 8601.
     </li>
     <li>
-        <span class="redText">breakdown_Name</span> (optional): Additional attributes to analyse indicators even further into deeper levels
-        (also known as drill-downs). Modify the column alias to name each breakdown.
+      <span class="redText">breakdown_Name</span> (optional): Additional attributes to analyse indicators even further
+      into deeper levels
+      (also known as drill-downs). Modify the column alias to name each breakdown.
     </li>
   </ul>
-   
-    
+
+
   <p>
     For example, to see your "Total sales" by product, the query should look like:
   </p>
@@ -86,13 +101,12 @@
 
     <span>product</span>
     <b class="blueText"> AS </b>
-    <span  class="redText">'breakdown_Product'</span>
+    <span class="redText">'breakdown_Product'</span>
     <br />
     <b class="blueText">FROM</b>
     Invoice_Table
   </div>
 
-  <div class="ace-container" ace-editor 
-  [(text)]="queryString"></div>
+  <div class="ace-container" ace-editor [(text)]="queryString"></div>
 
 </div>

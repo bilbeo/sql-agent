@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Injector } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbCredentials } from '../../interfaces/db-credentials';
 import { DBMySqlService } from '../../providers/db-mysql.service';
+import { SharedService } from '../../providers/shared.service';
 
 
 
@@ -12,28 +13,43 @@ import { DBMySqlService } from '../../providers/db-mysql.service';
   styleUrls: ['./db-connector.component.scss']
 })
 export class DbConnectorComponent implements OnInit {
+  @Input('localData') localData: any;
+  @Input('workspace') workspace;
 
-  @Input('dbType') dbType: string;
   selectedDb: any;
   dbForm: FormGroup
   message: string;
   dbOutput: any;
   dbConnected: boolean;
   queryString: string;
+  allDbs: Array<any>;
+  saveLocal = true;
 
   constructor(
     private fb: FormBuilder,
-    private mySqlService: DBMySqlService) {
+    private mySqlService: DBMySqlService,
+    private sharedService: SharedService) {
 
-      this.queryString = '';
-
-    let allDbs = {
-      'mySql': {
+    //TODO:  maybe get the list from backend?
+    this.allDbs = [
+      {
         name: 'MySQL',
-        port: 3306
-      }
-    }
-    this.selectedDb = this.dbType ? allDbs[this.dbType] : allDbs['mySql'];
+        port: 3306,
+        key: 'mysql'
+      },
+      {
+        name: 'MongoDB',
+        port: 27017,
+        key: 'mongo'
+      },
+
+    ];
+    // hardcoded
+    this.selectedDb = this.allDbs[0];
+
+    this.queryString = '';
+
+
   }
 
   ngOnInit() {
@@ -69,6 +85,9 @@ export class DbConnectorComponent implements OnInit {
           console.log(res);
           this.message = res;
           this.dbConnected = true;
+          if (this.saveLocal) {
+            this.saveCredentials(credentials);
+          }
 
         },
         (errMessage) => {
@@ -77,7 +96,20 @@ export class DbConnectorComponent implements OnInit {
 
         }
       )
+  }
 
+  saveCredentials(credentials) {
+    // save the credentials in app ocal storage if the user has not unchecked save checkbox
+    const workspaceData = {
+      id: this.workspace.id,
+      credentials: credentials,
+      queries: []
+    }
+
+    if (!this.sharedService.getFromStorage('workspaces')) {
+      this.sharedService.setInStorage('workspaces', {});
+    }
+    this.sharedService.setInStorage(`workspaces.${this.workspace.id}`, workspaceData);
   }
 
   queryMySql(query?) {
@@ -95,6 +127,11 @@ export class DbConnectorComponent implements OnInit {
         });
   }
 
-  
+  onDbSelection(event) {
+    this.dbForm.controls['port'].setValue(event.value.port);
+
+  }
+
+
 
 }
