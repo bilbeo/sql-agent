@@ -2,28 +2,31 @@
   <div>
     <form [formGroup]="loginForm">
       <div>
-        <label>
-          Email address:
-          <input type="text" formControlName="email">
-        </label>
+
+        <mat-form-field>
+          <input matInput placeholder=" Email address" type="text" formControlName="email">
+        </mat-form-field>
       </div>
 
+
+
+
       <div>
-        <label>
-          Password:
-          <input type="password" formControlName="password">
-        </label>
+        <mat-form-field>
+          <input matInput placeholder="Password" type="password" formControlName="password">
+        </mat-form-field>
+
       </div>
 
 
     </form>
     <div>
-      <button (click)="signin()">Login</button>
+      <button mat-raised-button color="primary" (click)="signin()" class="login-button">Login</button>
     </div>
 
     <div *ngIf="message">
-        <small> {{message}}</small> 
-      </div>
+      <small> {{message}}</small>
+    </div>
   </div>
 
 </div>

@@ -16,8 +16,9 @@ export class WorkspaceItemComponent implements OnInit {
   // hardcoded at the moment: Sat
   dbType = 'mysql';
   workspaceLocalData: any;
-  selectedId;
+  workspaceId;
   datasource;
+  selectedIndicator;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -29,9 +30,9 @@ export class WorkspaceItemComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap(params => {
         // (+) before `params.get()` turns the string into a number
-        this.selectedId = params.get('id');
+        this.workspaceId = params.get('id');
         this.getDetailsFromLocalStore();
-        return this.workspaceService.getWorkspaceDetails(this.selectedId);
+        return this.workspaceService.getWorkspaceDetails(this.workspaceId);
       })
     )
       .subscribe((res) => {
@@ -45,7 +46,7 @@ export class WorkspaceItemComponent implements OnInit {
 
   getDetailsFromLocalStore() {
     this.workspaceLocalData = this.sharedService.getFromStorage('workspaces') ?
-      this.sharedService.getFromStorage('workspaces')[this.selectedId] : null;
+      this.sharedService.getFromStorage('workspaces')[this.workspaceId] : null;
   }
 
   getDatasource(name) {

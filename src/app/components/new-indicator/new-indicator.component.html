@@ -1,0 +1,52 @@
+<div class="container">
+
+
+
+
+  <form [formGroup]="indicatorForm">
+
+    <mat-vertical-stepper [linear]="isLinear" #stepper>
+      <ng-template matStepperIcon="edit">
+        +
+      </ng-template>
+
+      <ng-template matStepperIcon="done">
+        V
+      </ng-template>
+      <mat-step>
+
+        <ng-template matStepLabel>Name your KPI</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="" formControlName="name">
+        </mat-form-field>
+        <div>
+          <button mat-raised-button matStepperNext>Next</button>
+        </div>
+
+      </mat-step>
+      <mat-step>
+
+        <ng-template matStepLabel>Settings</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="Unit" formControlName="unit">
+        </mat-form-field>
+        <div>
+          <button mat-raised-button matStepperPrevious>Back</button>
+          <button mat-raised-button matStepperNext>Next</button>
+        </div>
+
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div>
+          <button mat-raised-button matStepperPrevious>Back</button>
+          <button mat-raised-button (click)="addIndicator()"> Add Indicator </button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+
+  </form>
+
+
+</div>

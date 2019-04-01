@@ -26,6 +26,7 @@ import { WorkspaceItemComponent } from './components/workspace-item/workspace-it
 import { DbConnectorComponent } from './components/db-connector/db-connector.component';
 import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 import { QueryDbComponent } from './components/query-db/query-db.component';
+import { NewIndicatorComponent } from './components/new-indicator/new-indicator.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -36,7 +37,6 @@ import { DBMongoService } from './providers/db-mongo.service';
 import { DBMySqlService } from './providers/db-mysql.service';
 import { WorkspaceService } from './providers/workspace.service';
 import { DatasourceService } from './providers/datasource.service';
-
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -53,7 +53,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WorkspaceItemComponent,
     DbConnectorComponent,
     CreateWorkspaceComponent,
-    QueryDbComponent
+    QueryDbComponent,
+    NewIndicatorComponent
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,12 @@
                 <h3>Workspace details</h3>
                 <p>{{workspace.name}}</p>
             </div>
+
+            <div *ngIf="datasource">
+                <mat-list>
+                    <mat-list-item *ngFor="let indicator of datasource.indicators">{{indicator.name}}</mat-list-item>
+                </mat-list>
+            </div>
         </div>
 
         <div class="credentials">
@@ -18,10 +24,10 @@
 
     <div class="right-side">
         <div class="add-indicator">
-
+            <app-new-indicator></app-new-indicator>
         </div>
 
-        <div class="query-tool">
+        <div class="query-tool" *ngIf="selectedIndicator">
             <app-query-db></app-query-db>
         </div>
 

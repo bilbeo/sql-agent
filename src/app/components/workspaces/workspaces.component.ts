@@ -55,7 +55,6 @@ export class WorkspacesComponent implements OnInit {
   }
 
   showWorkspaceDetails(workspaceItem) {
-    console.log(workspaceItem);
     this.router.navigate(['./', workspaceItem.id], { relativeTo: this.route });
 
   }
