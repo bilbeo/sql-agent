@@ -86,4 +86,24 @@ export class WorkspaceService {
   updateWorkspace() {
 
   }
+
+  getDatabaseTypes(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+    return this.http.get(this.baseUrl + `/api/db/connection/types`, httpOptions)
+      .pipe(
+        map((result) => {
+          return { ...result['types'] };
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+    
+  }
 }

@@ -1,7 +1,14 @@
-.workspace-card{
-    padding: 5px 10px;
-    border: 1px solid #cfcfcf;
-    border-radius: 3px;
-    margin-bottom: 5px;
-    cursor: pointer;
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.workspace-card {
+  padding: 5px 10px;
+  border: 1px solid #cfcfcf;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  cursor: pointer;
 }

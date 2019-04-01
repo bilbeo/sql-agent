@@ -25,6 +25,7 @@ import { WorkspacesComponent } from './components/workspaces/workspaces.componen
 import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
 import { DbConnectorComponent } from './components/db-connector/db-connector.component';
 import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
+import { QueryDbComponent } from './components/query-db/query-db.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -51,7 +52,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WorkspacesComponent,
     WorkspaceItemComponent,
     DbConnectorComponent,
-    CreateWorkspaceComponent
+    CreateWorkspaceComponent,
+    QueryDbComponent
   ],
   imports: [
     BrowserModule,

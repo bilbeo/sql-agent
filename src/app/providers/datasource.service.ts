@@ -47,4 +47,51 @@ export class DatasourceService {
         })
       );
   }
+
+  getDatasourceByName(datasourceName) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+    return this.http.get(this.baseUrl + `/api/datasource/${datasourceName}`, httpOptions)
+      .pipe(
+        map((result) => {
+          const datasource = { ...result['datasource'] };
+
+          return datasource;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+
+  }
+
+
+  updateDatasource(newData, datasourceId) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+    const payload = {
+      data: newData
+    }
+
+    return this.http.post(this.baseUrl + `/api/datasource/${datasourceId}`, payload, httpOptions)
+      .pipe(
+        map((result) => {
+          return result;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
 }

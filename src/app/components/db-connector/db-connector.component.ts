@@ -19,9 +19,7 @@ export class DbConnectorComponent implements OnInit {
   selectedDb: any;
   dbForm: FormGroup
   message: string;
-  dbOutput: any;
   dbConnected: boolean;
-  queryString: string;
   allDbs: Array<any>;
   saveLocal = true;
 
@@ -47,19 +45,17 @@ export class DbConnectorComponent implements OnInit {
     // hardcoded
     this.selectedDb = this.allDbs[0];
 
-    this.queryString = '';
-
-
+  
   }
 
   ngOnInit() {
-
+    let credentials = this.localData? this.localData.credentials : {};
     this.dbForm = this.fb.group({
-      host: ['', Validators.required],
-      dbName: ['', Validators.required],
-      port: [this.selectedDb.port, Validators.required],
-      user: [''],
-      dbPassword: [''],
+      host: [credentials.host || '', Validators.required],
+      dbName: [credentials.db || '', Validators.required],
+      port: [credentials.port || this.selectedDb.port, Validators.required],
+      user: [credentials.user || ''],
+      dbPassword: [credentials.password || ''],
     });
   }
 
@@ -112,26 +108,9 @@ export class DbConnectorComponent implements OnInit {
     this.sharedService.setInStorage(`workspaces.${this.workspace.id}`, workspaceData);
   }
 
-  queryMySql(query?) {
-    this.message = '';
-    const queryString = query || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
-
-    this.mySqlService.queryDB(queryString)
-      .subscribe(
-        (result) => {
-          this.dbOutput = result;
-        },
-        (errMessage) => {
-          console.log(errMessage);
-          this.message = errMessage || `Error when connecting to database`;
-        });
-  }
-
   onDbSelection(event) {
     this.dbForm.controls['port'].setValue(event.value.port);
 
   }
-
-
 
 }

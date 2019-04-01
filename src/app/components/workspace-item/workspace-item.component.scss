@@ -1,0 +1,32 @@
+.container {
+  padding: 10px 15px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+
+  .left-side {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+
+    .indicators {
+      flex: 1 1 auto;
+    }
+
+    .credentials {
+      flex: 0 1 200px;
+    }
+  }
+
+  .right-side {
+    flex: 1 1 auto;
+
+    .add-indicator {
+      flex: 0 1 300px;
+    }
+
+    .query-tool {
+      flex: 1 0 auto;
+    }
+  }
+}
