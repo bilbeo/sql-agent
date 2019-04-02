@@ -27,15 +27,15 @@ export class DatasourceService {
       })
     };
 
-    let data = {
-      defaultLang: "en_GB",
+    const data = {
+      defaultLang: 'en_GB',
       id: null,
       indicators: [],
-      langs: ["en_GB"],
+      langs: ['en_GB'],
       metrics: [],
       name: datasourceName,
       _id: null
-    }
+    };
 
     return this.http.post(this.baseUrl + `/api/datasource`, data, httpOptions)
       .pipe(
@@ -82,7 +82,7 @@ export class DatasourceService {
 
     const payload = {
       data: newData
-    }
+    };
 
     return this.http.post(this.baseUrl + `/api/datasource/${datasourceId}`, payload, httpOptions)
       .pipe(
@@ -95,7 +95,7 @@ export class DatasourceService {
       );
   }
 
-  getUnitGroups (){
+  getUnitGroups() {
     const groups = [
       {
         name: 'Currency',
@@ -124,11 +124,11 @@ export class DatasourceService {
           group: 'Number'
         }, {
           name: '1 decimal',
-          value: "+.1",
+          value: '+.1',
           group: 'Number'
         }, {
           name: '2 decimal',
-          value: "+.2",
+          value: '+.2',
           group: 'Number'
         }]
       }, {
@@ -139,11 +139,11 @@ export class DatasourceService {
           group: 'Percentage'
         }, {
           name: '1 decimal',
-          value: "+.1",
+          value: '+.1',
           group: 'Percentage'
         }, {
           name: '2 decimal',
-          value: "+.2",
+          value: '+.2',
           group: 'Percentage'
         }]
       }, {

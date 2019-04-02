@@ -41,19 +41,19 @@ export class WorkspaceService {
       );
   }
 
-  getDesktopWorkspaces(){
+  getDesktopWorkspaces() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this.userToken
       })
     };
-    var date = new Date();
+    const date = new Date();
 
     return this.http.get(this.baseUrl + `/api/workspaces/desktop?foobar=${date.getTime()}`, httpOptions)
       .pipe(
         map((result) => {
-          
+
           return result['data'];
         }),
         catchError((error: HttpErrorResponse) => {
@@ -62,7 +62,7 @@ export class WorkspaceService {
       );
   }
 
-  createDesktopWorkspace(data){
+  createDesktopWorkspace(data) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export class WorkspaceService {
       })
     };
 
-   
+
 
     return this.http.post(this.baseUrl + `/api/oem/workspace/create`, data, httpOptions)
       .pipe(
@@ -87,7 +87,7 @@ export class WorkspaceService {
 
   }
 
-  getDatabaseTypes(){
+  getDatabaseTypes() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -104,6 +104,6 @@ export class WorkspaceService {
           return throwError(error.error.message || error.error);
         })
       );
-    
+
   }
 }

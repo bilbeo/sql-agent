@@ -9,7 +9,7 @@ export class DBMySqlService {
     constructor(private ngZone: NgZone) { }
 
     connect(dbData: DbCredentials) {
-        return new Observable((observer)=>{
+        return new Observable((observer) => {
             this.db = mysql.createConnection({
                 host: dbData.host,
                 port: dbData.port,
@@ -17,19 +17,19 @@ export class DBMySqlService {
                 password: dbData.password,
                 database: dbData.db
             });
-    
+
             this.db.connect((err) => {
                 if (err) {
                     observer.error(err.message);
                 }
-               
-    
+
+
                 this.ngZone.run(() => {
                     observer.next('Connection Established');
                 });
             });
-        })
-        
+        });
+
     }
 
     queryDB(queryString) {

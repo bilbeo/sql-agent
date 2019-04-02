@@ -35,7 +35,7 @@ export class CreateWorkspaceComponent implements OnInit {
       custom: '',
       dataSourceName: '',
       isPushDb: true,
-    }
+    };
 
   }
 
@@ -49,13 +49,13 @@ export class CreateWorkspaceComponent implements OnInit {
       .subscribe(
         (res) => {
           console.log(res);
-          let data = {
+          const data = {
             APIKey: this.user.APIKey,
             dataSourceName: this.workspaceData.dataSourceName,
             workspaceName: this.workspaceData.workspaceName,
             custom: '',
             isPushDb: true
-          }
+          };
 
           this.workspaceService.createDesktopWorkspace(data)
             .subscribe(
@@ -74,7 +74,7 @@ export class CreateWorkspaceComponent implements OnInit {
           if (err.error && err.error.name === 'MongoError') {
             this.errorMessage = 'Datasource name already in use';
           } else {
-            this.errorMessage = 'Something went wrong when creating datasource'
+            this.errorMessage = 'Something went wrong when creating datasource';
           }
         }
       );

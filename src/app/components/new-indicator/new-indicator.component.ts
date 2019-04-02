@@ -7,8 +7,8 @@ import { DatasourceService } from '../../providers/datasource.service';
   styleUrls: ['./new-indicator.component.scss']
 })
 export class NewIndicatorComponent implements OnInit {
-  @Input('datasource') datasource;
-  @Output('datasourceChange') datasourceChange = new EventEmitter();
+  @Input() datasource;
+  @Output() datasourceChange = new EventEmitter();
   unitGroups;
   directionOptions;
   newIndicator;
@@ -25,23 +25,25 @@ export class NewIndicatorComponent implements OnInit {
       publicID: null,
       name: null,
       information: {
-        description: "",
+        description: '',
         descriptionI18N: {},
-        formula: "",
+        formula: '',
         formulaI18N: {},
-        hint: "",
+        hint: '',
         hintI18N: {}
       },
-      indicatorDomain: "",
+      indicatorDomain: '',
       keyIndicator: false,
-      snapshot: false, // snapshot = !timeAggregation
-      timeAggregation: true,// back needs the snapshot property. TimeAggregation is easiest to explain so tht the property we use at front
+      snapshot: false,
+      // snapshot = !timeAggregation
+      timeAggregation: true,
+      // back needs the snapshot property. TimeAggregation is easiest to explain so tht the property we use at front
       division: false,
-      direction: "Increasing is Better",
-      displayGranularity: "Day",
-      aggregation: "sum",
-      valueSpec: "Currency",
-      formatSpec: "",
+      direction: 'Increasing is Better',
+      displayGranularity: 'Day',
+      aggregation: 'sum',
+      valueSpec: 'Currency',
+      formatSpec: '',
       unit: this.unitGroups[0].items[0],
       atomicUpdate: false,
     };
@@ -61,9 +63,9 @@ export class NewIndicatorComponent implements OnInit {
       .subscribe(
         (resDatasource) => {
           this.datasource = resDatasource;
-          let lastIndex = this.datasource.indicators.length-1
+          const lastIndex = this.datasource.indicators.length - 1;
           this.datasourceChange.emit({
-            indicator:this.datasource.indicators[lastIndex],
+            indicator: this.datasource.indicators[lastIndex],
             datasource: this.datasource
           });
         },
@@ -71,43 +73,47 @@ export class NewIndicatorComponent implements OnInit {
           console.log(err);
 
         }
-      )
+      );
   }
 
   private formatKPIBeforeSave(kpiToUpdate) {
-    for (var prop in kpiToUpdate) {
-      switch (prop) {
+    for (const prop in kpiToUpdate) {
+      if (kpiToUpdate.hasOwnProperty(prop)) {
+        switch (prop) {
 
-        case 'columnsToDisplay':
-        case 'selectedBgColor':
-        case 'selectedfontColor': // all these are front properties only and shouldn't be send to backend
-        case 'query': // remove remove binding
-          delete kpiToUpdate[prop];
-          break;
+          case 'columnsToDisplay':
+          case 'selectedBgColor':
+          case 'selectedfontColor': // all these are front properties only and shouldn't be send to backend
+          case 'query': // remove remove binding
+            delete kpiToUpdate[prop];
+            break;
 
-        // [BACKEND] we need to adapt some data to backend
-        case 'timeAggregation':// convert time aggregation to snapshot
-          kpiToUpdate.snapshot = !kpiToUpdate[prop];
-          break;
-        case 'name':
-          kpiToUpdate.nameI18N = { 'en_GB': kpiToUpdate[prop] };
-          kpiToUpdate.publicID = kpiToUpdate[prop].toLowerCase();
-          break;
-        case 'information':
-          kpiToUpdate.information.descriptionI18N = { 'en_GB': kpiToUpdate[prop].description };
-          kpiToUpdate.information.formulaI18N = { 'en_GB': kpiToUpdate[prop].formula };
-          kpiToUpdate.information.hintI18N = { 'en_GB': kpiToUpdate[prop].hint };
-          break;
+          // [BACKEND] we need to adapt some data to backend
+          case 'timeAggregation':
+            // convert time aggregation to snapshot
+            kpiToUpdate.snapshot = !kpiToUpdate[prop];
+            break;
+          case 'name':
+            kpiToUpdate.nameI18N = { 'en_GB': kpiToUpdate[prop] };
+            kpiToUpdate.publicID = kpiToUpdate[prop].toLowerCase();
+            break;
+          case 'information':
+            kpiToUpdate.information.descriptionI18N = { 'en_GB': kpiToUpdate[prop].description };
+            kpiToUpdate.information.formulaI18N = { 'en_GB': kpiToUpdate[prop].formula };
+            kpiToUpdate.information.hintI18N = { 'en_GB': kpiToUpdate[prop].hint };
+            break;
 
-        case 'aggregation': // set division
-          kpiToUpdate.division = (kpiToUpdate[prop] === 'avg') ? true : false;
-          break;
-        case 'unit':
-          kpiToUpdate.formatSpec = kpiToUpdate[prop].value;
-          kpiToUpdate.valueSpec = kpiToUpdate[prop].group;
-          delete kpiToUpdate[prop];
-          break;
+          case 'aggregation': // set division
+            kpiToUpdate.division = (kpiToUpdate[prop] === 'avg') ? true : false;
+            break;
+          case 'unit':
+            kpiToUpdate.formatSpec = kpiToUpdate[prop].value;
+            kpiToUpdate.valueSpec = kpiToUpdate[prop].group;
+            delete kpiToUpdate[prop];
+            break;
+        }
       }
+
     }
     return kpiToUpdate;
   }

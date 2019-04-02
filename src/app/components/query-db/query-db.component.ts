@@ -9,7 +9,7 @@ import { DBMySqlService } from '../../providers/db-mysql.service';
 export class QueryDbComponent implements OnInit {
   message;
   dbOutput: any;
-  queryString:string
+  queryString: string;
 
   constructor(
     private mySqlService: DBMySqlService

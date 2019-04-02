@@ -1,35 +1,50 @@
 <div class="container">
-
-    <div class="left-side">
-        <div class="indicators">
-            <button (click)="goBack()">Back</button>
-
-            <div *ngIf="workspace">
-                <h3>Workspace details</h3>
-                <p>{{workspace.name}}</p>
-            </div>
-
-            <div *ngIf="datasource">
-                <mat-list>
-                    <mat-list-item *ngFor="let indicator of datasource.indicators" [ngClass]="{'selected': selectedIndicator && (indicator._id === selectedIndicator._id)}">{{indicator.name}}</mat-list-item>
-                </mat-list>
-            </div>
-        </div>
-
-        <div class="credentials">
-            <app-db-connector [workspace]="workspace" [localData]="workspaceLocalData"></app-db-connector>
-        </div>
+    <div class="header">
+        <button (click)="goBack()" mat-raised-button>Back</button>
+        <h3 *ngIf="workspace">{{workspace.name}}</h3>
     </div>
 
 
-    <div class="right-side">
-        <div class="add-indicator">
-            <app-new-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)"></app-new-indicator>
+
+    <div class="flex-container">
+        <div class="left-side">
+            <div class="indicators" *ngIf="workspace && datasource && datasource.indicators.length">
+
+                <div *ngIf="datasource">
+                    <ul class="indicator-list">
+                        <li *ngFor="let indicator of datasource.indicators; let i = index"
+                            [ngClass]="{'selected': selectedIndicator && (indicator._id === selectedIndicator._id)}"
+                            (click)="selectIndicator(i)">
+                            {{indicator.name}}
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="credentials">
+                <app-db-connector [workspace]="workspace" [localData]="workspaceLocalData"></app-db-connector>
+            </div>
         </div>
 
-        <div class="query-tool" *ngIf="selectedIndicator">
-            <app-query-db></app-query-db>
-        </div>
 
+        <div class="right-side">
+            <div class="add-indicator">
+                <div *ngIf="!selectedIndicator">
+                    <app-new-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)">
+                    </app-new-indicator>
+                </div>
+
+                <div *ngIf="selectedIndicator">
+                    Selected!
+                </div>
+            </div>
+
+            <div class="query-tool" *ngIf="selectedIndicator">
+                <app-query-db></app-query-db>
+            </div>
+
+        </div>
     </div>
+
 </div>

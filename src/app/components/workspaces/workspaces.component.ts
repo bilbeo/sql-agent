@@ -51,7 +51,7 @@ export class WorkspacesComponent implements OnInit {
           this.loading = false;
           console.log(err);
         }
-      )
+      );
   }
 
   showWorkspaceDetails(workspaceItem) {

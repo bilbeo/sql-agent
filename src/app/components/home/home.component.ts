@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
       this.queryMongo();
     });
   }
-  
+
 
   queryMongo(query?) {
 

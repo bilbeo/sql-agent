@@ -29,6 +29,7 @@ export class UserService {
             .pipe(
                 map((result) => {
                     if (result['status'] === 'success') {
+                        this.userToken = result['token'];
                         this.sharedService.setInStorage('token', result['token']);
                         this.sharedService.setInStorage('userId', result['id']);
                     }
@@ -43,8 +44,9 @@ export class UserService {
 
     signout() {
         return new Observable((observer) => {
+            this.userToken = null;
             this.sharedService.removeFromStorage('userId'),
-                this.sharedService.removeFromStorage('token');
+            this.sharedService.removeFromStorage('token');
 
             observer.next('Logged out!');
             observer.complete();

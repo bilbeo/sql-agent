@@ -12,7 +12,7 @@ import { DatasourceService } from '../../providers/datasource.service';
   styleUrls: ['./workspace-item.component.scss']
 })
 export class WorkspaceItemComponent implements OnInit {
-  workspace
+  workspace;
   // hardcoded at the moment: Sat
   dbType = 'mysql';
   workspaceLocalData: any;
@@ -37,7 +37,7 @@ export class WorkspaceItemComponent implements OnInit {
     )
       .subscribe((res) => {
         this.workspace = res;
-        this.getDatasource(this.workspace.dataSource)
+        this.getDatasource(this.workspace.dataSource);
       },
         (err) => {
           console.log(err);
@@ -59,11 +59,17 @@ export class WorkspaceItemComponent implements OnInit {
           console.log(err);
 
         }
-      )
+      );
   }
 
-  onDatasourceUpdated(newDatasouceData){
-    
+  selectIndicator(index) {
+    this.selectedIndicator = null;
+    this.selectedIndicator = this.datasource.indicators[index];
+
+  }
+
+  onDatasourceUpdated(newDatasouceData) {
+    this.selectedIndicator = null;
     this.datasource = newDatasouceData.datasource;
     // when a new indicatoris created we want ot to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
