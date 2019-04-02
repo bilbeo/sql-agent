@@ -7,7 +7,11 @@ import {
   MatProgressSpinnerModule,
   // MatGridListModule,
   MatListModule,
-  MatStepperModule
+  MatStepperModule,
+  MatRadioModule,
+  MatButtonToggleModule,
+  MatSlideToggleModule,
+  MatExpansionModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 
@@ -23,7 +27,11 @@ import { NgModule } from '@angular/core';
     MatProgressSpinnerModule,
     // MatGridListModule,
     MatListModule,
-    MatStepperModule
+    MatStepperModule,
+    MatRadioModule,
+    MatButtonToggleModule,
+    MatSlideToggleModule,
+    MatExpansionModule
 
 
   ],
@@ -36,7 +44,11 @@ import { NgModule } from '@angular/core';
     MatProgressSpinnerModule,
     // MatGridListModule,
     MatListModule,
-    MatStepperModule
+    MatStepperModule,
+    MatRadioModule,
+    MatButtonToggleModule,
+    MatSlideToggleModule,
+    MatExpansionModule
   ],
 })
 export class MaterialModule { }

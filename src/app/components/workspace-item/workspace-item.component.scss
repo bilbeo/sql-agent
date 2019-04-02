@@ -16,6 +16,8 @@
 
     .indicators {
       flex: 1 1 auto;
+      max-height: 300px;
+      overflow-y: auto;
     }
 
     .credentials {
@@ -33,5 +35,13 @@
     .query-tool {
       flex: 1 0 auto;
     }
+  }
+}
+
+mat-list-item {
+  cursor: pointer;
+  
+  &.selected{
+    background: red;
   }
 }

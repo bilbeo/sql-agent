@@ -62,6 +62,13 @@ export class WorkspaceItemComponent implements OnInit {
       )
   }
 
+  onDatasourceUpdated(newDatasouceData){
+    
+    this.datasource = newDatasouceData.datasource;
+    // when a new indicatoris created we want ot to be the selected one
+    this.selectedIndicator = newDatasouceData.indicator;
+  }
+
 
   goBack() {
     this.router.navigate(['../']);

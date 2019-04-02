@@ -1,11 +1,6 @@
 <div class="container">
 
-
-
-
-  <form [formGroup]="indicatorForm">
-
-    <mat-vertical-stepper [linear]="isLinear" #stepper>
+    <mat-vertical-stepper [linear]="isLinear" #stepper *ngIf="newIndicator">
       <ng-template matStepperIcon="edit">
         +
       </ng-template>
@@ -13,11 +8,12 @@
       <ng-template matStepperIcon="done">
         V
       </ng-template>
+
       <mat-step>
 
         <ng-template matStepLabel>Name your KPI</ng-template>
         <mat-form-field>
-          <input matInput placeholder="" formControlName="name">
+          <input matInput placeholder="" [(ngModel)]="newIndicator.name">
         </mat-form-field>
         <div>
           <button mat-raised-button matStepperNext>Next</button>
@@ -26,27 +22,95 @@
       </mat-step>
       <mat-step>
 
-        <ng-template matStepLabel>Settings</ng-template>
+        <ng-template matStepLabel>KPI Settings</ng-template>
+
+
+
         <mat-form-field>
-          <input matInput placeholder="Unit" formControlName="unit">
+          <mat-label>Unit</mat-label>
+          <mat-select [(value)]="newIndicator.unit" >
+            <mat-optgroup *ngFor="let group of unitGroups" [label]="group.name">
+              <mat-option *ngFor="let item of group.items" [value]="item">
+                {{item.name}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
         </mat-form-field>
+        <br>
+
+        <mat-form-field>
+          <mat-label>Direction</mat-label>
+          <mat-hint></mat-hint>
+          <mat-select [(value)]="newIndicator.direction">
+
+            <mat-option *ngFor="let direction of directionOptions" [value]="direction">
+              {{direction}}
+            </mat-option>
+          </mat-select>
+
+        </mat-form-field>
+        <br>
+
+
+        <mat-button-toggle-group name="aggregation" [(ngModel)]="newIndicator.aggregation" >
+          <mat-button-toggle value="avg">Average</mat-button-toggle>
+          <mat-button-toggle value="sum">Sum</mat-button-toggle>
+        </mat-button-toggle-group>
+
+
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Advanced settings
+              </mat-panel-title>
+
+            </mat-expansion-panel-header>
+
+            <mat-form-field>
+              <input matInput placeholder="Domain" [(ngModel)]="newIndicator.indicatorDomain"  type="text">
+            </mat-form-field>
+
+            <br>
+            <mat-form-field>
+              <textarea matInput placeholder="Description" [(ngModel)]="newIndicator.information.description"></textarea>
+            </mat-form-field>
+
+            <br>
+            <mat-slide-toggle [(ngModel)]="newIndicator.timeAggregation">Aggregation on time</mat-slide-toggle>
+            <br>
+            <mat-slide-toggle [(ngModel)]="newIndicator.keyIndicator">Key indicator</mat-slide-toggle>
+            <br>
+
+            <label>Update behavior</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="newIndicator.atomicUpdate">
+              <mat-radio-button class="radio-button" value="true">
+                Overwrite existing data and upload new data
+              </mat-radio-button>
+              <mat-radio-button class="radio-button" value="false">
+                Replace all data
+              </mat-radio-button>
+            </mat-radio-group>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+
         <div>
           <button mat-raised-button matStepperPrevious>Back</button>
-          <button mat-raised-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperNext >Next</button>
         </div>
 
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        You are now done.
+        <ng-template matStepLabel>Save KPI</ng-template>
         <div>
           <button mat-raised-button matStepperPrevious>Back</button>
-          <button mat-raised-button (click)="addIndicator()"> Add Indicator </button>
+          <button mat-raised-button (click)="addIndicator()"> Save </button>
         </div>
       </mat-step>
     </mat-vertical-stepper>
-
-  </form>
 
 
 </div>

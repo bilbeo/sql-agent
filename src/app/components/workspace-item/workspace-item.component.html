@@ -11,7 +11,7 @@
 
             <div *ngIf="datasource">
                 <mat-list>
-                    <mat-list-item *ngFor="let indicator of datasource.indicators">{{indicator.name}}</mat-list-item>
+                    <mat-list-item *ngFor="let indicator of datasource.indicators" [ngClass]="{'selected': selectedIndicator && (indicator._id === selectedIndicator._id)}">{{indicator.name}}</mat-list-item>
                 </mat-list>
             </div>
         </div>
@@ -24,7 +24,7 @@
 
     <div class="right-side">
         <div class="add-indicator">
-            <app-new-indicator></app-new-indicator>
+            <app-new-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)"></app-new-indicator>
         </div>
 
         <div class="query-tool" *ngIf="selectedIndicator">

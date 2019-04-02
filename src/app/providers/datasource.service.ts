@@ -55,8 +55,8 @@ export class DatasourceService {
         'Authorization': 'Bearer ' + this.userToken
       })
     };
-
-    return this.http.get(this.baseUrl + `/api/datasource/${datasourceName}`, httpOptions)
+    const date = new Date();
+    return this.http.get(this.baseUrl + `/api/datasource/${datasourceName}?foobar=${date.getTime()}`, httpOptions)
       .pipe(
         map((result) => {
           const datasource = { ...result['datasource'] };
@@ -87,11 +87,78 @@ export class DatasourceService {
     return this.http.post(this.baseUrl + `/api/datasource/${datasourceId}`, payload, httpOptions)
       .pipe(
         map((result) => {
-          return result;
+          return { ...result['data'] };
         }),
         catchError((error: HttpErrorResponse) => {
           return throwError(error.error.message || error.error);
         })
       );
+  }
+
+  getUnitGroups (){
+    const groups = [
+      {
+        name: 'Currency',
+        items: [{
+          name: 'Euros',
+          value: 'EUR0',
+          group: 'Currency'
+        }, {
+          name: 'US Dollars',
+          value: 'USD0',
+          group: 'Currency'
+        }, {
+          name: 'Israeli Shekels',
+          value: 'ILS',
+          group: 'Currency'
+        }, {
+          name: 'france',
+          value: 'XPF',
+          group: 'Currency'
+        }]
+      }, {
+        name: 'Number',
+        items: [{
+          name: 'No decimals',
+          value: '+.0',
+          group: 'Number'
+        }, {
+          name: '1 decimal',
+          value: "+.1",
+          group: 'Number'
+        }, {
+          name: '2 decimal',
+          value: "+.2",
+          group: 'Number'
+        }]
+      }, {
+        name: 'Percentage',
+        items: [{
+          name: 'No decimals',
+          value: '+.0',
+          group: 'Percentage'
+        }, {
+          name: '1 decimal',
+          value: "+.1",
+          group: 'Percentage'
+        }, {
+          name: '2 decimal',
+          value: "+.2",
+          group: 'Percentage'
+        }]
+      }, {
+        name: 'Time',
+        items: [{
+          name: 'Hours : minutes : seconds',
+          value: 'hhmmss',
+          group: 'Time'
+        }, {
+          name: 'Seconds',
+          value: 'sec',
+          group: 'Time'
+        }]
+      }
+    ];
+    return groups;
   }
 }
