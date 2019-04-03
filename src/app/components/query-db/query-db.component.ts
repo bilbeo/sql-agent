@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DBMySqlService } from '../../providers/db-mysql.service';
+import "brace/mode/sql"
 
 @Component({
   selector: 'app-query-db',
@@ -7,6 +8,7 @@ import { DBMySqlService } from '../../providers/db-mysql.service';
   styleUrls: ['./query-db.component.scss']
 })
 export class QueryDbComponent implements OnInit {
+  @Input() selectedIndicator;
   message;
   dbOutput: any;
   queryString: string;

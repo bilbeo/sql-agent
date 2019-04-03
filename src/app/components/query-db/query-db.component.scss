@@ -1,8 +1,7 @@
 .query-example {
   font-family: monospace;
-  padding: display-inline;
   border: 1px solid grey;
-  border-radius: 5px;
+  // border-radius: 5px;
   padding: 10px 15px;
 }
 
@@ -15,7 +14,8 @@
   color: #2060a0;
 }
 
-.ace-container {
-  height: 50px;
-  margin-top: 20px;
+.ace-editor{
+  min-height: 200px; 
+  width:100%; 
+  overflow: auto;
 }

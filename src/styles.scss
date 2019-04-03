@@ -7,3 +7,8 @@ html, body {
 
   height: 100%;
 }
+
+// [Sat] hide the vertical line in the middle of the ace-editor
+.ace-monokai .ace_print-margin {
+  width: 0 !important;
+}

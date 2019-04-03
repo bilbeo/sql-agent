@@ -1,4 +1,4 @@
-<h2>Query your database</h2>
+<h2>Query your database for {{selectedIndicator.name}}</h2>
 
 <p>
   The following column names are expected with those aliases:
@@ -19,7 +19,7 @@
 
 
 <p>
-  For example, to see your "Total sales" by product, the query should look like:
+  For example, to see your <b>{{selectedIndicator.name}}</b> by product, the query should look like:
 </p>
 
 <div class="query-example">
@@ -41,4 +41,4 @@
   Invoice_Table
 </div>
 
-<div class="ace-container" ace-editor [(text)]="queryString"></div>
+<ace-editor class="ace-editor" [(text)]="queryString" mode="sql" ></ace-editor>

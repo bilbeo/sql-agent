@@ -68,6 +68,10 @@ export class WorkspaceItemComponent implements OnInit {
 
   }
 
+  editIndicator(){
+    
+  }
+
   onDatasourceUpdated(newDatasouceData) {
     this.selectedIndicator = null;
     this.datasource = newDatasouceData.datasource;
