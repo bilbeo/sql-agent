@@ -15,7 +15,7 @@
   </div>
 
   <!-- create/update credentials -->
-  <form [formGroup]="dbForm" *ngIf="!localData || editMode">
+  <form [formGroup]="dbForm" *ngIf="dbForm && (!localData || editMode)">
     <mat-form-field class="db-select">
       <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)">
         <mat-option *ngFor="let db of allDbs" [value]="db">
@@ -71,7 +71,7 @@
 
 
   <!-- Already have credentials -->
-  <div *ngIf="localData && !editMode">
+  <div *ngIf="localData && credentials && !editMode">
     <table>
       <tr>
         <td class="label">Host</td>

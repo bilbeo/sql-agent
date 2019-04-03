@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SharedService } from './shared.service';
-import { AppConfig } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { User } from '../interfaces/user';
-import { Workspace } from '../interfaces/workspace';
+import { Datasource } from '../interfaces/datasource';
+
 
 @Injectable()
 export class DatasourceService {
@@ -48,7 +47,7 @@ export class DatasourceService {
       );
   }
 
-  getDatasourceByName(datasourceName) {
+  getDatasourceByName(datasourceName): Observable<Datasource> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -60,7 +59,6 @@ export class DatasourceService {
       .pipe(
         map((result) => {
           const datasource = { ...result['datasource'] };
-
           return datasource;
         }),
         catchError((error: HttpErrorResponse) => {

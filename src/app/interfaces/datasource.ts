@@ -1,10 +1,12 @@
 export interface Datasource {
     _id: string;
-    type: string;
-    isExcel?: boolean;
-    isDb?: boolean;
-    isGoogleAnalytics?: boolean;
-    queries?: Array<any>;
-    credentials?: any;
+    defaultLang?: string;
+    langs?: Array<string>
+    name: string;
+    owner: string;
+    indicators: Array<any>;
+    metrics: Array<any>;
+    isPublic?: boolean;
+    isGoogle?: boolean;
 }
 

@@ -30,7 +30,10 @@ export class DbConnectorComponent implements OnInit {
     private workspaceService: WorkspaceService) { }
 
   ngOnInit() {
-    this.getDbTypes();
+    this.getDbTypes();  
+  }
+
+  initDbForm(){
     this.credentials = this.localData ? this.localData.credentials : {};
     this.dbForm = this.fb.group({
       host: [this.credentials.host || '', Validators.required],
@@ -65,6 +68,7 @@ export class DbConnectorComponent implements OnInit {
           });
 
           this.selectedDb = this.allDbs[0];
+          this.initDbForm();
         },
         (err) => {
           console.log(err);
