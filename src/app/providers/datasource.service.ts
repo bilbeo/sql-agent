@@ -55,8 +55,7 @@ export class DatasourceService {
         'Authorization': 'Bearer ' + this.userToken
       })
     };
-    const date = new Date();
-    return this.http.get(this.baseUrl + `/api/datasource/${datasourceName}?foobar=${date.getTime()}`, httpOptions)
+    return this.http.get(this.baseUrl + `/api/datasource/${datasourceName}`, httpOptions)
       .pipe(
         map((result) => {
           const datasource = { ...result['datasource'] };

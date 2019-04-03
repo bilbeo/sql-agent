@@ -37,6 +37,7 @@ import { DBMongoService } from './providers/db-mongo.service';
 import { DBMySqlService } from './providers/db-mysql.service';
 import { WorkspaceService } from './providers/workspace.service';
 import { DatasourceService } from './providers/datasource.service';
+import { HttpCacheInterceptor } from './providers/http-cache-interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -81,7 +82,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     DBMongoService,
     DBMySqlService,
     WorkspaceService,
-    DatasourceService
+    DatasourceService,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

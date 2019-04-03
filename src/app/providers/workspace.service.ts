@@ -48,9 +48,8 @@ export class WorkspaceService {
         'Authorization': 'Bearer ' + this.userToken
       })
     };
-    const date = new Date();
 
-    return this.http.get(this.baseUrl + `/api/workspaces/desktop?foobar=${date.getTime()}`, httpOptions)
+    return this.http.get(this.baseUrl + `/api/workspaces/desktop`, httpOptions)
       .pipe(
         map((result) => {
 
