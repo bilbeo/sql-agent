@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbCredentials } from '../../interfaces/db-credentials';
-import { DBMySqlService } from '../../providers/db-mysql.service';
 import { SharedService } from '../../providers/shared.service';
 import { WorkspaceService } from '../../providers/workspace.service';
+import { DatabaseService } from '../../providers/database.service';
 
 @Component({
   selector: 'app-db-connector',
@@ -25,15 +25,15 @@ export class DbConnectorComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private mySqlService: DBMySqlService,
+    private databaseService: DatabaseService,
     private sharedService: SharedService,
     private workspaceService: WorkspaceService) { }
 
   ngOnInit() {
-    this.getDbTypes();  
+    this.getDbTypes();
   }
 
-  initDbForm(){
+  initDbForm() {
     this.credentials = this.localData ? this.localData.credentials : {};
     this.dbForm = this.fb.group({
       host: [this.credentials.host || '', Validators.required],
@@ -91,8 +91,7 @@ export class DbConnectorComponent implements OnInit {
 
     };
 
-
-    this.mySqlService.connect(credentials)
+    this.databaseService.testConnection(credentials, 'mysql', {})
       .subscribe(
         (res: string) => {
           console.log(res);

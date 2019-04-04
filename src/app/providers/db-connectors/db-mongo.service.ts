@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { DbCredentials } from '../interfaces/db-credentials';
+import { DbCredentials } from '../../interfaces/db-credentials';
 const MongoClient = (<any>window).require('mongodb').MongoClient;
 
 @Injectable()

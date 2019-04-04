@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../providers/user.service';
 import { Router } from '@angular/router';
-import { DBMongoService } from '../../providers/db-mongo.service';
-import { DBMySqlService } from '../../providers/db-mysql.service';
+
 import { DbCredentials } from '../../interfaces/db-credentials';
 import { User } from '../../interfaces/user';
 
@@ -19,9 +18,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router,
-    private mongoService: DBMongoService,
-    private sqlService: DBMySqlService) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.getUserDetails();
@@ -50,44 +47,44 @@ export class HomeComponent implements OnInit {
 
 
 
-  connectMongo() {
-    const connectionDetails: DbCredentials = {
-      host: 'test',
-      port: 27017,
-      user: 'username',
-      password: 'password',
-      db: 'databaseName'
-    };
+  // connectMongo() {
+  //   const connectionDetails: DbCredentials = {
+  //     host: 'test',
+  //     port: 27017,
+  //     user: 'username',
+  //     password: 'password',
+  //     db: 'databaseName'
+  //   };
 
-    this.mongoService.connect(connectionDetails, (err) => {
-      console.log(err);
-      if (err) {
-        return;
-      }
-      this.queryMongo();
-    });
-  }
+  //   this.mongoService.connect(connectionDetails, (err) => {
+  //     console.log(err);
+  //     if (err) {
+  //       return;
+  //     }
+  //     this.queryMongo();
+  //   });
+  // }
 
 
-  queryMongo(query?) {
+  // queryMongo(query?) {
 
-    const queryString = query || `instructions.aggregate([
-      { '$project': {
-          '_id': 0,
-          'value': '$amount',
-          'date': '$processDate',
-          'breakdown_type': '$type'
-         }
-      }
-  ])`;
+  //   const queryString = query || `instructions.aggregate([
+  //     { '$project': {
+  //         '_id': 0,
+  //         'value': '$amount',
+  //         'date': '$processDate',
+  //         'breakdown_type': '$type'
+  //        }
+  //     }
+  // ])`;
 
-    this.mongoService.queryDB(queryString)
-      .subscribe(
-        (result) => {
-          this.output = result;
-        },
-        (err) => { });
-  }
+  //   this.mongoService.queryDB(queryString)
+  //     .subscribe(
+  //       (result) => {
+  //         this.output = result;
+  //       },
+  //       (err) => { });
+  // }
 
 
 

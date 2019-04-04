@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DBMySqlService } from '../../providers/db-mysql.service';
-import "brace/mode/sql"
+// import { DBMySqlService } from '../../providers/db-connectors/mysql';
+import 'brace/mode/sql';
+import { DatabaseService } from '../../providers/database.service';
 
 @Component({
   selector: 'app-query-db',
@@ -9,32 +10,37 @@ import "brace/mode/sql"
 })
 export class QueryDbComponent implements OnInit {
   @Input() selectedIndicator;
+  @Input() localData;
   message;
   dbOutput: any;
   queryString: string;
+  credentials;
 
   constructor(
-    private mySqlService: DBMySqlService
+    private databaseServce: DatabaseService
   ) { }
 
   ngOnInit() {
     this.queryString = '';
+    this.credentials = this.localData ? this.localData.credentials : {};
   }
 
 
-  queryMySql(query?) {
+  queryDB(query?) {
+
     this.message = '';
     const queryString = query || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
 
-    this.mySqlService.queryDB(queryString)
+
+    this.databaseServce.executeQueries('mysql', this.credentials, queryString, {})
       .subscribe(
-        (result) => {
-          this.dbOutput = result;
+        (outputResult) => {
+          this.dbOutput = outputResult;
         },
-        (errMessage) => {
-          console.log(errMessage);
-          this.message = errMessage || `Error when connecting to database`;
-        });
+        (err) => {
+          this.message = err;
+        }
+      );
   }
 
 }

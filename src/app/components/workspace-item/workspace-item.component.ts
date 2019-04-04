@@ -68,8 +68,8 @@ export class WorkspaceItemComponent implements OnInit {
 
   }
 
-  editIndicator(){
-    
+  editIndicator() {
+
   }
 
   onDatasourceUpdated(newDatasouceData) {
