@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-// import { DBMySqlService } from '../../providers/db-connectors/mysql';
 import 'brace/mode/sql';
 import { DatabaseService } from '../../providers/database.service';
 
@@ -32,7 +31,7 @@ export class QueryDbComponent implements OnInit {
     const queryString = query || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
 
 
-    this.databaseServce.executeQueries('mysql', this.credentials, queryString, {})
+    this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryString, {})
       .subscribe(
         (outputResult) => {
           this.dbOutput = {

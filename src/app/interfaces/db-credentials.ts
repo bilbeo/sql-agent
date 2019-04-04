@@ -4,4 +4,5 @@ export interface DbCredentials {
     user: string;
     password: string;
     db: string;
+    type: string;
 }

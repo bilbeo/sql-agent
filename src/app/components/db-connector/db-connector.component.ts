@@ -13,7 +13,6 @@ import { DatabaseService } from '../../providers/database.service';
 export class DbConnectorComponent implements OnInit {
   @Input() localData: any;
   @Input() workspace;
-
   selectedDb: any;
   dbForm: FormGroup;
   message: string;
@@ -42,6 +41,11 @@ export class DbConnectorComponent implements OnInit {
       user: [this.credentials.user || ''],
       dbPassword: [this.credentials.password || ''],
     });
+    if (this.credentials.type) {
+      this.selectedDb = this.allDbs.find((db) => {
+        return db.key === this.credentials.type;
+      })
+    }
   }
 
   getDbTypes() {
@@ -87,11 +91,12 @@ export class DbConnectorComponent implements OnInit {
       port: this.dbForm.controls['port'].value,
       db: this.dbForm.controls['dbName'].value,
       user: this.dbForm.controls['user'].value ? this.dbForm.controls['user'].value : null,
-      password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null
+      password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null,
+      type: this.selectedDb.key
 
     };
 
-    this.databaseService.testConnection(credentials, 'mysql', {})
+    this.databaseService.testConnection(credentials, this.selectedDb.key, {})
       .subscribe(
         (res: string) => {
           console.log(res);

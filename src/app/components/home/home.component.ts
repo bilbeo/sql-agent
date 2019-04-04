@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../providers/user.service';
 import { Router } from '@angular/router';
-
-import { DbCredentials } from '../../interfaces/db-credentials';
 import { User } from '../../interfaces/user';
 
 @Component({
@@ -44,48 +42,5 @@ export class HomeComponent implements OnInit {
       },
       (err) => { });
   }
-
-
-
-  // connectMongo() {
-  //   const connectionDetails: DbCredentials = {
-  //     host: 'test',
-  //     port: 27017,
-  //     user: 'username',
-  //     password: 'password',
-  //     db: 'databaseName'
-  //   };
-
-  //   this.mongoService.connect(connectionDetails, (err) => {
-  //     console.log(err);
-  //     if (err) {
-  //       return;
-  //     }
-  //     this.queryMongo();
-  //   });
-  // }
-
-
-  // queryMongo(query?) {
-
-  //   const queryString = query || `instructions.aggregate([
-  //     { '$project': {
-  //         '_id': 0,
-  //         'value': '$amount',
-  //         'date': '$processDate',
-  //         'breakdown_type': '$type'
-  //        }
-  //     }
-  // ])`;
-
-  //   this.mongoService.queryDB(queryString)
-  //     .subscribe(
-  //       (result) => {
-  //         this.output = result;
-  //       },
-  //       (err) => { });
-  // }
-
-
 
 }

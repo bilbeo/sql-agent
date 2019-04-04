@@ -13,8 +13,6 @@ import { DatasourceService } from '../../providers/datasource.service';
 })
 export class WorkspaceItemComponent implements OnInit {
   workspace;
-  // hardcoded at the moment: Sat
-  dbType = 'mysql';
   workspaceLocalData: any;
   workspaceId;
   datasource;

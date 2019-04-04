@@ -54,12 +54,12 @@ export class DatabaseService {
         //     script: require('./db/mariadb'),
         //     defaultPort: 3306
         // },
-        // mongodb: {
-        //     name: 'MongoDB',
-        //     order: 10,
-        //     script: require('./db/mongodb'),
-        //     defaultPort: 27017
-        // },
+        mongodb: {
+            name: 'MongoDB',
+            order: 10,
+            script: require('./db-connectors/mongo'),
+            defaultPort: 27017
+        },
         // sybase: {
         //     name: 'SAP ASE / Sybase',
         //     order: 6,
