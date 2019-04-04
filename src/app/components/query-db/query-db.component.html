@@ -1,46 +1,78 @@
 <h2>Query your database for {{selectedIndicator.name}}</h2>
 
-<p>
-  The following column names are expected with those aliases:
-</p>
-<ul>
-  <li>
-    <span class="redText">value</span> : The KPI's value. The column must contain numbers.
-  </li>
-  <li>
-    <span class="redText">date</span>: Non formatted SQL date of the value measured or ISO 8601.
-  </li>
-  <li>
-    <span class="redText">breakdown_Name</span> (optional): Additional attributes to analyse indicators even further
-    into deeper levels
-    (also known as drill-downs). Modify the column alias to name each breakdown.
-  </li>
-</ul>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        The following column names are expected with those aliases:
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!-- <p>
+      The following column names are expected with those aliases:
+    </p> -->
+    <ul>
+      <li>
+        <span class="redText">value</span> : The KPI's value. The column must contain numbers.
+      </li>
+      <li>
+        <span class="redText">date</span>: Non formatted SQL date of the value measured or ISO 8601.
+      </li>
+      <li>
+        <span class="redText">breakdown_Name</span> (optional): Additional attributes to analyse indicators even further
+        into deeper levels
+        (also known as drill-downs). Modify the column alias to name each breakdown.
+      </li>
+    </ul>
 
 
-<p>
-  For example, to see your <b>{{selectedIndicator.name}}</b> by product, the query should look like:
-</p>
+    <p>
+      For example, to see your <b>{{selectedIndicator.name}}</b> by product, the query should look like:
+    </p>
 
-<div class="query-example">
-  <b class="blueText">SELECT</b>
-  <br />
-  <span style="margin-left: 30px">billing_amount</span>
-  <b class="blueText"> AS </b>
-  <span class="redText">'value'</span>,
+    <div class="query-example">
+      <b class="blueText">SELECT</b>
+      <br />
+      <span style="margin-left: 30px">billing_amount</span>
+      <b class="blueText"> AS </b>
+      <span class="redText">'value'</span>,
 
-  <span>billing_date</span>
-  <b class="blueText"> AS </b>
-  <span class="redText">'date'</span>,
+      <span>billing_date</span>
+      <b class="blueText"> AS </b>
+      <span class="redText">'date'</span>,
 
-  <span>product</span>
-  <b class="blueText"> AS </b>
-  <span class="redText">'breakdown_Product'</span>
-  <br />
-  <b class="blueText">FROM</b>
-  Invoice_Table
-</div>
+      <span>product</span>
+      <b class="blueText"> AS </b>
+      <span class="redText">'breakdown_Product'</span>
+      <br />
+      <b class="blueText">FROM</b>
+      Invoice_Table
+    </div>
 
-<ace-editor class="ace-editor" [(text)]="queryString" mode="sql" ></ace-editor>
+  </mat-expansion-panel>
+
+</mat-accordion>
+
+
+
+<ace-editor class="ace-editor" [(text)]="queryString" mode="sql"></ace-editor>
+
 
 <button mat-raised-button color="accent" (click)="queryDB()">Run Query</button>
+
+<div *ngIf="dbOutput" class="output-container">
+  <table class="output-table">
+    <thead>
+      <tr>
+        <th *ngFor="let header of dbOutput.columns">{{header}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of dbOutput.rows">
+        <td *ngFor="let value of row">{{value}}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button mat-raised-button color="accent" (click)="updateWorkspace()" *ngIf="dbOutput">Update Workspace</button>

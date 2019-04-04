@@ -11,7 +11,7 @@ import { DatabaseService } from '../../providers/database.service';
 export class QueryDbComponent implements OnInit {
   @Input() selectedIndicator;
   @Input() localData;
-  message;
+  message: string;
   dbOutput: any;
   queryString: string;
   credentials;
@@ -35,12 +35,20 @@ export class QueryDbComponent implements OnInit {
     this.databaseServce.executeQueries('mysql', this.credentials, queryString, {})
       .subscribe(
         (outputResult) => {
-          this.dbOutput = outputResult;
+          this.dbOutput = {
+            rows: outputResult['rows'].splice(0, 100),
+            columns: outputResult['columns']
+          }
+
         },
         (err) => {
           this.message = err;
         }
       );
+  }
+
+  updateWorkspace() {
+
   }
 
 }

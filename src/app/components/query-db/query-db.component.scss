@@ -14,8 +14,33 @@
   color: #2060a0;
 }
 
-.ace-editor{
-  min-height: 200px; 
-  width:100%; 
+.ace-editor {
+  min-height: 200px;
+  width: 100%;
   overflow: auto;
+}
+
+button {
+  margin: 10px 0;
+}
+
+.output-container {
+  height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+
+  .output-table {
+    width: 100%;
+
+    th, td {
+      padding: 5px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    th {
+      color: #868686;
+      font-weight: initial;
+    }
+  }
 }

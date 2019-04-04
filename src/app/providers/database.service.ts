@@ -138,8 +138,9 @@ export class DatabaseService {
                 if (data instanceof Error) {
                     return observer.error(data);
                 }
-
-                return observer.next(data);
+                this.ngZone.run(() => {
+                    observer.next(data);
+                });
             });
         });
     }
