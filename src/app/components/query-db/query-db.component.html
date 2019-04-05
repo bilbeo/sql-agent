@@ -1,15 +1,16 @@
 <h2>Query your database for {{selectedIndicator.name}}</h2>
 
 <mat-accordion>
-  <mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
-      <mat-panel-description>
-        The following column names are expected with those aliases:
-      </mat-panel-description>
+
+      <mat-panel-title>
+        {{panelOpenState ? 'Close' : 'Expand'}} instructions
+      </mat-panel-title>
     </mat-expansion-panel-header>
-    <!-- <p>
+    <p>
       The following column names are expected with those aliases:
-    </p> -->
+    </p>
     <ul>
       <li>
         <span class="redText">value</span> : The KPI's value. The column must contain numbers.
@@ -74,5 +75,12 @@
     </tbody>
   </table>
 </div>
+
+<div *ngIf="querySucceded">
+    <mat-checkbox [(ngModel)]="saveLocal">
+        Save the query locally
+    </mat-checkbox>
+</div>
+
 
 <button mat-raised-button color="accent" (click)="updateWorkspace()" *ngIf="dbOutput">Update Workspace</button>

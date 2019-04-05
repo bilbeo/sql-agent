@@ -11,7 +11,7 @@ import { DatabaseService } from '../../providers/database.service';
   styleUrls: ['./db-connector.component.scss']
 })
 export class DbConnectorComponent implements OnInit {
-  @Input() localData: any;
+  @Input() localWorkspaceData: any;
   @Input() workspace;
   selectedDb: any;
   dbForm: FormGroup;
@@ -33,7 +33,7 @@ export class DbConnectorComponent implements OnInit {
   }
 
   initDbForm() {
-    this.credentials = this.localData ? this.localData.credentials : {};
+    this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
     this.dbForm = this.fb.group({
       host: [this.credentials.host || '', Validators.required],
       dbName: [this.credentials.db || '', Validators.required],
@@ -136,7 +136,7 @@ export class DbConnectorComponent implements OnInit {
     }
     this.sharedService.setInStorage(`workspaces.${this.workspace.id}`, workspaceData);
     this.credentials = credentials;
-    this.localData = {
+    this.localWorkspaceData = {
       credentials: credentials
     };
   }

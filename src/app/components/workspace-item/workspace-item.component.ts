@@ -13,7 +13,7 @@ import { DatasourceService } from '../../providers/datasource.service';
 })
 export class WorkspaceItemComponent implements OnInit {
   workspace;
-  workspaceLocalData: any;
+  localWorkspaceData: any;
   workspaceId;
   datasource;
   selectedIndicator;
@@ -43,7 +43,7 @@ export class WorkspaceItemComponent implements OnInit {
   }
 
   getDetailsFromLocalStore() {
-    this.workspaceLocalData = this.sharedService.getFromStorage('workspaces') ?
+    this.localWorkspaceData = this.sharedService.getFromStorage('workspaces') ?
       this.sharedService.getFromStorage('workspaces')[this.workspaceId] : null;
   }
 
