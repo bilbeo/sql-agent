@@ -14,10 +14,19 @@
   color: #2060a0;
 }
 
+.margin-30{
+  margin-left:30px;
+}
+
 .ace-editor {
   min-height: 200px;
   width: 100%;
   overflow: auto;
+}
+
+.error-message{
+  color: red;
+  font-size: 13px;
 }
 
 button {

@@ -44,7 +44,7 @@ export class DbConnectorComponent implements OnInit {
     if (this.credentials.type) {
       this.selectedDb = this.allDbs.find((db) => {
         return db.key === this.credentials.type;
-      })
+      });
     }
   }
 

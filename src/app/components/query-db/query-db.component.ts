@@ -11,12 +11,13 @@ import { SharedService } from '../../providers/shared.service';
 export class QueryDbComponent implements OnInit, OnChanges {
   @Input() selectedIndicator;
   @Input() localWorkspaceData;
-  message: string;
+  errMessage: string;
   dbOutput: any;
   queryString: string;
   credentials;
   saveLocal: boolean;
   querySucceded: boolean;
+  dateColumnIndex;
 
   constructor(
     private databaseServce: DatabaseService,
@@ -33,7 +34,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
     this.queryString = '';
     if (this.localWorkspaceData && this.localWorkspaceData.queries.length) {
       const localIndicatorData = this.localWorkspaceData.queries.find((queryItem) => {
-        return queryItem.indicatorId === this.selectedIndicator._id
+        return queryItem.indicatorId === this.selectedIndicator._id;
       });
       if (localIndicatorData) {
         this.queryString = localIndicatorData.query;
@@ -51,35 +52,40 @@ export class QueryDbComponent implements OnInit, OnChanges {
   }
 
 
-  queryDB(query?) {
+  queryDB() {
     this.querySucceded = false;
-    this.message = '';
-    this.queryString = query || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
-
+    this.errMessage = '';
+    this.queryString = this.queryString || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
+    if (this.credentials.type === 'mongodb') {
+      this.queryString = this.queryString || `instructions.aggregate([ { "$project": { "_id": 0, "value": "$amount", "date": "$processDate", "breakdown_type": "$type" } } ])`;
+    }
 
     this.databaseServce.executeQueries(this.credentials.type, this.credentials, this.queryString, {})
       .subscribe(
         (outputResult) => {
-          this.querySucceded = true
+          this.querySucceded = true;
           this.dbOutput = {
             rows: outputResult['rows'].splice(0, 100),
             columns: outputResult['columns']
-          }
-
+          };
+          // find the date columns to format them as a date
+          this.dateColumnIndex = this.dbOutput.columns.findIndex((colName) => {
+            return colName === 'date';
+          });
         },
         (err) => {
-          this.message = err;
+          this.errMessage = err;
         }
       );
   }
 
   updateWorkspace() {
     if (this.saveLocal) {
-      let queryItem = {
+      const queryItem = {
         indicatorId: this.selectedIndicator._id,
         query: this.queryString
-      }
-      this.localWorkspaceData.queries.push(queryItem)
+      };
+      this.localWorkspaceData.queries.push(queryItem);
       this.sharedService.setInStorage(`workspaces.${this.localWorkspaceData.id}`, this.localWorkspaceData);
     }
 

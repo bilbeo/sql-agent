@@ -134,11 +134,11 @@ export class DatabaseService {
                 if (singleQuery) {
                     data = data[0];
                 }
-
-                if (data instanceof Error) {
-                    return observer.error(data);
-                }
                 this.ngZone.run(() => {
+                    if (data instanceof Error) {
+                        observer.error(data.message);
+                    }
+
                     observer.next(data);
                 });
             });

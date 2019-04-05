@@ -1,4 +1,3 @@
-
 import { DbCredentials } from '../../interfaces/db-credentials';
 const mysql = (<any>window).require('mysql');
 import * as async from 'async';
@@ -87,8 +86,6 @@ const testConnection = function (credentials: DbCredentials, options, cb) {
 		cb(null, 'Connection Established Successfully');
 	});
 };
-
-
 
 export {
 	testConnection,

@@ -29,8 +29,9 @@
     <p>
       For example, to see your <b>{{selectedIndicator.name}}</b> by product, the query should look like:
     </p>
+    <!-- SQL query example -->
 
-    <div class="query-example">
+    <div class="query-example" *ngIf="credentials.type !== 'mongodb'">
       <b class="blueText">SELECT</b>
       <br />
       <span style="margin-left: 30px">billing_amount</span>
@@ -49,7 +50,36 @@
       Invoice_Table
     </div>
 
+    <!-- mongo query example -->
+    <div class="query-example" *ngIf="credentials.type === 'mongodb'">
+      <div>
+        invoicesCollection.aggregate([
+        <div class="margin-30">
+
+          {{ '{' }} "$project": {{ '{' }}
+          <div class="margin-30">
+            "_id": 0,
+            <br>
+            <span class="redText">"value"</span>: "$billing_amount",
+            <br>
+            <span class="redText">"date"</span>: "$billing_date",
+            <br>
+            <span class="redText">"breakdown_product"</span>: "$product"
+            <br>
+            {{ '}'}}
+          </div>
+
+          {{ '}' }}
+
+        </div>
+
+        ])
+
+      </div>
+    </div>
   </mat-expansion-panel>
+
+
 
 </mat-accordion>
 
@@ -60,6 +90,8 @@
 
 <button mat-raised-button color="accent" (click)="queryDB()">Run Query</button>
 
+<div *ngIf="errMessage" class="error-message">{{errMessage}}</div>
+
 <div *ngIf="dbOutput" class="output-container">
   <table class="output-table">
     <thead>
@@ -69,7 +101,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of dbOutput.rows">
-        <td *ngFor="let value of row">{{value}}</td>
+        <td *ngFor="let value of row; let i = index">
+          <span *ngIf="i !== dateColumnIndex"> {{value}}</span>
+
+          <span *ngIf="i === dateColumnIndex"> {{ value | date : 'longDate'}}</span>
+         
+        </td>
 
       </tr>
     </tbody>
@@ -77,9 +114,9 @@
 </div>
 
 <div *ngIf="querySucceded">
-    <mat-checkbox [(ngModel)]="saveLocal">
-        Save the query locally
-    </mat-checkbox>
+  <mat-checkbox [(ngModel)]="saveLocal">
+    Save the query locally
+  </mat-checkbox>
 </div>
 
 

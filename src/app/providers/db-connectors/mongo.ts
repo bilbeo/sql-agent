@@ -3,25 +3,28 @@ import * as async from 'async';
 const MongoClient = (<any>window).require('mongodb').MongoClient;
 
 const formatOutput = function (output) {
-    var columns = [];
-    var rows = [];
+    const columns = [];
+    const rows = [];
 
-    for (var i = 0; i < output.length; i++) {
+    for (let i = 0; i < output.length; i++) {
         rows[i] = [];
-        for (var j = 0; j < Object.keys(output[i]).length; j++) {
-            if (columns.indexOf(Object.keys(output[i])[j]) == -1) columns.push(Object.keys(output[i])[j]);
-            rows[i][columns.indexOf(Object.keys(output[i])[j])] = output[i][Object.keys(output[i])[j]]
+        for (let j = 0; j < Object.keys(output[i]).length; j++) {
+            if (columns.indexOf(Object.keys(output[i])[j]) === -1) {
+                columns.push(Object.keys(output[i])[j]);
+            }
+            rows[i][columns.indexOf(Object.keys(output[i])[j])] = output[i][Object.keys(output[i])[j]];
         }
     }
 
-    for (var i = 0; i < rows.length; i++) {
-        if (rows[i].length !== columns.length) rows[i][columns.length - 1] = null;
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].length !== columns.length) {
+            rows[i][columns.length - 1] = null;
+        }
     }
 
-
-    for (var i = 0; i < columns.length; i++) {
-        if (columns[i].trim().toLowerCase() == 'value') {
-            for (var j = 0; j < rows.length; j++) {
+    for (let i = 0; i < columns.length; i++) {
+        if (columns[i].trim().toLowerCase() === 'value') {
+            for (let j = 0; j < rows.length; j++) {
                 rows[j][i] = parseFloat(rows[j][i]);
             }
         }
@@ -35,39 +38,40 @@ const formatOutput = function (output) {
 
 
 const testConnection = function (dbData: DbCredentials, options, cb) {
+    const url = 'mongodb://' + ((dbData.user && dbData.password) ?
+        (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017);
 
-    const url = 'mongodb://' + ((dbData.user && dbData.password) ? (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017) + '/' + dbData.db;
-    MongoClient.connect(url, (err, client) => {
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
 
         if (err) {
             return cb(err);
         }
-        const db = client.db(dbData);
-        db.close();
+        const db = client.db(dbData.db);
+        client.close();
         cb(null, 'Connection Established Successfully');
     });
-}
+};
 
 const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
-    const url = 'mongodb://' + ((dbData.user && dbData.password) ? (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017) + '/' + dbData.db;
-    MongoClient.connect(url, (err, client) => {
-        if (err) return cb(err);
+    const url = 'mongodb://' + ((dbData.user && dbData.password) ?
+        (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017);
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+        if (err) {
+            return cb(err);
+        }
+        const db = client.db(dbData.db);
 
-        const db = client.db(dbData);
-
-        var methodCheck = '.aggregate(';
-        var result = [];
+        const methodCheck = '.aggregate(';
+        const result = [];
 
         async.eachSeries(queries, function (query, callback) {
 
-
-
-            if (query.indexOf(methodCheck) == -1) {
-                result.push(new Error('Only aggregates are supported. Send a query inn this form: myCollection.aggregate([ ...aggregation stages... ])'));
+            if (query.indexOf(methodCheck) === -1) {
+                result.push(new Error('Only aggregates are supported. Send a query in this form: myCollection.aggregate([ ...aggregation stages... ])'));
                 return callback();
             }
 
-            var collection = query.substr(0, query.indexOf(methodCheck));
+            const collection = query.substr(0, query.indexOf(methodCheck));
 
             if (!collection) {
                 result.push(new Error('No collection has been sent'));
@@ -77,7 +81,7 @@ const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
             query = query.substr((query.indexOf(methodCheck) + methodCheck.length), (query.length - (query.indexOf(methodCheck) + methodCheck.length) - 1));
 
             try {
-                JSON.parse(query)
+                JSON.parse(query);
             } catch (e) {
                 result.push(new Error(e));
                 return callback();
@@ -85,29 +89,26 @@ const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
 
             db.collection(collection).aggregate(
                 JSON.parse(query)
-            ).toArray(function (err, output) {
+            ).toArray((error, output) => {
 
-                if (err)
-                    result.push(new Error(err));
-                else
+                if (error) {
+                    result.push(new Error(error));
+                } else {
                     result.push(formatOutput(output));
-
-
+                }
 
                 return callback();
             });
         }, function () {
-            db.close();
+            client.close();
             // console.log(result);
             return cb(null, result);
         });
 
     });
-}
+};
 
 export {
     testConnection,
     executeQueries
 };
-
-
