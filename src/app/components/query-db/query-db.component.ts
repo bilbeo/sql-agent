@@ -2,6 +2,9 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges, SimpleChange } from
 import 'brace/mode/sql';
 import { DatabaseService } from '../../providers/database.service';
 import { SharedService } from '../../providers/shared.service';
+import { WorkspaceService } from '../../providers/workspace.service';
+import { User } from '../../interfaces/user';
+import { UserService } from '../../providers/user.service';
 
 @Component({
   selector: 'app-query-db',
@@ -11,6 +14,8 @@ import { SharedService } from '../../providers/shared.service';
 export class QueryDbComponent implements OnInit, OnChanges {
   @Input() selectedIndicator;
   @Input() localWorkspaceData;
+  @Input() datasource;
+  @Input() workspaceId;
   errMessage: string;
   dbOutput: any;
   queryString: string;
@@ -18,16 +23,26 @@ export class QueryDbComponent implements OnInit, OnChanges {
   saveLocal: boolean;
   querySucceded: boolean;
   dateColumnIndex;
+  user: User;
 
   constructor(
     private databaseServce: DatabaseService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private workspaceService: WorkspaceService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
     this.saveLocal = true;
     this.setQuery();
     this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
+
+    this.userService.getUser()
+      .subscribe(
+        (userRes) => {
+          this.user = userRes;
+        },
+        (err) => { });
   }
 
   setQuery() {
@@ -39,7 +54,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
       if (localIndicatorData) {
         this.queryString = localIndicatorData.query;
       }
-
     }
   }
 
@@ -48,9 +62,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
     if (selectedIndicator.previousValue && (selectedIndicator.previousValue._id !== selectedIndicator.currentValue._id)) {
       this.setQuery();
     }
-
   }
-
 
   queryDB() {
     this.querySucceded = false;
@@ -59,8 +71,14 @@ export class QueryDbComponent implements OnInit, OnChanges {
     if (this.credentials.type === 'mongodb') {
       this.queryString = this.queryString || `instructions.aggregate([ { "$project": { "_id": 0, "value": "$amount", "date": "$processDate", "breakdown_type": "$type" } } ])`;
     }
+    const options = {};
 
-    this.databaseServce.executeQueries(this.credentials.type, this.credentials, this.queryString, {})
+    const queryObject = {
+      indicatorId: this.selectedIndicator._id,
+      query: this.queryString
+    };
+
+    this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
       .subscribe(
         (outputResult) => {
           this.querySucceded = true;
@@ -89,8 +107,59 @@ export class QueryDbComponent implements OnInit, OnChanges {
       this.sharedService.setInStorage(`workspaces.${this.localWorkspaceData.id}`, this.localWorkspaceData);
     }
 
+    const options = {
+      withFormatting: true,
+      indicators: this.datasource.indicators
+    };
 
-    // here goes the payload structuring for updating the workspace
+    const queryObject = {
+      indicatorId: this.selectedIndicator._id,
+      query: this.queryString
+    };
+
+    this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
+      .subscribe(
+        (outputResult) => {
+          this.querySucceded = true;
+          if (!(outputResult instanceof Error)) {
+            // prepare the parameters to be sent in updateWorkspace
+            const json = {
+              KPIs: outputResult['formatted']
+            };
+
+            // var totalRows = outputResult['numberOfRows'];
+            // var invalidRows = outputResult['numberOfInvalidRows'];
+
+            // var message = 'Query succeeded and returned ' + totalRows + ' row' + (totalRows === 1 ? '' : 's') + '.';
+            // if (invalidRows) {
+            //   message += ' ' + (totalRows - invalidRows) + ' row' + (totalRows === 1 ? '' : 's') + ' have been kept';
+            //   message += ' and ' + invalidRows + ' row' + (totalRows === 1 ? '' : 's') + ' were invalid (missing or invalid id/value/date)';
+            // }
+
+            const params = {};
+            params['updatePartial'] = true;
+            params['updateMode'] = 'replace';
+            params['workspaceId'] = this.workspaceId;
+            params['APIKey'] = this.user.APIKey;
+
+            this.workspaceService.updateWorkspace(params, json)
+              .subscribe(
+                (res) => {
+                  console.log(res);
+                  // TODO: show a success popup ("visit BI to see your updated workspace")
+
+                },
+                (err) => {
+                  console.log(err);
+                  // TODO: show the error message
+
+                }
+              );
+          }
+        },
+        (err) => {
+          this.errMessage = err;
+        }
+      );
   }
-
 }

@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { DbCredentials } from '../interfaces/db-credentials';
 const mysql = (<any>window).require('mysql');
-declare var moment: any;
+import * as moment from 'moment';
 
 @Injectable()
 export class DatabaseService {
@@ -110,7 +110,6 @@ export class DatabaseService {
                 if (err) {
                     observer.error(err);
                 }
-
                 if (options && options.withFormatting && options.indicators) {
                     for (let i = 0; i < data.length; i++) {
                         if (!(data[i] instanceof Error)) {

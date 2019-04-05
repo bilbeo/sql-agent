@@ -42,7 +42,7 @@
             </div>
 
             <div class="query-tool" *ngIf="selectedIndicator">
-                <app-query-db [selectedIndicator]="selectedIndicator" [localWorkspaceData]="localWorkspaceData"></app-query-db>
+                <app-query-db [selectedIndicator]="selectedIndicator" [localWorkspaceData]="localWorkspaceData" [datasource]="datasource" [workspaceId]="workspace.id"></app-query-db>
             </div>
 
         </div>
