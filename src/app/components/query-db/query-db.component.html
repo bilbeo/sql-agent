@@ -55,7 +55,6 @@
       <div>
         invoicesCollection.aggregate([
         <div class="margin-30">
-
           {{ '{' }} "$project": {{ '{' }}
           <div class="margin-30">
             "_id": 0,
@@ -68,22 +67,14 @@
             <br>
             {{ '}'}}
           </div>
-
           {{ '}' }}
-
         </div>
-
         ])
 
       </div>
     </div>
   </mat-expansion-panel>
-
-
-
 </mat-accordion>
-
-
 
 <ace-editor class="ace-editor" [(text)]="queryString" mode="sql"></ace-editor>
 
@@ -92,20 +83,22 @@
 
 <div *ngIf="errMessage" class="error-message">{{errMessage}}</div>
 
-<div *ngIf="dbOutput" class="output-container">
+<div *ngIf="successMessage" class="success-message">{{successMessage}}</div>
+
+<div *ngIf="tableData" class="output-container">
   <table class="output-table">
     <thead>
       <tr>
-        <th *ngFor="let header of dbOutput.columns">{{header}}</th>
+        <th *ngFor="let header of tableData.columns">{{header}}</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of dbOutput.rows">
+      <tr *ngFor="let row of tableData.rows">
         <td *ngFor="let value of row; let i = index">
           <span *ngIf="i !== dateColumnIndex"> {{value}}</span>
 
           <span *ngIf="i === dateColumnIndex"> {{ value | date : 'longDate'}}</span>
-         
+
         </td>
 
       </tr>
@@ -113,11 +106,11 @@
   </table>
 </div>
 
-<div *ngIf="querySucceded">
+<div *ngIf="querySucceded && dbOutput">
   <mat-checkbox [(ngModel)]="saveLocal">
     Save the query locally
   </mat-checkbox>
 </div>
 
 
-<button mat-raised-button color="accent" (click)="updateWorkspace()" *ngIf="dbOutput">Update Workspace</button>
+<button mat-raised-button color="accent" (click)="updateWorkspace()" *ngIf="dbOutput && querySucceded">Update Workspace</button>

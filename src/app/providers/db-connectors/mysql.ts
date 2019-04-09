@@ -3,91 +3,91 @@ const mysql = (<any>window).require('mysql');
 import * as async from 'async';
 
 const formatOutput = function (output) {
-	if (!output || !output.length) {
-		return { columns: [], rows: [] };
-	}
+  if (!output || !output.length) {
+    return { columns: [], rows: [] };
+  }
 
-	const columns = Object.keys(output[0]);
-	const rows = [];
-	for (let i = 0; i < output.length; i++) {
-		const row = [];
-		for (const value in output[i]) {
-			if (output[i].hasOwnProperty(value)) {
-				row.push(output[i][value]);
-			}
+  const columns = Object.keys(output[0]);
+  const rows = [];
+  for (let i = 0; i < output.length; i++) {
+    const row = [];
+    for (const value in output[i]) {
+      if (output[i].hasOwnProperty(value)) {
+        row.push(output[i][value]);
+      }
 
-		}
-		rows.push(row);
-	}
+    }
+    rows.push(row);
+  }
 
 
-	for (let i = 0; i < columns.length; i++) {
-		if (columns[i].trim().toLowerCase() === 'value') {
-			for (let j = 0; j < rows.length; j++) {
-				rows[j][i] = parseFloat(rows[j][i]);
-			}
-		}
-	}
+  for (let i = 0; i < columns.length; i++) {
+    if (columns[i].trim().toLowerCase() === 'value') {
+      for (let j = 0; j < rows.length; j++) {
+        rows[j][i] = parseFloat(rows[j][i]);
+      }
+    }
+  }
 
-	return {
-		columns: columns,
-		rows: rows
-	};
+  return {
+    columns: columns,
+    rows: rows
+  };
 };
 
 const executeQueries = function (credentials: DbCredentials, queries, options, cb) {
-	const pool = mysql.createPool({
-		host: credentials.host,
-		user: credentials.user,
-		password: credentials.password,
-		database: credentials.db,
-		port: credentials.port || 3306,
-		connectTimeout: 10000
-	});
+  const pool = mysql.createPool({
+    host: credentials.host,
+    user: credentials.user,
+    password: credentials.password,
+    database: credentials.db,
+    port: credentials.port || 3306,
+    connectTimeout: 10000
+  });
 
-	const result = [];
-	async.eachSeries(queries, function (query, callback) {
-		const qu = { sql: query, timeout: 30000 };
+  const result = [];
+  async.eachSeries(queries, function (query, callback) {
+    const qu = { sql: query, timeout: 30000 };
 
-		pool.query(qu, function (err, rows, fields) {
-			console.log(err);
-			if (err) {
-				result.push(new Error(err));
-			} else {
-				result.push(formatOutput(rows));
-			}
+    pool.query(qu, function (err, rows, fields) {
+      console.log(err);
+      if (err) {
+        result.push(new Error(err));
+      } else {
+        result.push(formatOutput(rows));
+      }
 
-			return callback();
-		});
-	}, function () {
-		try {
-			pool.end();
-			return cb(null, result);
-		} catch (err) {
-			return cb(err);
-		}
-	});
+      return callback();
+    });
+  }, function () {
+    try {
+      pool.end();
+      return cb(null, result);
+    } catch (err) {
+      return cb(err);
+    }
+  });
 };
 
 const testConnection = function (credentials: DbCredentials, options, cb) {
-	const db = mysql.createConnection({
-		host: credentials.host,
-		port: credentials.port,
-		user: credentials.user,
-		password: credentials.password,
-		database: credentials.db
-	});
+  const db = mysql.createConnection({
+    host: credentials.host,
+    port: credentials.port,
+    user: credentials.user,
+    password: credentials.password,
+    database: credentials.db
+  });
 
-	db.connect((err) => {
-		if (err) {
-			cb(err.message);
-		}
-		db.end();
-		cb(null, 'Connection Established Successfully');
-	});
+  db.connect((err) => {
+    if (err) {
+      cb(err.message);
+    }
+    db.end();
+    cb(null, 'Connection Established Successfully');
+  });
 };
 
 export {
-	testConnection,
-	executeQueries
+  testConnection,
+  executeQueries
 };

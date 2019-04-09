@@ -94,7 +94,7 @@ export class WorkspaceService {
       updatePartial: params['updatePartial'],
       compressed: false,
       data: jsonData
-    }
+    };
 
     return this.http.post(this.baseUrl + `/api/oem/workspace/update`, paylod, httpOptions)
       .pipe(

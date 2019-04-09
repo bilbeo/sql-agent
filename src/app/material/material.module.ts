@@ -11,7 +11,8 @@ import {
   MatRadioModule,
   MatButtonToggleModule,
   MatSlideToggleModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSnackBarModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 
@@ -31,7 +32,8 @@ import { NgModule } from '@angular/core';
     MatRadioModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule
 
 
   ],
@@ -48,7 +50,8 @@ import { NgModule } from '@angular/core';
     MatRadioModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule
   ],
 })
 export class MaterialModule { }
