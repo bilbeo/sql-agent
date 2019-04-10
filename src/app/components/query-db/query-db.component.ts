@@ -39,16 +39,20 @@ export class QueryDbComponent implements OnInit, OnChanges {
       if (localIndicatorData) {
         this.queryString = localIndicatorData.query;
       }
-
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     const selectedIndicator: SimpleChange = changes.selectedIndicator;
-    if (selectedIndicator.previousValue && (selectedIndicator.previousValue._id !== selectedIndicator.currentValue._id)) {
+    if (selectedIndicator && selectedIndicator.previousValue && (selectedIndicator.previousValue._id !== selectedIndicator.currentValue._id)) {
       this.setQuery();
+      return;
     }
-
+    //  if the credentials have been updated we want to update them in the component
+    const localWorkspaceData: SimpleChange = changes.localWorkspaceData;
+    if (localWorkspaceData && localWorkspaceData.previousValue && (localWorkspaceData.previousValue.credentials !== localWorkspaceData.currentValue.credentials)) {
+      this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
+    }
   }
 
 

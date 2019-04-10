@@ -23,7 +23,7 @@
             </div>
 
             <div class="credentials">
-                <app-db-connector [workspace]="workspace" [localWorkspaceData]="localWorkspaceData"></app-db-connector>
+                <app-db-connector [workspace]="workspace" [localWorkspaceData]="localWorkspaceData" (localDataChange)="updateLocalData($event)"></app-db-connector>
             </div>
         </div>
 

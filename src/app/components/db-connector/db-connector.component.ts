@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbCredentials } from '../../interfaces/db-credentials';
 import { SharedService } from '../../providers/shared.service';
 import { WorkspaceService } from '../../providers/workspace.service';
 import { DatabaseService } from '../../providers/database.service';
+
 
 @Component({
   selector: 'app-db-connector',
@@ -13,6 +14,7 @@ import { DatabaseService } from '../../providers/database.service';
 export class DbConnectorComponent implements OnInit {
   @Input() localWorkspaceData: any;
   @Input() workspace;
+  @Output() localDataChange = new EventEmitter();
   selectedDb: any;
   dbForm: FormGroup;
   message: string;
@@ -124,7 +126,7 @@ export class DbConnectorComponent implements OnInit {
   }
 
   saveCredentials(credentials) {
-    // save the credentials in app ocal storage if the user has not unchecked save checkbox
+    // save the credentials in app local storage if the user has not unchecked save checkbox
     const workspaceData = {
       id: this.workspace.id,
       credentials: credentials,
@@ -139,6 +141,7 @@ export class DbConnectorComponent implements OnInit {
     this.localWorkspaceData = {
       credentials: credentials
     };
+    this.localDataChange.emit('Local data has changed');
   }
 
   removeCredentials() {
