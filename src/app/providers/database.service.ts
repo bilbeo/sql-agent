@@ -24,12 +24,12 @@ export class DatabaseService {
       script: require('./db-connectors/azure-sql'),
       defaultPort: 1433
     },
-    // oracle: {
-    //     name: 'Oracle',
-    //     order: 4,
-    //     script: require('./db-connectors/oracle'),
-    //     defaultPort: 1521
-    // },
+    oracle: {
+        name: 'Oracle',
+        order: 4,
+        script: require('./db-connectors/oracle'),
+        defaultPort: 1521
+    },
     mysql: {
       name: 'MySQL',
       order: 1,
@@ -42,36 +42,36 @@ export class DatabaseService {
       script: require('./db-connectors/postgre-sql'),
       defaultPort: 5432
     },
-    // db2: {
-    //     name: 'IBM DB2',
-    //     order: 8,
-    //     script: require('./db-connectors/db2'),
-    //     defaultPort: 50001
-    // },
-    // mariadb: {
-    //     name: 'MariaDB',
-    //     order: 7,
-    //     script: require('./db-connectors/mariadb'),
-    //     defaultPort: 3306
-    // },
+    db2: {
+        name: 'IBM DB2',
+        order: 8,
+        script: require('./db-connectors/db2'),
+        defaultPort: 50001
+    },
+    mariadb: {
+        name: 'MariaDB',
+        order: 7,
+        script: require('./db-connectors/maria-db'),
+        defaultPort: 3306
+    },
     mongodb: {
       name: 'MongoDB',
       order: 10,
       script: require('./db-connectors/mongo-db'),
       defaultPort: 27017
     },
-    // sybase: {
-    //     name: 'SAP ASE / Sybase',
-    //     order: 6,
-    //     script: require('./db-connectors/sybase'),
-    //     defaultPort: 5000
-    // },
-    // firebird: {
-    //     name: 'Firebird',
-    //     order: 9,
-    //     script: require('./db-connectors/firebird'),
-    //     defaultPort: 3050
-    // }
+    sybase: {
+        name: 'SAP ASE / Sybase',
+        order: 6,
+        script: require('./db-connectors/sybase'),
+        defaultPort: 5000
+    },
+    firebird: {
+        name: 'Firebird',
+        order: 9,
+        script: require('./db-connectors/firebird'),
+        defaultPort: 3050
+    }
   };
 
   executeQueries(type, credentials: DbCredentials, queries, options) {

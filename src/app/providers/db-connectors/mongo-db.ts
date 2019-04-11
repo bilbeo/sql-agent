@@ -1,5 +1,6 @@
 import { DbCredentials } from '../../interfaces/db-credentials';
 import * as async from 'async';
+
 const MongoClient = (<any>window).require('mongodb').MongoClient;
 
 const formatOutput = function (output) {

@@ -84,12 +84,16 @@
     "async": "^2.6.2",
     "dotenv": "^7.0.0",
     "electron-store": "^2.0.0",
+    "ibm_db": "^2.5.0",
     "moment": "^2.24.0",
     "mongodb": "^3.1.13",
     "mysql": "^2.16.0",
     "ng2-ace-editor": "^0.3.9",
+    "node-firebird": "^0.8.6",
+    "oracledb": "^3.1.2",
     "pg": "^7.9.0",
     "pg-native": "^3.0.0",
+    "sybase": "^1.2.1",
     "tedious": "^6.1.0"
   }
 }
