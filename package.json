@@ -78,7 +78,13 @@
     "zone.js": "0.8.29"
   },
   "dependencies": {
+    "@angular/animations": "^7.2.11",
+    "@angular/cdk": "^7.3.6",
+    "@angular/material": "^7.3.6",
     "dotenv": "^7.0.0",
-    "electron-store": "^2.0.0"
+    "electron-store": "^2.0.0",
+    "mongodb": "^3.1.13",
+    "mysql": "^2.16.0",
+    "ng2-ace-editor": "^0.3.9"
   }
 }

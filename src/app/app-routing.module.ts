@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './components/auth/auth.component';
 import { AuthGuardService } from './providers/auth-guard.service';
+import { WorkspacesComponent } from './components/workspaces/workspaces.component';
+import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
+import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 
 const routes: Routes = [
 
@@ -11,12 +14,20 @@ const routes: Routes = [
         component: HomeComponent,
         canActivate: [AuthGuardService],
         canActivateChild: [AuthGuardService],
-        // children: [
-        //     {
-        //       path: 'dashboard',
-        //       component: DashboardComponent,
-        //     }
-        // ]
+        children: [
+            {
+                path: 'create-workspace',
+                component: CreateWorkspaceComponent
+            },
+            {
+                path: ':id',
+                component: WorkspaceItemComponent,
+            },
+            {
+                path: '',
+                component: WorkspacesComponent,
+            },
+        ]
     },
     {
         path: 'auth',

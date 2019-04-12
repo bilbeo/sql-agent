@@ -1,12 +1,15 @@
 import 'reflect-metadata';
 import '../polyfills';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AceEditorModule } from 'ng2-ace-editor';
+import { MaterialModule } from './material/material.module';
 
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -18,12 +21,22 @@ import { WebviewDirective } from './directives/webview.directive';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { WorkspacesComponent } from './components/workspaces/workspaces.component';
+import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
+import { DbConnectorComponent } from './components/db-connector/db-connector.component';
+import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
+import { QueryDbComponent } from './components/query-db/query-db.component';
+import { NewIndicatorComponent } from './components/new-indicator/new-indicator.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
 import { UserService } from './providers/user.service';
 import { ElectronService } from './providers/electron.service';
 import { AuthGuardService } from './providers/auth-guard.service';
+import { DBMongoService } from './providers/db-mongo.service';
+import { DBMySqlService } from './providers/db-mysql.service';
+import { WorkspaceService } from './providers/workspace.service';
+import { DatasourceService } from './providers/datasource.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -35,7 +48,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     WebviewDirective,
-    AuthComponent
+    AuthComponent,
+    WorkspacesComponent,
+    WorkspaceItemComponent,
+    DbConnectorComponent,
+    CreateWorkspaceComponent,
+    QueryDbComponent,
+    NewIndicatorComponent
   ],
   imports: [
     BrowserModule,
@@ -49,13 +68,20 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
-    })
+    }),
+    AceEditorModule,
+    MaterialModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ElectronService,
     SharedService,
     UserService,
-    AuthGuardService
+    AuthGuardService,
+    DBMongoService,
+    DBMySqlService,
+    WorkspaceService,
+    DatasourceService
   ],
   bootstrap: [AppComponent]
 })

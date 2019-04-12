@@ -1,0 +1,39 @@
+.mat-form-field,
+mat-checkbox {
+  font-size: 12px;
+}
+
+.mat-form-field {
+  width: 90%;
+}
+
+.connect-button {
+  width: 90%;
+  margin-top: 20px;
+}
+
+.credential-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .edit {
+    display: none;
+    cursor: pointer;
+  }
+
+  &:hover {
+    .edit {
+      display: initial;
+    }
+  }
+}
+
+.label {
+  font-weight: bold;
+  font-size: 12px;
+  padding-right: 5px;
+}
+.value {
+  font-size: 12px;
+}

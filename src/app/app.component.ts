@@ -19,7 +19,7 @@ export class AppComponent {
 
     // add .env variables in process.env
     dotenv.config();
-    
+
     if (electronService.isElectron()) {
       console.log('Mode electron');
       console.log('Electron ipcRenderer', electronService.ipcRenderer);

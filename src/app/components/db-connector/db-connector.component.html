@@ -1,0 +1,106 @@
+<div class="scroll">
+  <div *ngIf="!localData ">
+    <h4>Connect to database</h4>
+  </div>
+
+  <!-- shown when we already have credentials -->
+  <div class="credential-header" *ngIf="localData">
+    <h4>DB credentials </h4>
+    <button mat-button *ngIf="!editMode" class="edit" (click)="editCredentials()">Edit</button>
+
+    <div *ngIf="editMode">
+      <button mat-button (click)="editMode = false"> Cancel</button>
+      <button mat-button color="accent" (click)="connectToDatabase()"> Update</button>
+    </div>
+  </div>
+
+  <!-- create/update credentials -->
+  <form [formGroup]="dbForm" *ngIf="dbForm && (!localData || editMode)">
+    <mat-form-field class="db-select">
+      <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)">
+        <mat-option *ngFor="let db of allDbs" [value]="db">
+          {{db.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="text" formControlName="host" placeholder="Host">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="text" formControlName="dbName" placeholder="Database Name">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="number" formControlName="port" placeholder="Port">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="text" formControlName="user" placeholder="User">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput type="password" formControlName="dbPassword" placeholder="Password">
+      </mat-form-field>
+    </div>
+
+    <div>
+
+      <mat-checkbox [(ngModel)]="saveLocal" [ngModelOptions]="{standalone: true}">
+        Save the credentials locally
+      </mat-checkbox>
+
+    </div>
+
+  </form>
+
+  <!-- create credentials -->
+  <button (click)="connectToDatabase()" mat-raised-button color="primary" *ngIf="!localData" class="connect-button">
+    Connect to Database
+  </button>
+
+
+  <!-- Already have credentials -->
+  <div *ngIf="localData && credentials && !editMode">
+    <table>
+      <tr>
+        <td class="label">Host</td>
+        <td class="value">{{credentials.host}}</td>
+      </tr>
+      <tr>
+        <td class="label">Db Name</td>
+        <td class="value">{{credentials.db}}</td>
+      </tr>
+      <tr>
+        <td class="label">Port</td>
+        <td class="value">{{credentials.port}}</td>
+      </tr>
+      <tr>
+        <td class="label">User</td>
+        <td class="value">{{credentials.user}}</td>
+      </tr>
+      <tr>
+        <td class="label">Password</td>
+        <td class="value">**********</td>
+      </tr>
+
+    </table>
+
+  </div>
+
+  <div *ngIf="message">
+    <span>{{message}}</span>
+  </div>
+
+
+</div>
