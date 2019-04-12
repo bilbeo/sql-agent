@@ -1,17 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DatasourceService } from '../../providers/datasource.service';
-
 @Component({
-  selector: 'app-new-indicator',
-  templateUrl: './new-indicator.component.html',
-  styleUrls: ['./new-indicator.component.scss']
+  selector: 'app-edit-indicator',
+  templateUrl: './edit-indicator.component.html',
+  styleUrls: ['./edit-indicator.component.scss']
 })
-export class NewIndicatorComponent implements OnInit {
+export class EditIndicatorComponent implements OnInit {
   @Input() datasource;
+  @Input() indicatorData;
   @Output() datasourceChange = new EventEmitter();
   unitGroups;
   directionOptions;
-  newIndicator;
+  editIndicator;
 
   constructor(
     private datasourceService: DatasourceService
@@ -20,10 +20,9 @@ export class NewIndicatorComponent implements OnInit {
   ngOnInit() {
 
     this.unitGroups = this.datasourceService.getUnitGroups();
-
-    this.newIndicator = {
-      publicID: null,
-      name: null,
+    this.editIndicator = {
+      publicID: this.indicatorData.publicID,
+      name: this.indicatorData.name,
       information: {
         description: '',
         descriptionI18N: {},
@@ -32,20 +31,18 @@ export class NewIndicatorComponent implements OnInit {
         hint: '',
         hintI18N: {}
       },
-      indicatorDomain: '',
-      keyIndicator: false,
-      snapshot: false,
-      // snapshot = !timeAggregation
-      timeAggregation: true,
-      // back needs the snapshot property. TimeAggregation is easiest to explain so tht the property we use at front
-      division: false,
-      direction: 'Increasing is Better',
-      displayGranularity: 'Day',
-      aggregation: 'sum',
-      valueSpec: 'Currency',
-      formatSpec: '',
-      unit: this.unitGroups[0].items[0],
-      atomicUpdate: 'false',
+      indicatorDomain: this.indicatorData.indicatorDomain,
+      keyIndicator: this.indicatorData.keyIndicator,
+      snapshot: this.indicatorData.snapshot,
+      timeAggregation: !this.indicatorData.snapshot,
+      division: this.indicatorData.division,
+      direction: this.indicatorData.direction,
+      displayGranularity: this.indicatorData.displayGranularity,
+      aggregation: this.indicatorData.aggregation,
+      valueSpec: this.indicatorData.valueSpec,
+      formatSpec: this.indicatorData.formatSpec,
+      unit: this.unitGroups[0].items[0],   // TODO: set the correct unit
+      atomicUpdate: ''+ this.indicatorData.atomicUpdate,
     };
 
     this.directionOptions = [
@@ -55,17 +52,20 @@ export class NewIndicatorComponent implements OnInit {
     ];
   }
 
-  addIndicator() {
+  updateIndicator() {
     // do not overwrite the initial datasource input before saving
     const datasource = JSON.parse(JSON.stringify(this.datasource));
-    datasource.indicators.push(this.formatKPIBeforeSave(this.newIndicator));
+    
+    const indicatorIndex = datasource.indicators.findIndex((indicator)=>{
+      return indicator.publicID === this.editIndicator.publicID;
+    })
+    datasource.indicators[indicatorIndex] = this.formatKPIBeforeSave(this.editIndicator);
     this.datasourceService.updateDatasource(datasource, this.datasource._id)
       .subscribe(
         (resDatasource) => {
           this.datasource = resDatasource;
-          const lastIndex = this.datasource.indicators.length - 1;
           this.datasourceChange.emit({
-            indicator: this.datasource.indicators[lastIndex],
+            indicator: this.datasource.indicators[indicatorIndex],
             datasource: this.datasource
           });
         },
@@ -115,5 +115,4 @@ export class NewIndicatorComponent implements OnInit {
     }
     return kpiToUpdate;
   }
-
 }

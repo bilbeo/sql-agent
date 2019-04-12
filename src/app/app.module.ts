@@ -27,6 +27,7 @@ import { DbConnectorComponent } from './components/db-connector/db-connector.com
 import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 import { QueryDbComponent } from './components/query-db/query-db.component';
 import { NewIndicatorComponent } from './components/new-indicator/new-indicator.component';
+import { EditIndicatorComponent } from './components/edit-indicator/edit-indicator.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -36,6 +37,7 @@ import { AuthGuardService } from './providers/auth-guard.service';
 import { WorkspaceService } from './providers/workspace.service';
 import { DatasourceService } from './providers/datasource.service';
 import { DatabaseService } from './providers/database.service';
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -53,7 +55,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     DbConnectorComponent,
     CreateWorkspaceComponent,
     QueryDbComponent,
-    NewIndicatorComponent
+    NewIndicatorComponent,
+    EditIndicatorComponent
   ],
   imports: [
     BrowserModule,

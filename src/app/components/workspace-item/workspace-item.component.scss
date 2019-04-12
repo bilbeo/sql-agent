@@ -55,10 +55,17 @@
           text-align: center;
           
           &.selected{
-            background: #efefef;;
+            background: #efefef;
           }
           &:hover{
             background: #efefef;
+          }
+
+          &.add-button{
+            flex: 2 1 100%;
+            background: #3b89f0;
+            color: white;
+            margin-bottom: 10px;
           }
         }
 

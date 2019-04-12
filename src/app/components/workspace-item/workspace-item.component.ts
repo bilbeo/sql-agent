@@ -5,6 +5,8 @@ import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SharedService } from '../../providers/shared.service';
 import { DatasourceService } from '../../providers/datasource.service';
+import { Datasource } from '../../interfaces/datasource';
+import { Workspace } from '../../interfaces/workspace';
 
 @Component({
   selector: 'app-workspace-item',
@@ -12,11 +14,13 @@ import { DatasourceService } from '../../providers/datasource.service';
   styleUrls: ['./workspace-item.component.scss']
 })
 export class WorkspaceItemComponent implements OnInit {
-  workspace;
+  workspace: Workspace;
   localWorkspaceData: any;
-  workspaceId;
-  datasource;
-  selectedIndicator;
+  workspaceId: string;
+  datasource: Datasource;
+  selectedIndicator: any;
+  showAddIndicator: boolean;
+  showEditIndicator: boolean;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -27,7 +31,6 @@ export class WorkspaceItemComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap(params => {
-        // (+) before `params.get()` turns the string into a number
         this.workspaceId = params.get('id');
         this.getDetailsFromLocalStore();
         return this.workspaceService.getWorkspaceDetails(this.workspaceId);
@@ -61,20 +64,31 @@ export class WorkspaceItemComponent implements OnInit {
   }
 
   selectIndicator(index) {
+    this.showAddIndicator = false;
+    this.showEditIndicator = false;
     this.selectedIndicator = null;
     this.selectedIndicator = this.datasource.indicators[index];
 
   }
 
-  editIndicator() {
+  newIndicator() {
+    this.selectedIndicator = null;
+    this.showAddIndicator = true;
+    this.showEditIndicator = false;
+  }
 
+  editIndicator() {
+    this.showAddIndicator = false;
+    this.showEditIndicator = true;
   }
 
   onDatasourceUpdated(newDatasouceData) {
     this.selectedIndicator = null;
     this.datasource = newDatasouceData.datasource;
-    // when a new indicatoris created we want ot to be the selected one
+    // when an indicator is created/updated, we want it to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
+    this.showAddIndicator = false;
+    this.showEditIndicator = false;
   }
 
 
