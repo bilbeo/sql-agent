@@ -1,5 +1,5 @@
 
-// // TODO: TO BE TESTED!!!!!
+// // // TODO: TO BE TESTED!!!!!
 
 
 // const oracledb = (<any>window).require('oracledb');
@@ -57,6 +57,7 @@
 // };
 
 // const testConnection = function (credentials: DbCredentials, options, cb) {
+//   debugger
 //   const config = {
 //     user: credentials.user,
 //     password: credentials.password,

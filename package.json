@@ -90,7 +90,7 @@
     "mysql": "^2.16.0",
     "ng2-ace-editor": "^0.3.9",
     "node-firebird": "^0.8.6",
-    "oracledb": "^3.1.2",
+    "oracledb": "github:oracle/node-oracledb#v3.1.2",
     "pg": "^7.9.0",
     "pg-native": "^3.0.0",
     "sybase": "^1.2.1",

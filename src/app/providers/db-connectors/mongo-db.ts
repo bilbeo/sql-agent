@@ -43,7 +43,6 @@ const testConnection = function (dbData: DbCredentials, options, cb) {
         (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017);
 
     MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-
         if (err) {
             return cb(err);
         }
@@ -61,24 +60,19 @@ const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
             return cb(err);
         }
         const db = client.db(dbData.db);
-
         const methodCheck = '.aggregate(';
         const result = [];
 
         async.eachSeries(queries, function (query, callback) {
-
             if (query.indexOf(methodCheck) === -1) {
                 result.push(new Error('Only aggregates are supported. Send a query in this form: myCollection.aggregate([ ...aggregation stages... ])'));
                 return callback();
             }
-
             const collection = query.substr(0, query.indexOf(methodCheck));
-
             if (!collection) {
                 result.push(new Error('No collection has been sent'));
                 return callback();
             }
-
             query = query.substr((query.indexOf(methodCheck) + methodCheck.length), (query.length - (query.indexOf(methodCheck) + methodCheck.length) - 1));
 
             try {
@@ -91,21 +85,17 @@ const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
             db.collection(collection).aggregate(
                 JSON.parse(query)
             ).toArray((error, output) => {
-
                 if (error) {
                     result.push(new Error(error));
                 } else {
                     result.push(formatOutput(output));
                 }
-
                 return callback();
             });
         }, function () {
             client.close();
-            // console.log(result);
             return cb(null, result);
         });
-
     });
 };
 

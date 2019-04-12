@@ -24,12 +24,12 @@ export class DatabaseService {
       script: require('./db-connectors/azure-sql'),
       defaultPort: 1433
     },
-    oracle: {
-        name: 'Oracle',
-        order: 4,
-        script: require('./db-connectors/oracle'),
-        defaultPort: 1521
-    },
+    // oracle: {
+    //     name: 'Oracle',
+    //     order: 4,
+    //     script: require('./db-connectors/oracle'),
+    //     defaultPort: 1521
+    // },
     mysql: {
       name: 'MySQL',
       order: 1,
