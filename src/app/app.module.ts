@@ -37,6 +37,7 @@ import { AuthGuardService } from './providers/auth-guard.service';
 import { WorkspaceService } from './providers/workspace.service';
 import { DatasourceService } from './providers/datasource.service';
 import { DatabaseService } from './providers/database.service';
+import { HttpCacheInterceptor } from './providers/http-cache-interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -81,7 +82,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthGuardService,
     DatabaseService,
     WorkspaceService,
-    DatasourceService
+    DatasourceService,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

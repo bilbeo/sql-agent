@@ -46,9 +46,8 @@ export class WorkspaceService {
         'Authorization': 'Bearer ' + this.userToken
       })
     };
-    const date = new Date();
 
-    return this.http.get(this.baseUrl + `/api/workspaces/desktop?foobar=${date.getTime()}`, httpOptions)
+    return this.http.get(this.baseUrl + `/api/workspaces/desktop`, httpOptions)
       .pipe(
         map((result) => {
 
@@ -136,6 +135,25 @@ export class WorkspaceService {
     };
 
     return this.http.post(this.baseUrl + `/api/workspace/${workspaceId}/updateName`, { name: newName }, httpOptions)
+      .pipe(
+        map((result) => {
+          return result;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
+
+  deleteWorkspace(workspaceId) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+    return this.http.post(this.baseUrl + `/api/workspace/${workspaceId}/delete`, {}, httpOptions)
       .pipe(
         map((result) => {
           return result;

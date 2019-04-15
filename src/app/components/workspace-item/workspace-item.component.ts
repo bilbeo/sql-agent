@@ -7,6 +7,7 @@ import { SharedService } from '../../providers/shared.service';
 import { DatasourceService } from '../../providers/datasource.service';
 import { Datasource } from '../../interfaces/datasource';
 import { Workspace } from '../../interfaces/workspace';
+import { Server } from 'tls';
 
 @Component({
   selector: 'app-workspace-item',
@@ -22,7 +23,7 @@ export class WorkspaceItemComponent implements OnInit {
   showAddIndicator: boolean;
   showEditIndicator: boolean;
   isEditMode: boolean;
-  newWorkspaceName: string
+  newWorkspaceName: string;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -60,7 +61,6 @@ export class WorkspaceItemComponent implements OnInit {
         },
         (err) => {
           console.log(err);
-
         }
       );
   }
@@ -93,29 +93,49 @@ export class WorkspaceItemComponent implements OnInit {
     this.showEditIndicator = false;
   }
 
-  toggleWorkspaceEdit(showEdit: boolean){
+  toggleWorkspaceEdit(showEdit: boolean) {
     this.isEditMode = showEdit;
     this.newWorkspaceName = this.workspace.name;
   }
 
-  editWorkspaceName(){
-
-    if(this.newWorkspaceName){
+  editWorkspaceName() {
+    if (this.newWorkspaceName) {
       this.workspaceService.updateWorkspaceName(this.workspace.id, this.newWorkspaceName)
+        .subscribe(
+          (res) => {
+            if (res['status'] === 'success') {
+              this.workspace['name'] = this.newWorkspaceName;
+              this.toggleWorkspaceEdit(false);
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    }
+  }
+
+  removeWorkspace() {
+    this.workspaceService.deleteWorkspace(this.workspace.id)
       .subscribe(
         (res) => {
-          debugger
-          this.workspace['name'] = this.newWorkspaceName;
+          this.removeLocalData();
+          this.goBack();
+          // TODO: should we also remove the datasource?
         },
         (err) => {
           console.log(err);
-
         }
       );
-    }
-
   }
 
+  removeLocalData() {
+    const allLocalWorkspaceData = this.sharedService.getFromStorage('workspaces');
+    if (allLocalWorkspaceData[this.workspace.id]) {
+      delete allLocalWorkspaceData[this.workspace.id];
+      this.sharedService.setInStorage('workspaces', allLocalWorkspaceData);
+    }
+  }
 
   goBack() {
     this.router.navigate(['../']);

@@ -2,8 +2,12 @@
   <div class="header-flex">
     <button (click)="goBack()" mat-raised-button>Back</button>
     <div *ngIf="!isEditMode">
-      <h3 *ngIf="workspace">{{workspace.name}}</h3>
-      <button click="toggleWorkspaceEdit(true)">Edit</button>
+      <h3 *ngIf="workspace">{{workspace.name}}
+        <button mat-icon-button color="" (click)="toggleWorkspaceEdit(true)">
+            <mat-icon svgIcon="edit-icon"></mat-icon>
+        </button>
+      </h3>
+
     </div>
 
     <div *ngIf="isEditMode">
@@ -11,7 +15,9 @@
         <input matInput type="text" [(ngModel)]="newWorkspaceName">
       </mat-form-field>
       <button mat-button (click)="toggleWorkspaceEdit(false)"> Cancel</button>
-      <button mat-button color="accent" (click)="editWorkspaceName()"> Update</button>
+      <br>
+      <button mat-button color="primary" (click)="editWorkspaceName()"> Update</button>
+      <button mat-button color="warn" (click)="removeWorkspace()"> Remove</button>
     </div>
   </div>
 
@@ -43,7 +49,7 @@
         </div>
 
         <div *ngIf="showEditIndicator">
-          <app-edit-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)"
+          <app-edit-indicator  [workspace]="workspace" [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)"
             [indicatorData]="selectedIndicator">
           </app-edit-indicator>
         </div>
