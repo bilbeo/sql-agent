@@ -1,28 +1,29 @@
 <div class="container">
-  <div class="header-flex">
+  <div >
     <button (click)="goBack()" mat-raised-button>Back</button>
-    <div *ngIf="!isEditMode">
-      <h3 *ngIf="workspace">{{workspace.name}}
-        <button mat-icon-button color="" (click)="toggleWorkspaceEdit(true)">
-            <mat-icon svgIcon="edit-icon"></mat-icon>
-        </button>
-      </h3>
-
-    </div>
-
-    <div *ngIf="isEditMode">
-      <mat-form-field>
-        <input matInput type="text" [(ngModel)]="newWorkspaceName">
-      </mat-form-field>
-      <button mat-button (click)="toggleWorkspaceEdit(false)"> Cancel</button>
-      <br>
-      <button mat-button color="primary" (click)="editWorkspaceName()"> Update</button>
-      <button mat-button color="warn" (click)="removeWorkspace()"> Remove</button>
-    </div>
+    
   </div>
 
   <div class="flex-container">
     <div class="left-side">
+        <div *ngIf="!isEditMode" class="header-flex">
+            <h3 *ngIf="workspace">{{workspace.name}}</h3>
+            <button mat-icon-button class="edit-button" (click)="toggleWorkspaceEdit(true)">
+                <mat-icon svgIcon="edit-icon"></mat-icon>
+            </button>
+      
+          </div>
+      
+          <div *ngIf="isEditMode">
+            <mat-form-field>
+              <input matInput type="text" [(ngModel)]="newWorkspaceName">
+            </mat-form-field>
+            <button mat-button (click)="toggleWorkspaceEdit(false)"> Cancel</button>
+            <br>
+            <button mat-button color="primary" (click)="editWorkspaceName()"> Update</button>
+            <button mat-button color="warn" (click)="removeWorkspace()"> Remove</button>
+          </div>
+
       <div class="indicators" *ngIf="workspace && datasource">
 
         <ul class="indicator-list">
@@ -54,9 +55,12 @@
           </app-edit-indicator>
         </div>
 
-        <div *ngIf="selectedIndicator && !showEditIndicator">
+        <div *ngIf="selectedIndicator && !showEditIndicator" class="header-flex">
           <b>{{selectedIndicator.name}}</b>
-          <button mat-button (click)="editIndicator()"><u>Edit</u></button>
+
+          <button mat-icon-button class="edit-button" (click)="editIndicator()">
+              <mat-icon svgIcon="edit-icon"></mat-icon>
+          </button>
         </div>
       </div>
 
