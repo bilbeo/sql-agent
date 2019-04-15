@@ -1,5 +1,11 @@
 <div class="container">
 
+  <div class="header-flex">
+      <h2>Update Indicator Details</h2>
+      <button  mat-flat-button color="warn" (click)="removeIndicator()"> Remove</button>
+  </div>
+  
+
   <mat-vertical-stepper [linear]="isLinear" #stepper *ngIf="editIndicator">
     <ng-template matStepperIcon="edit">
       v

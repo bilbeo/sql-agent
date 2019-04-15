@@ -21,6 +21,8 @@ export class WorkspaceItemComponent implements OnInit {
   selectedIndicator: any;
   showAddIndicator: boolean;
   showEditIndicator: boolean;
+  isEditMode: boolean;
+  newWorkspaceName: string
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -89,6 +91,29 @@ export class WorkspaceItemComponent implements OnInit {
     this.selectedIndicator = newDatasouceData.indicator;
     this.showAddIndicator = false;
     this.showEditIndicator = false;
+  }
+
+  toggleWorkspaceEdit(showEdit: boolean){
+    this.isEditMode = showEdit;
+    this.newWorkspaceName = this.workspace.name;
+  }
+
+  editWorkspaceName(){
+
+    if(this.newWorkspaceName){
+      this.workspaceService.updateWorkspaceName(this.workspace.id, this.newWorkspaceName)
+      .subscribe(
+        (res) => {
+          debugger
+          this.workspace['name'] = this.newWorkspaceName;
+        },
+        (err) => {
+          console.log(err);
+
+        }
+      );
+    }
+
   }
 
 

@@ -1,24 +1,35 @@
 <div class="container">
-  <div class="header">
+  <div class="header-flex">
     <button (click)="goBack()" mat-raised-button>Back</button>
-    <h3 *ngIf="workspace">{{workspace.name}}</h3>
+    <div *ngIf="!isEditMode">
+      <h3 *ngIf="workspace">{{workspace.name}}</h3>
+      <button click="toggleWorkspaceEdit(true)">Edit</button>
+    </div>
+
+    <div *ngIf="isEditMode">
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="newWorkspaceName">
+      </mat-form-field>
+      <button mat-button (click)="toggleWorkspaceEdit(false)"> Cancel</button>
+      <button mat-button color="accent" (click)="editWorkspaceName()"> Update</button>
+    </div>
   </div>
 
   <div class="flex-container">
     <div class="left-side">
-      <div class="indicators" *ngIf="workspace && datasource && datasource.indicators.length">
-        <div *ngIf="datasource">
-          <ul class="indicator-list">
-            <li (click)="newIndicator()" class="add-button">+ Add a KPI</li>
-            <li *ngFor="let indicator of datasource.indicators; let i = index"
-              [ngClass]="{'selected': selectedIndicator && (indicator._id === selectedIndicator._id)}"
-              (click)="selectIndicator(i)">
-              {{indicator.name}}
-            </li>
-          </ul>
-        </div>
+      <div class="indicators" *ngIf="workspace && datasource">
+
+        <ul class="indicator-list">
+          <li (click)="newIndicator()" class="add-button">+ Add a KPI</li>
+          <li *ngFor="let indicator of datasource.indicators; let i = index"
+            [ngClass]="{'selected': selectedIndicator && (indicator._id === selectedIndicator._id)}"
+            (click)="selectIndicator(i)">
+            {{indicator.name}}
+          </li>
+        </ul>
+
       </div>
-      
+
       <div class="credentials">
         <app-db-connector [workspace]="workspace" [localWorkspaceData]="localWorkspaceData"></app-db-connector>
       </div>
@@ -32,7 +43,8 @@
         </div>
 
         <div *ngIf="showEditIndicator">
-          <app-edit-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)" [indicatorData]="selectedIndicator">
+          <app-edit-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)"
+            [indicatorData]="selectedIndicator">
           </app-edit-indicator>
         </div>
 

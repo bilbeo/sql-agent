@@ -80,9 +80,10 @@ export class QueryDbComponent implements OnInit, OnChanges {
     this.dbOutput = null;
     this.tableData = null;
     // TODO: hardcoded parts to be removed after testings are done
-    this.queryString = this.queryString || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
     if (this.credentials.type === 'mongodb') {
       this.queryString = this.queryString || `instructions.aggregate([ { "$project": { "_id": 0, "value": "$amount", "date": "$processDate", "breakdown_type": "$type" } } ])`;
+    } else {
+      this.queryString = this.queryString || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
     }
     const options = {
       withFormatting: true,

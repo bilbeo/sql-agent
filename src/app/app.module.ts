@@ -38,7 +38,6 @@ import { WorkspaceService } from './providers/workspace.service';
 import { DatasourceService } from './providers/datasource.service';
 import { DatabaseService } from './providers/database.service';
 
-
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

@@ -41,9 +41,18 @@ export class EditIndicatorComponent implements OnInit {
       aggregation: this.indicatorData.aggregation,
       valueSpec: this.indicatorData.valueSpec,
       formatSpec: this.indicatorData.formatSpec,
-      unit: this.unitGroups[0].items[0],   // TODO: set the correct unit
-      atomicUpdate: ''+ this.indicatorData.atomicUpdate,
+      unit: this.unitGroups[0].items[0],
+      atomicUpdate: '' + this.indicatorData.atomicUpdate,
     };
+
+    // set the correct unit
+    this.unitGroups.forEach((group) => {
+      if (group.name === this.indicatorData.valueSpec) {
+        this.editIndicator.unit = group.items.find((item) => {
+          return item.value === this.indicatorData.formatSpec;
+        })
+      }
+    });
 
     this.directionOptions = [
       'Increasing is Better',
@@ -55,10 +64,11 @@ export class EditIndicatorComponent implements OnInit {
   updateIndicator() {
     // do not overwrite the initial datasource input before saving
     const datasource = JSON.parse(JSON.stringify(this.datasource));
-    
-    const indicatorIndex = datasource.indicators.findIndex((indicator)=>{
+
+    const indicatorIndex = datasource.indicators.findIndex((indicator) => {
       return indicator.publicID === this.editIndicator.publicID;
-    })
+    });
+
     datasource.indicators[indicatorIndex] = this.formatKPIBeforeSave(this.editIndicator);
     this.datasourceService.updateDatasource(datasource, this.datasource._id)
       .subscribe(
@@ -75,17 +85,43 @@ export class EditIndicatorComponent implements OnInit {
       );
   }
 
+  removeIndicator() {
+    const datasource = JSON.parse(JSON.stringify(this.datasource));
+
+    const indicatorIndex = datasource.indicators.findIndex((indicator) => {
+      return indicator._id === this.indicatorData._id;
+    });
+    // if we just splice, the metrics won't be deleted from datasource (that's what happens in web app)
+    // datasource.indicators.splice(indicatorIndex, 1);
+
+    datasource.indicators[indicatorIndex].toDelete = true;
+
+    this.datasourceService.updateDatasource(datasource, this.datasource._id)
+      .subscribe(
+        (resDatasource) => {
+          this.datasource = resDatasource;
+          this.datasourceChange.emit({
+            indicator: this.datasource.indicators[indicatorIndex],
+            datasource: this.datasource
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+
+  }
+
   private formatKPIBeforeSave(kpiToUpdate) {
     for (const prop in kpiToUpdate) {
       if (kpiToUpdate.hasOwnProperty(prop)) {
         switch (prop) {
           case 'columnsToDisplay':
           case 'selectedBgColor':
-          case 'selectedfontColor': // all these are front properties only and shouldn't be send to backend
-          case 'query': // remove remove binding
+          case 'selectedfontColor':
+          case 'query':
             delete kpiToUpdate[prop];
             break;
-          // [BACKEND] we need to adapt some data to backend
           case 'timeAggregation':
             // convert time aggregation to snapshot
             kpiToUpdate.snapshot = !kpiToUpdate[prop];
@@ -100,6 +136,8 @@ export class EditIndicatorComponent implements OnInit {
             kpiToUpdate.information.hintI18N = { 'en_GB': kpiToUpdate[prop].hint };
             break;
           case 'aggregation': // set division
+            // TODO: confirm that this is the correct behaviour: changing the kpi formula, 
+            // when the aggregation is change (sum -> division: false, avg -> division: true)
             kpiToUpdate.division = (kpiToUpdate[prop] === 'avg') ? true : false;
             break;
           case 'atomicUpdate':
@@ -113,6 +151,13 @@ export class EditIndicatorComponent implements OnInit {
         }
       }
     }
+    console.log("payload", kpiToUpdate);
+    console.log("initial data", this.indicatorData)
+
+    // send the formula (and all the other existing props) so the backend knows that the kpi is not 'new' but 'update'
+    kpiToUpdate['formula'] = this.indicatorData.formula;
+    kpiToUpdate['dependencies'] = this.indicatorData.dependencies;
+    kpiToUpdate['_id'] = this.indicatorData._id;
     return kpiToUpdate;
   }
 }
