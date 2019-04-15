@@ -35,7 +35,7 @@ export class AppComponent {
     }
 
     // register svg icons that will be used with material's mat-icon component
-    this.iconRegistry.addSvgIcon('edit-icon', this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/svg-icons/edit.svg'));
-    this.iconRegistry.addSvgIcon('back-icon', this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/svg-icons/back_ios.svg'));
+    this.iconRegistry.addSvgIcon('edit-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/edit.svg'));
+    this.iconRegistry.addSvgIcon('back-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/back_ios.svg'));
   }
 }
