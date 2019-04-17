@@ -7,4 +7,19 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    .form-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 360px;
+
+      mat-form-field {
+        width: 100%;
+      }
+    }
+   
+    .warn{
+      color: red;
+    }
 }
