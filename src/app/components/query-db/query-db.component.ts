@@ -86,15 +86,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
     this.errMessage = '';
     this.dbOutput = null;
     this.tableData = null;
-<<<<<<< HEAD
-    // TODO: hardcoded parts to be removed after testings are done
-    if (this.credentials.type === 'mongodb') {
-      this.queryString = this.queryString || `instructions.aggregate([ { "$project": { "_id": 0, "value": "$amount", "date": "$processDate", "breakdown_type": "$type" } } ])`;
-    } else {
-      this.queryString = this.queryString || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
-    }
-=======
->>>>>>> 7451c1e1c0eaf775b25ff3f8dead00bcac626ab1
     const options = {
       withFormatting: true,
       indicators: this.datasource.indicators
