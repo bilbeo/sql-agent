@@ -80,63 +80,71 @@ export class QueryDbComponent implements OnInit, OnChanges {
   }
 
   queryDB() {
+
     this.querySucceded = false;
     this.successMessage = '';
     this.errMessage = '';
     this.dbOutput = null;
     this.tableData = null;
+<<<<<<< HEAD
     // TODO: hardcoded parts to be removed after testings are done
     if (this.credentials.type === 'mongodb') {
       this.queryString = this.queryString || `instructions.aggregate([ { "$project": { "_id": 0, "value": "$amount", "date": "$processDate", "breakdown_type": "$type" } } ])`;
     } else {
       this.queryString = this.queryString || `SELECT InvoiceDate as 'date', Total as 'value', BillingCountry as 'breakdown_Country' FROM Invoice`;
     }
+=======
+>>>>>>> 7451c1e1c0eaf775b25ff3f8dead00bcac626ab1
     const options = {
       withFormatting: true,
       indicators: this.datasource.indicators
     };
 
-    const queryObject = {
-      indicatorId: this.selectedIndicator._id,
-      query: this.queryString
-    };
+    if (this.queryString) {
+      const queryObject = {
+        indicatorId: this.selectedIndicator._id,
+        query: this.queryString
+      };
 
-    this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
-      .subscribe(
-        (outputResult) => {
-          if (!(outputResult instanceof Error)) {
-            this.querySucceded = true;
-            this.dbOutput = outputResult;
+      this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
+        .subscribe(
+          (outputResult) => {
+            if (!(outputResult instanceof Error)) {
+              this.querySucceded = true;
+              this.dbOutput = outputResult;
 
-            const totalRows = this.dbOutput['numberOfRows'];
-            const invalidRows = this.dbOutput['numberOfInvalidRows'];
+              const totalRows = this.dbOutput['numberOfRows'];
+              const invalidRows = this.dbOutput['numberOfInvalidRows'];
 
-            this.successMessage = 'Query succeeded and returned ' + totalRows + ' row' + (totalRows === 1 ? '' : 's') + '.';
-            if (invalidRows) {
-              this.successMessage += ' ' + (totalRows - invalidRows) + ' row' + (totalRows === 1 ? '' : 's') + ' have been kept';
-              this.successMessage += ' and ' + invalidRows + ' row' + (totalRows === 1 ? '' : 's') + ' were invalid (missing or invalid id/value/date)';
+              this.successMessage = 'Query succeeded and returned ' + totalRows + ' row' + (totalRows === 1 ? '' : 's') + '.';
+              if (invalidRows) {
+                this.successMessage += ' ' + (totalRows - invalidRows) + ' row' + (totalRows === 1 ? '' : 's') + ' have been kept';
+                this.successMessage += ' and ' + invalidRows + ' row' + (totalRows === 1 ? '' : 's') + ' were invalid (missing or invalid id/value/date)';
+              }
+              if (totalRows > 100) {
+                this.successMessage += ' Showing the first 100 records.';
+              }
+
+              this.tableData = {
+                rows: this.dbOutput['raw']['rows'].splice(0, 100),
+                columns: this.dbOutput['raw']['columns']
+              };
+
+              // find the date columns to format them as a date
+              this.dateColumnIndex = this.tableData.columns.findIndex((colName) => {
+                return colName === 'date';
+              });
+            } else {
+              this.querySucceded = false;
+              this.errMessage = outputResult.message || 'Something went wrongquerying the database';
             }
-            this.successMessage += ' Showing the first 100 records.';
-
-            this.tableData = {
-              rows: this.dbOutput['raw']['rows'].splice(0, 100),
-              columns: this.dbOutput['raw']['columns']
-            };
-
-            // find the date columns to format them as a date
-            this.dateColumnIndex = this.tableData.columns.findIndex((colName) => {
-              return colName === 'date';
-            });
-          } else {
+          },
+          (err) => {
             this.querySucceded = false;
-            this.errMessage = outputResult.message || 'Something went wrongquerying the database';
+            this.errMessage = err;
           }
-        },
-        (err) => {
-          this.querySucceded = false;
-          this.errMessage = err;
-        }
-      );
+        );
+    }
   }
 
   updateWorkspace() {
