@@ -17,16 +17,7 @@ mat-checkbox {
   align-items: center;
   justify-content: space-between;
 
-  .edit {
-    display: none;
-    cursor: pointer;
-  }
 
-  &:hover {
-    .edit {
-      display: initial;
-    }
-  }
 }
 
 .label {

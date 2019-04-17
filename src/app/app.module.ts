@@ -27,6 +27,7 @@ import { DbConnectorComponent } from './components/db-connector/db-connector.com
 import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 import { QueryDbComponent } from './components/query-db/query-db.component';
 import { NewIndicatorComponent } from './components/new-indicator/new-indicator.component';
+import { EditIndicatorComponent } from './components/edit-indicator/edit-indicator.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -54,7 +55,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     DbConnectorComponent,
     CreateWorkspaceComponent,
     QueryDbComponent,
-    NewIndicatorComponent
+    NewIndicatorComponent,
+    EditIndicatorComponent
   ],
   imports: [
     BrowserModule,

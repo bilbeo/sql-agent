@@ -1,19 +1,13 @@
 <div class="container">
   <div *ngIf="user" class="topbar">
-
-    <img src="../../../assets/img/bilbeoNewSad.png" class="logo">
+    <img src="./assets/img/bilbeoNewSad.png" class="logo">
     <!-- <h1 class="title">
       {{ 'PAGES.HOME.TITLE' | translate }}
     </h1> -->
     <div class="text-right">{{user.firstName}} {{user.lastName}} <span (click)="signout()" class="signout">Signout</span></div>
-
-   
-
   </div>
   <div class="main-content">
       <router-outlet></router-outlet>
   </div>
-
-
 
 </div>

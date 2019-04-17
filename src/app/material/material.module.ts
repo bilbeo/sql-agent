@@ -12,7 +12,8 @@ import {
   MatButtonToggleModule,
   MatSlideToggleModule,
   MatExpansionModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatIconModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 
@@ -33,9 +34,8 @@ import { NgModule } from '@angular/core';
     MatButtonToggleModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatSnackBarModule
-
-
+    MatSnackBarModule,
+    MatIconModule
   ],
   exports: [
     MatButtonModule,
@@ -51,7 +51,8 @@ import { NgModule } from '@angular/core';
     MatButtonToggleModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule
   ],
 })
 export class MaterialModule { }

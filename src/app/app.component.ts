@@ -3,6 +3,8 @@ import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import dotenv from 'dotenv';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 // require('dotenv').config();
 
 @Component({
@@ -11,10 +13,14 @@ import dotenv from 'dotenv';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public electronService: ElectronService,
-    private translate: TranslateService) {
+  constructor(
+    public electronService: ElectronService,
+    private translate: TranslateService,
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer
+  ) {
 
-    translate.setDefaultLang('en');
+    this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
 
     // add .env variables in process.env
@@ -27,5 +33,9 @@ export class AppComponent {
     } else {
       console.log('Mode web');
     }
+
+    // register svg icons that will be used with material's mat-icon component
+    this.iconRegistry.addSvgIcon('edit-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/edit.svg'));
+    this.iconRegistry.addSvgIcon('back-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/back_ios.svg'));
   }
 }

@@ -125,4 +125,42 @@ export class WorkspaceService {
       );
 
   }
+
+  updateWorkspaceName(workspaceId, newName) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+    return this.http.post(this.baseUrl + `/api/workspace/${workspaceId}/updateName`, { name: newName }, httpOptions)
+      .pipe(
+        map((result) => {
+          return result;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
+
+  deleteWorkspace(workspaceId) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
+
+    return this.http.post(this.baseUrl + `/api/workspace/${workspaceId}/delete`, {}, httpOptions)
+      .pipe(
+        map((result) => {
+          return result;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
 }

@@ -45,7 +45,7 @@ export class NewIndicatorComponent implements OnInit {
       valueSpec: 'Currency',
       formatSpec: '',
       unit: this.unitGroups[0].items[0],
-      atomicUpdate: false,
+      atomicUpdate: 'false',
     };
 
     this.directionOptions = [
@@ -71,7 +71,6 @@ export class NewIndicatorComponent implements OnInit {
         },
         (err) => {
           console.log(err);
-
         }
       );
   }
@@ -80,14 +79,12 @@ export class NewIndicatorComponent implements OnInit {
     for (const prop in kpiToUpdate) {
       if (kpiToUpdate.hasOwnProperty(prop)) {
         switch (prop) {
-
           case 'columnsToDisplay':
           case 'selectedBgColor':
           case 'selectedfontColor': // all these are front properties only and shouldn't be send to backend
           case 'query': // remove remove binding
             delete kpiToUpdate[prop];
             break;
-
           // [BACKEND] we need to adapt some data to backend
           case 'timeAggregation':
             // convert time aggregation to snapshot
@@ -102,18 +99,19 @@ export class NewIndicatorComponent implements OnInit {
             kpiToUpdate.information.formulaI18N = { 'en_GB': kpiToUpdate[prop].formula };
             kpiToUpdate.information.hintI18N = { 'en_GB': kpiToUpdate[prop].hint };
             break;
-
           case 'aggregation': // set division
             kpiToUpdate.division = (kpiToUpdate[prop] === 'avg') ? true : false;
             break;
+          case 'atomicUpdate':
+            kpiToUpdate.atomicUpdate = (kpiToUpdate[prop] === 'false') ? false : true;
+            break;
           case 'unit':
-            kpiToUpdate.formatSpec = kpiToUpdate[prop].value;
-            kpiToUpdate.valueSpec = kpiToUpdate[prop].group;
-            delete kpiToUpdate[prop];
+            kpiToUpdate.formatSpec = kpiToUpdate['unit'].value;
+            kpiToUpdate.valueSpec = kpiToUpdate['unit'].group;
+            delete kpiToUpdate['unit'];
             break;
         }
       }
-
     }
     return kpiToUpdate;
   }

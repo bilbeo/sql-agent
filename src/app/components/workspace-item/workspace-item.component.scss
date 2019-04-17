@@ -6,14 +6,10 @@
 .container {
   padding: 10px 15px;
 
-  .header{
+  .header-flex{
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-
-    button {
-      margin-right: 10px;
-    }
   }
  
 
@@ -55,10 +51,17 @@
           text-align: center;
           
           &.selected{
-            background: #efefef;;
+            background: #efefef;
           }
           &:hover{
             background: #efefef;
+          }
+
+          &.add-button{
+            flex: 2 1 100%;
+            background: #3b89f0;
+            color: white;
+            margin-bottom: 10px;
           }
         }
 

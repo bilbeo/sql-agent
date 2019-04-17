@@ -6,7 +6,10 @@
   <!-- shown when we already have credentials -->
   <div class="credential-header" *ngIf="localWorkspaceData">
     <h4>DB credentials </h4>
-    <button mat-button *ngIf="!editMode" class="edit" (click)="editCredentials()">Edit</button>
+
+    <button mat-icon-button *ngIf="!editMode" class="edit-button" (click)="editCredentials()">
+        <mat-icon svgIcon="edit-icon"></mat-icon>
+    </button>
 
     <div *ngIf="editMode">
       <button mat-button (click)="editMode = false"> Cancel</button>

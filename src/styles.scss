@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 
@@ -11,4 +12,18 @@ html, body {
 // [Sat] hide the vertical line in the middle of the ace-editor
 .ace-monokai .ace_print-margin {
   width: 0 !important;
+}
+
+.edit-button {
+  cursor: pointer;
+  mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    color: rgb(184, 184, 184);
+    &:hover {
+      color: blue;
+    }
+  }
+  
 }
