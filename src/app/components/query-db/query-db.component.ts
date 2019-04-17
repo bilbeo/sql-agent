@@ -112,7 +112,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
                 this.successMessage += ' ' + (totalRows - invalidRows) + ' row' + (totalRows === 1 ? '' : 's') + ' have been kept';
                 this.successMessage += ' and ' + invalidRows + ' row' + (totalRows === 1 ? '' : 's') + ' were invalid (missing or invalid id/value/date)';
               }
-              if (totalRows.length > 100) {
+              if (totalRows > 100) {
                 this.successMessage += ' Showing the first 100 records.';
               }
 
