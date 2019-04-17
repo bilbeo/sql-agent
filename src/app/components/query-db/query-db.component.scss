@@ -19,7 +19,7 @@
 }
 
 .ace-editor {
-  min-height: 200px;
+  min-height: 100px;
   width: 100%;
   overflow: auto;
 }
@@ -29,12 +29,17 @@
   font-size: 13px;
 }
 
+.success-message {
+  color: green;
+  font-size: 13px;
+}
+
 button {
   margin: 10px 0;
 }
 
 .output-container {
-  height: 200px;
+  height: 300px;
   overflow-y: auto;
   margin-bottom: 20px;
 

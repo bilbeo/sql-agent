@@ -78,8 +78,32 @@ export class WorkspaceService {
       );
   }
 
-  updateWorkspace() {
+  updateWorkspace(params, jsonData) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.userToken
+      })
+    };
 
+    const paylod = {
+      APIKey: params['APIKey'],
+      workspaceId: params['workspaceId'],
+      updateMode: params['updateMode'],
+      updatePartial: params['updatePartial'],
+      compressed: false,
+      data: jsonData
+    };
+
+    return this.http.post(this.baseUrl + `/api/oem/workspace/update`, paylod, httpOptions)
+      .pipe(
+        map((result) => {
+          return result;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
   }
 
   getDatabaseTypes() {

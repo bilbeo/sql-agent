@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { DbCredentials } from '../interfaces/db-credentials';
 const mysql = (<any>window).require('mysql');
-declare var moment: any;
+import * as moment from 'moment';
 
 @Injectable()
 export class DatabaseService {
@@ -268,15 +268,11 @@ export class DatabaseService {
     for (let i = 0; i < data.rows.length; i++) {
 
       // detects invalid rows
-      if (
-        !(
-          this.isValidDate(new Date(data.rows[i][dateColumn])) &&
-          typeof data.rows[i][valueColumn] === 'number' &&
-          !isNaN(data.rows[i][valueColumn])
-        )
-      ) {
-        toSanitize.push(i);
-        continue;
+      //[Sat] if date column is falsey value (null, undefined), or it's an invalid date or value column is not a number
+      if (!data.rows[i][dateColumn] || !this.isValidDate(new Date(data.rows[i][dateColumn])) || 
+          typeof data.rows[i][valueColumn] !== 'number' || isNaN(data.rows[i][valueColumn])) {
+          toSanitize.push(i);
+          continue;
       }
 
       // extract dimensions
