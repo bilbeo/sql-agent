@@ -1,32 +1,29 @@
-<div class="container">
-  <div>
-    <form [formGroup]="loginForm">
-      <div>
-
-        <mat-form-field>
-          <input matInput placeholder=" Email address" type="text" formControlName="email">
-        </mat-form-field>
-      </div>
-
-
-
-
-      <div>
-        <mat-form-field>
-          <input matInput placeholder="Password" type="password" formControlName="password">
-        </mat-form-field>
-
-      </div>
-
-
-    </form>
-    <div>
-      <button mat-raised-button color="primary" (click)="signin()" class="login-button">Login</button>
-    </div>
-
-    <div *ngIf="message">
-      <small> {{message}}</small>
-    </div>
+<div class="container dark-theme-wrapper">
+  <div class="header">
+    <img src="./assets/img/bilbeoNewSad.png">
   </div>
+  <div class="main">
+    <div>
+      <form [formGroup]="loginForm">
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Email address" type="text" formControlName="email">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Password" type="password" formControlName="password">
+          </mat-form-field>
+        </div>
+      </form>
+      <div>
+        <button mat-stroked-button (click)="signin()" class="login-button">Login</button>
+      </div>
 
+      <div *ngIf="message" class="warn">
+        <small>{{message}}</small>
+      </div>
+    </div>
+
+  </div>
 </div>

@@ -16,9 +16,7 @@ export class AuthComponent implements OnInit {
     private sharedService: SharedService,
     private router: Router,
     private fb: FormBuilder,
-    private userService: UserService) {
-
-  }
+    private userService: UserService) { }
 
   ngOnInit() {
     this.checkUserAuthenticated();
@@ -34,10 +32,8 @@ export class AuthComponent implements OnInit {
     }
   }
 
-
   signin() {
     this.message = '';
-
     if (!this.loginForm.valid) {
       return;
     }
@@ -54,6 +50,5 @@ export class AuthComponent implements OnInit {
       (errMessage) => {
         this.message = errMessage;
       });
-
   }
 }
