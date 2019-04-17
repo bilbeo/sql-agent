@@ -8,21 +8,19 @@ import { Workspace } from '../interfaces/workspace';
 @Injectable()
 export class WorkspaceService {
   private baseUrl = process.env.BILBEO_SERVER;
-  private userToken;
-
   constructor(
     private http: HttpClient,
     private sharedService: SharedService) {
 
-    this.userToken = this.sharedService.getFromStorage('token');
+    
   }
 
   getWorkspaceDetails(workspaceId): Observable<Workspace> {
-
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -40,10 +38,11 @@ export class WorkspaceService {
   }
 
   getDesktopWorkspaces() {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -60,10 +59,11 @@ export class WorkspaceService {
   }
 
   createDesktopWorkspace(data) {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -79,10 +79,11 @@ export class WorkspaceService {
   }
 
   updateWorkspace(params, jsonData) {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -107,10 +108,11 @@ export class WorkspaceService {
   }
 
   getDatabaseTypes() {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -127,10 +129,11 @@ export class WorkspaceService {
   }
 
   updateWorkspaceName(workspaceId, newName) {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -146,10 +149,11 @@ export class WorkspaceService {
   }
 
   deleteWorkspace(workspaceId) {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 

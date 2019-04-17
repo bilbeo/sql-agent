@@ -9,20 +9,18 @@ import { Datasource } from '../interfaces/datasource';
 @Injectable()
 export class DatasourceService {
   private baseUrl = process.env.BILBEO_SERVER;
-  private userToken;
 
   constructor(
     private http: HttpClient,
     private sharedService: SharedService) {
-
-    this.userToken = this.sharedService.getFromStorage('token');
   }
 
   createDatasource(datasourceName) {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
@@ -48,10 +46,11 @@ export class DatasourceService {
   }
 
   getDatasourceByName(datasourceName): Observable<Datasource> {
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
     return this.http.get(this.baseUrl + `/api/datasource/${datasourceName}`, httpOptions)
@@ -69,11 +68,11 @@ export class DatasourceService {
 
 
   updateDatasource(newData, datasourceId) {
-
+    const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken
+        'Authorization': 'Bearer ' + userToken
       })
     };
 
