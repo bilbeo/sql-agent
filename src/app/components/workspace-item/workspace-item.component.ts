@@ -55,7 +55,6 @@ export class WorkspaceItemComponent implements OnInit {
         },
         (err) => {
           console.log(err);
-
         }
       );
   }
@@ -75,6 +74,10 @@ export class WorkspaceItemComponent implements OnInit {
     this.datasource = newDatasouceData.datasource;
     // when a new indicatoris created we want ot to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
+  }
+
+  updateLocalData(event) {
+    this.getDetailsFromLocalStore();
   }
 
 
