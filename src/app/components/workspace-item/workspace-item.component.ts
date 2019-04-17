@@ -137,6 +137,10 @@ export class WorkspaceItemComponent implements OnInit {
     }
   }
 
+  updateLocalData(event) {
+    this.getDetailsFromLocalStore();
+  }
+
   goBack() {
     this.router.navigate(['../']);
   }
