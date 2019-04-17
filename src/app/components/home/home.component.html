@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container dark-theme-wrapper">
   <div *ngIf="user" class="topbar">
     <!-- <img src="./assets/img/bilbeoNewSad.png" class="logo"> -->
     <img [src]="user.logoURL" class="logo">
@@ -10,7 +10,6 @@
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
-
           <span>{{user.mail}}</span>
         </button>
         <button mat-menu-item (click)="signout()">

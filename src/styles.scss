@@ -15,6 +15,15 @@ body {
   width: 0 !important;
 }
 
+// helper classes
+.text-center {
+  text-align: center;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
 .edit-button {
   cursor: pointer;
   mat-icon {
@@ -26,5 +35,4 @@ body {
       color: blue;
     }
   }
-  
 }
