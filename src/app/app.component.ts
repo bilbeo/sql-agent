@@ -34,8 +34,14 @@ export class AppComponent {
       console.log('Mode web');
     }
 
+    this.registerIcons();
+  }
+
+  registerIcons() {
     // register svg icons that will be used with material's mat-icon component
     this.iconRegistry.addSvgIcon('edit-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/edit.svg'));
     this.iconRegistry.addSvgIcon('back-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/back_ios.svg'));
+    this.iconRegistry.addSvgIcon('exit-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/exit_icon.svg'));
+    this.iconRegistry.addSvgIcon('dropdown-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/drop_down_icon.svg'));
   }
 }

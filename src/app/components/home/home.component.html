@@ -1,13 +1,30 @@
 <div class="container">
   <div *ngIf="user" class="topbar">
-    <img src="./assets/img/bilbeoNewSad.png" class="logo">
-    <!-- <h1 class="title">
-      {{ 'PAGES.HOME.TITLE' | translate }}
-    </h1> -->
-    <div class="text-right">{{user.firstName}} {{user.lastName}} <span (click)="signout()" class="signout">Signout</span></div>
+    <!-- <img src="./assets/img/bilbeoNewSad.png" class="logo"> -->
+    <img [src]="user.logoURL" class="logo">
+    <div class="text-right">
+
+      <span> {{user.firstName}} {{user.lastName}}</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon svgIcon="dropdown-icon"></mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+
+          <span>{{user.mail}}</span>
+        </button>
+        <button mat-menu-item (click)="signout()">
+          <mat-icon svgIcon="exit-icon"></mat-icon>
+          <span>Signout</span>
+        </button>
+      </mat-menu>
+    </div>
   </div>
   <div class="main-content">
-      <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
   </div>
-
 </div>
+
+<!-- <h1 class="title">
+      {{ 'PAGES.HOME.TITLE' | translate }}
+    </h1> -->
