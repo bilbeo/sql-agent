@@ -33,10 +33,9 @@ import { SharedService } from './providers/shared.service';
 import { UserService } from './providers/user.service';
 import { ElectronService } from './providers/electron.service';
 import { AuthGuardService } from './providers/auth-guard.service';
-import { DBMongoService } from './providers/db-mongo.service';
-import { DBMySqlService } from './providers/db-mysql.service';
 import { WorkspaceService } from './providers/workspace.service';
 import { DatasourceService } from './providers/datasource.service';
+import { DatabaseService } from './providers/database.service';
 import { HttpCacheInterceptor } from './providers/http-cache-interceptor';
 
 // AoT requires an exported function for factories
@@ -79,8 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedService,
     UserService,
     AuthGuardService,
-    DBMongoService,
-    DBMySqlService,
+    DatabaseService,
     WorkspaceService,
     DatasourceService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true }

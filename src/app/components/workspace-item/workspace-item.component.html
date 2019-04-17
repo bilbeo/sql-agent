@@ -23,7 +23,7 @@
             </div>
 
             <div class="credentials">
-                <app-db-connector [workspace]="workspace" [localData]="workspaceLocalData"></app-db-connector>
+                <app-db-connector [workspace]="workspace" [localWorkspaceData]="localWorkspaceData" (localDataChange)="updateLocalData($event)"></app-db-connector>
             </div>
         </div>
 
@@ -35,13 +35,14 @@
                     </app-new-indicator>
                 </div>
 
-                <div *ngIf="selectedIndicator">
-                    Selected!
+                <div *ngIf="selectedIndicator" >
+                    <b>{{selectedIndicator.name}}</b>
+                   <button mat-button (click)="editIndicator()"><u>Edit</u></button>   
                 </div>
             </div>
 
             <div class="query-tool" *ngIf="selectedIndicator">
-                <app-query-db></app-query-db>
+                <app-query-db [selectedIndicator]="selectedIndicator" [localWorkspaceData]="localWorkspaceData"></app-query-db>
             </div>
 
         </div>

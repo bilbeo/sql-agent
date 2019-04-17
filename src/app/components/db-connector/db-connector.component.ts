@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbCredentials } from '../../interfaces/db-credentials';
-import { DBMySqlService } from '../../providers/db-mysql.service';
 import { SharedService } from '../../providers/shared.service';
 import { WorkspaceService } from '../../providers/workspace.service';
+import { DatabaseService } from '../../providers/database.service';
+
 
 @Component({
   selector: 'app-db-connector',
@@ -11,9 +12,9 @@ import { WorkspaceService } from '../../providers/workspace.service';
   styleUrls: ['./db-connector.component.scss']
 })
 export class DbConnectorComponent implements OnInit {
-  @Input() localData: any;
+  @Input() localWorkspaceData: any;
   @Input() workspace;
-
+  @Output() localDataChange = new EventEmitter();
   selectedDb: any;
   dbForm: FormGroup;
   message: string;
@@ -25,16 +26,16 @@ export class DbConnectorComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private mySqlService: DBMySqlService,
+    private databaseService: DatabaseService,
     private sharedService: SharedService,
     private workspaceService: WorkspaceService) { }
 
   ngOnInit() {
-    this.getDbTypes();  
+    this.getDbTypes();
   }
 
-  initDbForm(){
-    this.credentials = this.localData ? this.localData.credentials : {};
+  initDbForm() {
+    this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
     this.dbForm = this.fb.group({
       host: [this.credentials.host || '', Validators.required],
       dbName: [this.credentials.db || '', Validators.required],
@@ -42,6 +43,11 @@ export class DbConnectorComponent implements OnInit {
       user: [this.credentials.user || ''],
       dbPassword: [this.credentials.password || ''],
     });
+    if (this.credentials.type) {
+      this.selectedDb = this.allDbs.find((db) => {
+        return db.key === this.credentials.type;
+      });
+    }
   }
 
   getDbTypes() {
@@ -87,12 +93,12 @@ export class DbConnectorComponent implements OnInit {
       port: this.dbForm.controls['port'].value,
       db: this.dbForm.controls['dbName'].value,
       user: this.dbForm.controls['user'].value ? this.dbForm.controls['user'].value : null,
-      password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null
+      password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null,
+      type: this.selectedDb.key
 
     };
 
-
-    this.mySqlService.connect(credentials)
+    this.databaseService.testConnection(credentials, this.selectedDb.key, {})
       .subscribe(
         (res: string) => {
           console.log(res);
@@ -120,7 +126,7 @@ export class DbConnectorComponent implements OnInit {
   }
 
   saveCredentials(credentials) {
-    // save the credentials in app ocal storage if the user has not unchecked save checkbox
+    // save the credentials in app local storage if the user has not unchecked save checkbox
     const workspaceData = {
       id: this.workspace.id,
       credentials: credentials,
@@ -132,9 +138,10 @@ export class DbConnectorComponent implements OnInit {
     }
     this.sharedService.setInStorage(`workspaces.${this.workspace.id}`, workspaceData);
     this.credentials = credentials;
-    this.localData = {
+    this.localWorkspaceData = {
       credentials: credentials
     };
+    this.localDataChange.emit('Local data has changed');
   }
 
   removeCredentials() {

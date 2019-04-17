@@ -1,8 +1,7 @@
 .query-example {
   font-family: monospace;
-  padding: display-inline;
   border: 1px solid grey;
-  border-radius: 5px;
+  // border-radius: 5px;
   padding: 10px 15px;
 }
 
@@ -15,7 +14,42 @@
   color: #2060a0;
 }
 
-.ace-container {
-  height: 50px;
-  margin-top: 20px;
+.margin-30{
+  margin-left:30px;
+}
+
+.ace-editor {
+  min-height: 200px;
+  width: 100%;
+  overflow: auto;
+}
+
+.error-message{
+  color: red;
+  font-size: 13px;
+}
+
+button {
+  margin: 10px 0;
+}
+
+.output-container {
+  height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+
+  .output-table {
+    width: 100%;
+
+    th, td {
+      padding: 5px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    th {
+      color: #868686;
+      font-weight: initial;
+    }
+  }
 }

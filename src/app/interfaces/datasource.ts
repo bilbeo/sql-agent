@@ -1,7 +1,7 @@
 export interface Datasource {
     _id: string;
     defaultLang?: string;
-    langs?: Array<string>
+    langs?: Array<string>;
     name: string;
     owner: string;
     indicators: Array<any>;

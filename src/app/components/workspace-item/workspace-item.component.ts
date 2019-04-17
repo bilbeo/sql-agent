@@ -13,9 +13,7 @@ import { DatasourceService } from '../../providers/datasource.service';
 })
 export class WorkspaceItemComponent implements OnInit {
   workspace;
-  // hardcoded at the moment: Sat
-  dbType = 'mysql';
-  workspaceLocalData: any;
+  localWorkspaceData: any;
   workspaceId;
   datasource;
   selectedIndicator;
@@ -45,7 +43,7 @@ export class WorkspaceItemComponent implements OnInit {
   }
 
   getDetailsFromLocalStore() {
-    this.workspaceLocalData = this.sharedService.getFromStorage('workspaces') ?
+    this.localWorkspaceData = this.sharedService.getFromStorage('workspaces') ?
       this.sharedService.getFromStorage('workspaces')[this.workspaceId] : null;
   }
 
@@ -57,7 +55,6 @@ export class WorkspaceItemComponent implements OnInit {
         },
         (err) => {
           console.log(err);
-
         }
       );
   }
@@ -68,11 +65,19 @@ export class WorkspaceItemComponent implements OnInit {
 
   }
 
+  editIndicator() {
+
+  }
+
   onDatasourceUpdated(newDatasouceData) {
     this.selectedIndicator = null;
     this.datasource = newDatasouceData.datasource;
     // when a new indicatoris created we want ot to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
+  }
+
+  updateLocalData(event) {
+    this.getDetailsFromLocalStore();
   }
 
 

@@ -1,10 +1,10 @@
 <div class="scroll">
-  <div *ngIf="!localData ">
+  <div *ngIf="!localWorkspaceData ">
     <h4>Connect to database</h4>
   </div>
 
   <!-- shown when we already have credentials -->
-  <div class="credential-header" *ngIf="localData">
+  <div class="credential-header" *ngIf="localWorkspaceData">
     <h4>DB credentials </h4>
     <button mat-button *ngIf="!editMode" class="edit" (click)="editCredentials()">Edit</button>
 
@@ -15,7 +15,7 @@
   </div>
 
   <!-- create/update credentials -->
-  <form [formGroup]="dbForm" *ngIf="dbForm && (!localData || editMode)">
+  <form [formGroup]="dbForm" *ngIf="dbForm && (!localWorkspaceData || editMode)">
     <mat-form-field class="db-select">
       <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)">
         <mat-option *ngFor="let db of allDbs" [value]="db">
@@ -65,13 +65,13 @@
   </form>
 
   <!-- create credentials -->
-  <button (click)="connectToDatabase()" mat-raised-button color="primary" *ngIf="!localData" class="connect-button">
+  <button (click)="connectToDatabase()" mat-raised-button color="primary" *ngIf="!localWorkspaceData" class="connect-button">
     Connect to Database
   </button>
 
 
   <!-- Already have credentials -->
-  <div *ngIf="localData && credentials && !editMode">
+  <div *ngIf="localWorkspaceData && credentials && !editMode">
     <table>
       <tr>
         <td class="label">Host</td>
