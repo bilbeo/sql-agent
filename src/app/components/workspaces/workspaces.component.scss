@@ -22,4 +22,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .full-width {
+    width: 100%;
+  }
 }

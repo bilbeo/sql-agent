@@ -13,7 +13,7 @@
       <mat-checkbox [(ngModel)]="workspaceData.isPushDb">Connect to Database</mat-checkbox>
     </div>
     <button mat-stroked-button (click)="createWorkspace()" class="margin-bottom-10">Create</button>
-    <div class="warn">
+    <div class="error-message">
       <span *ngIf="errorMessage">{{errorMessage}}</span>
     </div>
   </div>

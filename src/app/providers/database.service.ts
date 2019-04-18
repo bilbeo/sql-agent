@@ -13,10 +13,10 @@ export class DatabaseService {
 
   private dbList = {
     sqlServer: {
-        name: 'Microsoft SQL Server',
-        order: 2,
-        script: require('./db-connectors/sql-server'),
-        defaultPort: 1433
+      name: 'Microsoft SQL Server',
+      order: 2,
+      script: require('./db-connectors/sql-server'),
+      defaultPort: 1433
     },
     azureSql: {
       name: 'Azure SQL',
@@ -43,16 +43,16 @@ export class DatabaseService {
       defaultPort: 5432
     },
     db2: {
-        name: 'IBM DB2',
-        order: 8,
-        script: require('./db-connectors/db2'),
-        defaultPort: 50001
+      name: 'IBM DB2',
+      order: 8,
+      script: require('./db-connectors/db2'),
+      defaultPort: 50001
     },
     mariadb: {
-        name: 'MariaDB',
-        order: 7,
-        script: require('./db-connectors/maria-db'),
-        defaultPort: 3306
+      name: 'MariaDB',
+      order: 7,
+      script: require('./db-connectors/maria-db'),
+      defaultPort: 3306
     },
     mongodb: {
       name: 'MongoDB',
@@ -61,16 +61,16 @@ export class DatabaseService {
       defaultPort: 27017
     },
     sybase: {
-        name: 'SAP ASE / Sybase',
-        order: 6,
-        script: require('./db-connectors/sybase'),
-        defaultPort: 5000
+      name: 'SAP ASE / Sybase',
+      order: 6,
+      script: require('./db-connectors/sybase'),
+      defaultPort: 5000
     },
     firebird: {
-        name: 'Firebird',
-        order: 9,
-        script: require('./db-connectors/firebird'),
-        defaultPort: 3050
+      name: 'Firebird',
+      order: 9,
+      script: require('./db-connectors/firebird'),
+      defaultPort: 3050
     }
   };
 
@@ -268,11 +268,11 @@ export class DatabaseService {
     for (let i = 0; i < data.rows.length; i++) {
 
       // detects invalid rows
-      //[Sat] if date column is falsey value (null, undefined), or it's an invalid date or value column is not a number
-      if (!data.rows[i][dateColumn] || !this.isValidDate(new Date(data.rows[i][dateColumn])) || 
-          typeof data.rows[i][valueColumn] !== 'number' || isNaN(data.rows[i][valueColumn])) {
-          toSanitize.push(i);
-          continue;
+      // [Sat] if date column is falsey value (null, undefined), or it's an invalid date or value column is not a number
+      if (!data.rows[i][dateColumn] || !this.isValidDate(new Date(data.rows[i][dateColumn])) ||
+        typeof data.rows[i][valueColumn] !== 'number' || isNaN(data.rows[i][valueColumn])) {
+        toSanitize.push(i);
+        continue;
       }
 
       // extract dimensions
@@ -476,7 +476,4 @@ export class DatabaseService {
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());
     return (Math.round(timeDiff / (1000 * 3600 * 24)));
   };
-
-
-
 }

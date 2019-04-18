@@ -1,6 +1,6 @@
 <div class="container">
   <div *ngIf="!loading" class="workspaces-wrapper">
-    <div *ngIf="workspaces && workspaces.length">
+    <div *ngIf="workspaces && workspaces.length" class="full-width">
       <h2 class="text-center">My Desktop Workspaces</h2>
       <div *ngFor="let workspace of workspaces">
         <div class="workspace-card" (click)="showWorkspaceDetails(workspace)">
@@ -11,10 +11,10 @@
         <span>-OR-</span>
       </div>
     </div>
-    <div *ngIf="!workspaces || !workspaces.length">
+    <div *ngIf="!workspaces || !workspaces.length" class="full-width">
       <h3> No Desktop Workspaces Found! </h3>
     </div>
-    <button mat-stroked-button color="primary" (click)="newWorkspace()"> Create A Workspace</button>
+    <button mat-stroked-button color="primary" (click)="newWorkspace()" class="full-width"> Create A Workspace</button>
   </div>
   <div *ngIf="loading">
     <mat-spinner></mat-spinner>

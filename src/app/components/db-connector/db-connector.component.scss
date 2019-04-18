@@ -7,17 +7,19 @@ mat-checkbox {
   width: 90%;
 }
 
-.connect-button {
-  width: 90%;
-  margin-top: 20px;
-}
-
 .credential-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 
+  button {
+    margin-right: 5px;
+    margin-left: 5px;
 
+    &.connect-button{
+      margin-left: 20px;
+    }
+  }
 }
 
 .label {
@@ -25,6 +27,7 @@ mat-checkbox {
   font-size: 12px;
   padding-right: 5px;
 }
+
 .value {
   font-size: 12px;
 }
