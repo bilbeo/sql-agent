@@ -8,6 +8,8 @@ import { DatasourceService } from '../../providers/datasource.service';
 import { Datasource } from '../../interfaces/datasource';
 import { Workspace } from '../../interfaces/workspace';
 import { Server } from 'tls';
+import { MatDialog } from '@angular/material';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-workspace-item',
@@ -29,7 +31,8 @@ export class WorkspaceItemComponent implements OnInit {
     private router: Router,
     private workspaceService: WorkspaceService,
     private datasourceService: DatasourceService,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -116,17 +119,30 @@ export class WorkspaceItemComponent implements OnInit {
   }
 
   removeWorkspace() {
-    this.workspaceService.deleteWorkspace(this.workspace.id)
-      .subscribe(
-        (res) => {
-          this.removeLocalData();
-          this.goBack();
-          // TODO: should we also remove the datasource?
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    const dialog = this.openDialog('Delete Workspace', 'Are you sure you want to delete this workspace? All the details will be lost including KPIs', 'Cancel', 'Remove');
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        // [TODO]: show alert
+        this.workspaceService.deleteWorkspace(this.workspace.id)
+          .subscribe(
+            (res) => {
+              this.removeLocalData();
+              this.datasourceService.removeDatasource(this.datasource.name)
+                .subscribe(
+                  (result) => {
+                    this.goBack();
+                  },
+                  (err) => {
+                    console.log(err);
+                  }
+                );
+            },
+            (errMessage) => {
+              console.log(errMessage);
+            }
+          );
+      }
+    });
   }
 
   removeLocalData() {
@@ -143,6 +159,14 @@ export class WorkspaceItemComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['../']);
+  }
+
+  openDialog(title, message, cancelText, confirmText) {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '300px',
+      data: { title: title, message: message, cancelButtonText: cancelText, confirmButtonText: confirmText }
+    });
+    return dialogRef;
   }
 
 }

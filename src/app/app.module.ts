@@ -28,6 +28,7 @@ import { CreateWorkspaceComponent } from './components/create-workspace/create-w
 import { QueryDbComponent } from './components/query-db/query-db.component';
 import { NewIndicatorComponent } from './components/new-indicator/new-indicator.component';
 import { EditIndicatorComponent } from './components/edit-indicator/edit-indicator.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 // providers
 import { SharedService } from './providers/shared.service';
@@ -56,7 +57,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CreateWorkspaceComponent,
     QueryDbComponent,
     NewIndicatorComponent,
-    EditIndicatorComponent
+    EditIndicatorComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +87,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DatasourceService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true }
   ],
+  entryComponents: [AlertComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

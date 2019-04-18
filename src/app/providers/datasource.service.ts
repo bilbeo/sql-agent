@@ -91,6 +91,30 @@ export class DatasourceService {
       );
   }
 
+  removeDatasource(datasourceName) {
+    const userToken = this.sharedService.getFromStorage('token');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + userToken
+      })
+    };
+
+    const payload = {
+      name: datasourceName
+    };
+
+    return this.http.post(this.baseUrl + `/api/datasource/delete`, payload, httpOptions)
+      .pipe(
+        map((result) => {
+          return { ...result['data'] };
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message || error.error);
+        })
+      );
+  }
+
   getUnitGroups() {
     const groups = [
       {
