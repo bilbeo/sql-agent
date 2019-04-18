@@ -27,7 +27,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
   dbOutput: any;
   queryString: string;
   credentials: DbCredentials;
-  saveLocal: boolean;
   querySucceded: boolean;
   dateColumnIndex: number;
   user: User;
@@ -42,7 +41,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.saveLocal = true;
     this.setQuery();
     this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
 
@@ -80,7 +78,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
   }
 
   queryDB() {
-
     this.querySucceded = false;
     this.successMessage = '';
     this.errMessage = '';
@@ -141,7 +138,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
   updateWorkspace() {
     if (this.querySucceded && this.dbOutput) {
       // save the query in local store
-      if (this.saveLocal) {
+      if (this.localWorkspaceData) {
         const queryItem = {
           indicatorId: this.selectedIndicator._id,
           query: this.queryString
@@ -154,7 +151,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
       const json = {
         KPIs: this.dbOutput['formatted']
       };
-
       const params = {};
       params['updatePartial'] = true;
       params['updateMode'] = 'replace';
@@ -180,7 +176,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
       duration: 10000
     })
       .onAction().subscribe(() => {
-
         if (action === 'Visit') {
           // open external web browser window
           shell.openExternal(this.user.webURL || 'https://www.bilbeo.net');
