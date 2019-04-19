@@ -122,14 +122,13 @@ export class WorkspaceItemComponent implements OnInit {
     const dialog = this.openDialog('Delete Workspace', 'Are you sure you want to delete this workspace? All the details will be lost including KPIs', 'Cancel', 'Remove');
     dialog.afterClosed().subscribe(result => {
       if (result) {
-        // [TODO]: show alert
         this.workspaceService.deleteWorkspace(this.workspace.id)
           .subscribe(
             (res) => {
               this.removeLocalData();
               this.datasourceService.removeDatasource(this.datasource.name)
                 .subscribe(
-                  (result) => {
+                  (removeRes) => {
                     this.goBack();
                   },
                   (err) => {

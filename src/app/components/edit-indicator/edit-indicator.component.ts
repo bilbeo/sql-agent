@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DatasourceService } from '../../providers/datasource.service';
 import { SharedService } from '../../providers/shared.service';
+import { AlertComponent } from '../alert/alert.component';
+import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-edit-indicator',
   templateUrl: './edit-indicator.component.html',
@@ -14,14 +16,17 @@ export class EditIndicatorComponent implements OnInit {
   unitGroups;
   directionOptions;
   editIndicator;
-
+  hints;
   constructor(
     private datasourceService: DatasourceService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
     this.unitGroups = this.datasourceService.getUnitGroups();
+    this.hints = this.datasourceService.getIndicatorHints();
+
     this.editIndicator = {
       publicID: this.indicatorData.publicID,
       name: this.indicatorData.name,
@@ -88,31 +93,34 @@ export class EditIndicatorComponent implements OnInit {
   }
 
   removeIndicator() {
-    const datasource = JSON.parse(JSON.stringify(this.datasource));
 
-    const indicatorIndex = datasource.indicators.findIndex((indicator) => {
-      return indicator._id === this.indicatorData._id;
+    const confirmDialog = this.openDialog('Remove Indicator', 'Are you sure you want to delete the indicator? All the saved data will be removed', 'Cancel', 'Remove');
+    confirmDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        const datasource = JSON.parse(JSON.stringify(this.datasource));
+        const indicatorIndex = datasource.indicators.findIndex((indicator) => {
+          return indicator._id === this.indicatorData._id;
+        });
+        // if we just splice, the metrics won't be deleted from datasource (that's what happens in web app)
+        // datasource.indicators.splice(indicatorIndex, 1);
+        datasource.indicators[indicatorIndex].toDelete = true;
+
+        this.datasourceService.updateDatasource(datasource, this.datasource._id)
+          .subscribe(
+            (resDatasource) => {
+              this.datasource = resDatasource;
+              this.datasourceChange.emit({
+                indicator: this.datasource.indicators[indicatorIndex],
+                datasource: this.datasource
+              });
+              this.removeQueryFromLocalStore();
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+      }
     });
-    // if we just splice, the metrics won't be deleted from datasource (that's what happens in web app)
-    // datasource.indicators.splice(indicatorIndex, 1);
-
-    datasource.indicators[indicatorIndex].toDelete = true;
-
-    this.datasourceService.updateDatasource(datasource, this.datasource._id)
-      .subscribe(
-        (resDatasource) => {
-          this.datasource = resDatasource;
-          this.datasourceChange.emit({
-            indicator: this.datasource.indicators[indicatorIndex],
-            datasource: this.datasource
-          });
-          this.removeQueryFromLocalStore();
-          // TODO: remove the query from local store
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
   }
 
   removeQueryFromLocalStore() {
@@ -126,6 +134,14 @@ export class EditIndicatorComponent implements OnInit {
         this.sharedService.setInStorage(`workspaces.${localWorkspaceData.id}`, localWorkspaceData);
       }
     }
+  }
+
+  openDialog(title, message, cancelText, confirmText) {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '300px',
+      data: { title: title, message: message, cancelButtonText: cancelText, confirmButtonText: confirmText }
+    });
+    return dialogRef;
   }
 
   private formatKPIBeforeSave(kpiToUpdate) {
