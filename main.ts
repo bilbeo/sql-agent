@@ -1,6 +1,37 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as AutoLaunch from 'auto-launch';
+
+// auto launch on OS startup, skipped in development
+function enableAutoLaunch() {
+  if (serve) {
+    return;
+  }
+  let alConfig = {
+    name: app.getName(),
+    path: process.execPath,
+    isHidden: true
+  };
+
+  if (process.env.APPIMAGE) {
+    alConfig = Object.assign(alConfig, { path: process.env.APPIMAGE });
+  }
+
+  const autoLauncher = new AutoLaunch(alConfig);
+  autoLauncher.enable();
+
+  autoLauncher.isEnabled()
+    .then(function (isEnabled) {
+      if (isEnabled) {
+        return;
+      }
+      autoLauncher.enable();
+    })
+    .catch(function (err) {
+      console.log("err", err);
+    });
+}
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -55,6 +86,8 @@ try {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', createWindow);
+
+  enableAutoLaunch();
 
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {

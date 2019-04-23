@@ -1,5 +1,6 @@
 {
   "productName": "desktop-agent",
+  
   "directories": {
     "output": "release/"
   },
@@ -22,7 +23,7 @@
   "win": {
     "icon": "dist",
     "target": [
-      "portable"
+      "nsis"
     ]
   },
   "mac": {
@@ -36,5 +37,8 @@
     "target": [
       "AppImage"
     ]
+  },
+  "appImage":{
+    "artifactName": "DesktopAgent.${ext}"
   }
 }
