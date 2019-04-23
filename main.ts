@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, Menu, Tray, nativeImage } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as AutoLaunch from 'auto-launch';
@@ -31,6 +31,46 @@ function enableAutoLaunch() {
     .catch(function (err) {
       console.log("err", err);
     });
+}
+
+// enable tray minimizing
+function createTray() {
+  let tray = null;
+  const icon = nativeImage.createFromPath(path.join(__dirname, 'bilbeoGA.png'));
+  
+  tray = new Tray(icon);
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show App', click: function () {
+        win.show();
+      }
+    },
+    {
+      label: 'Quit', click: function () {
+        app['isQuiting'] = true;
+        tray.destroy();
+        app.quit();
+      }
+    }
+  ]);
+
+  tray.setToolTip('SQL Agent');
+  tray.setContextMenu(contextMenu);
+
+  win.on('minimize', function (event) {
+    event.preventDefault();
+    win.hide();
+  });
+
+  win.on('close', function (event) {
+    console.log("win.on.close", app['isQuiting'])
+    if (!app['isQuiting']) {
+      event.preventDefault();
+      win.hide();
+    }
+
+    return false;
+  });
 }
 
 let win, serve;
@@ -77,7 +117,6 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
-
 }
 
 try {
@@ -85,7 +124,10 @@ try {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  app.on('ready', createWindow);
+  app.on('ready', ()=>{
+    createWindow();
+    createTray();
+  });
 
   enableAutoLaunch();
 

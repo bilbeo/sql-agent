@@ -1,6 +1,5 @@
 {
   "productName": "desktop-agent",
-  
   "directories": {
     "output": "release/"
   },
