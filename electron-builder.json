@@ -19,6 +19,13 @@
         "!tsconfig.json",
         "!tslint.json"
     ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "bilbeo",
+        "repo": "sql-agent"
+      }
+    ],
   "win": {
     "icon": "dist",
     "target": [
