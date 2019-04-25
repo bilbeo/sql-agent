@@ -4,7 +4,14 @@
       <mat-icon svgIcon="back-icon"></mat-icon>
     </button>
   </div>
-  <div class="flex-container">
+  <!-- Step1: connect to DB -->
+  <div *ngIf="!localWorkspaceData || updateCredentialsMode" class="db-connect-wrapper">
+    <div class="db-connector">
+      <app-db-connector (closeCredentialsPage)="hideCredentialsForm($event)" [workspace]="workspace" [localWorkspaceData]="localWorkspaceData" [updateCredentialsMode]="updateCredentialsMode"></app-db-connector>
+    </div>
+  </div>
+  <!-- Step2: Manage KPI-s-->
+  <div class="flex-container" *ngIf="localWorkspaceData && !updateCredentialsMode">
     <div class="left-side">
       <div *ngIf="!isEditMode" class="header-flex">
         <h3 *ngIf="workspace" class="text-center">{{workspace.name}}</h3>
@@ -32,7 +39,37 @@
         </ul>
       </div>
       <div class="credentials">
-        <app-db-connector [workspace]="workspace" [localWorkspaceData]="localWorkspaceData"></app-db-connector>
+        <!-- Already have credentials -->
+        <div *ngIf="localWorkspaceData && credentials" class="margin-bottom-10">
+          <div class="credential-header">
+            <h4>DB credentials </h4>
+            <button mat-icon-button  class="edit-button" (click)="editCredentials()">
+              <mat-icon svgIcon="edit-icon"></mat-icon>
+            </button>
+          </div>
+          <table>
+            <tr>
+              <td class="label">Host</td>
+              <td class="value">{{credentials.host}}</td>
+            </tr>
+            <tr>
+              <td class="label">Db Name</td>
+              <td class="value">{{credentials.db}}</td>
+            </tr>
+            <tr>
+              <td class="label">Port</td>
+              <td class="value">{{credentials.port}}</td>
+            </tr>
+            <tr>
+              <td class="label">User</td>
+              <td class="value">{{credentials.user}}</td>
+            </tr>
+            <tr>
+              <td class="label">Password</td>
+              <td class="value">**********</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
     <div class="right-side">

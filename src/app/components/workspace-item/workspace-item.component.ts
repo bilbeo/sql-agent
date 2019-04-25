@@ -26,6 +26,8 @@ export class WorkspaceItemComponent implements OnInit {
   showEditIndicator: boolean;
   isEditMode: boolean;
   newWorkspaceName: string;
+  updateCredentialsMode: boolean;
+  credentials;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -54,6 +56,7 @@ export class WorkspaceItemComponent implements OnInit {
   getDetailsFromLocalStore() {
     this.localWorkspaceData = this.sharedService.getFromStorage('workspaces') ?
       this.sharedService.getFromStorage('workspaces')[this.workspaceId] : null;
+    this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
   }
 
   getDatasource(name) {
@@ -116,6 +119,15 @@ export class WorkspaceItemComponent implements OnInit {
           }
         );
     }
+  }
+
+  editCredentials() {
+    this.updateCredentialsMode = true;
+  }
+
+  hideCredentialsForm() {
+    this.updateCredentialsMode = false;
+    this.getDetailsFromLocalStore();
   }
 
   removeWorkspace() {

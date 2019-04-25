@@ -7,9 +7,7 @@ import * as moment from 'moment';
 @Injectable()
 export class DatabaseService {
 
-  constructor(private ngZone: NgZone) {
-
-  }
+  constructor(private ngZone: NgZone) { }
 
   private dbList = {
     sqlServer: {
@@ -84,7 +82,6 @@ export class DatabaseService {
       }
       let queriesRun = [];
       let singleQuery;
-
       if (typeof queries === 'string') {
         singleQuery = true;
         queriesRun = [queries];
@@ -102,7 +99,6 @@ export class DatabaseService {
           singleQuery = true;
           queriesRun = [queries.query];
           queries = [queries];
-
         }
       }
 
@@ -115,8 +111,6 @@ export class DatabaseService {
           for (let i = 0; i < data.length; i++) {
             if (!(data[i] instanceof Error)) {
               const indicatorId = queries[i].indicatorId;
-
-
               const numberOfRows = data[i].rows.length ? data[i].rows.length : 0;
               const formatted = this.format(data[i], options.indicators, indicatorId);
               const numberOfInvalidRows = numberOfRows - data[i].rows.length;
@@ -130,7 +124,6 @@ export class DatabaseService {
             }
           }
         }
-
         if (singleQuery) {
           data = data[0];
         }
@@ -138,7 +131,6 @@ export class DatabaseService {
           if (data instanceof Error) {
             observer.error(data.message);
           }
-
           observer.next(data);
         });
       });
@@ -157,12 +149,12 @@ export class DatabaseService {
       }
 
       this.dbList[type].script.testConnection(credentials, options, (err, data) => {
-        if (err) {
-          return observer.error(err.message || err);
-        }
-
         this.ngZone.run(() => {
-          observer.next('Connection Established');
+          if (err) {
+            return observer.error(err.message || err);
+          } else {
+            observer.next('Connection Established');
+          }
         });
       });
 
@@ -176,23 +168,16 @@ export class DatabaseService {
     if (!data.rows.length) {
       return [];
     }
-
     const cols = data.columns;
     const rows = data.rows;
-
     indicators = this.pivotIndicators(indicators);
     if (!indicators[indicatorId]) {
       return [];
     }
-
-
     data = this.findColumnsAndSanitize(data);
-
-
     if (typeof data.parsedColumns.valueColumn === 'undefined' || typeof data.parsedColumns.dateColumn === 'undefined') {
       return new Error(`'value' and 'date' columns are mandatory`);
     }
-
     data = this.orderbyIdAndSanitize(data, indicators, indicatorId);
     data = this.pivotData(data);
 

@@ -9,7 +9,6 @@
         <input matInput placeholder="Workspace Name" [(ngModel)]="workspaceData.workspaceName">
       </mat-form-field>
     </div>
-
     <button mat-stroked-button (click)="createWorkspace()" class="margin-bottom-10">Create</button>
     <div class="error-message">
       <span *ngIf="errorMessage">{{errorMessage}}</span>

@@ -9,18 +9,15 @@
     </button>
   </div>
   <!-- shown when we already have credentials -->
-  <div class="credential-header" *ngIf="localWorkspaceData">
+  <div class="credential-header" *ngIf="localWorkspaceData && updateCredentialsMode">
     <h4>DB credentials </h4>
-    <button mat-icon-button *ngIf="!editMode" class="edit-button" (click)="editCredentials()">
-      <mat-icon svgIcon="edit-icon"></mat-icon>
-    </button>
-    <div *ngIf="editMode">
-      <button mat-stroked-button (click)="editMode = false"> Cancel</button>
+    <div>
+      <button mat-stroked-button (click)="closePage()"> Cancel</button>
       <button mat-flat-button color="primary" (click)="connectToDatabase()"> Update</button>
     </div>
   </div>
   <!-- create/update credentials -->
-  <form [formGroup]="dbForm" *ngIf="dbForm && (!localWorkspaceData || editMode)">
+  <form [formGroup]="dbForm" *ngIf="dbForm">
     <mat-form-field class="db-select">
       <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)">
         <mat-option *ngFor="let db of allDbs" [value]="db">
@@ -54,33 +51,6 @@
       </mat-form-field>
     </div>
   </form>
-  <!-- create credentials -->
-
-  <!-- Already have credentials -->
-  <div *ngIf="localWorkspaceData && credentials && !editMode" class="margin-bottom-10">
-    <table>
-      <tr>
-        <td class="label">Host</td>
-        <td class="value">{{credentials.host}}</td>
-      </tr>
-      <tr>
-        <td class="label">Db Name</td>
-        <td class="value">{{credentials.db}}</td>
-      </tr>
-      <tr>
-        <td class="label">Port</td>
-        <td class="value">{{credentials.port}}</td>
-      </tr>
-      <tr>
-        <td class="label">User</td>
-        <td class="value">{{credentials.user}}</td>
-      </tr>
-      <tr>
-        <td class="label">Password</td>
-        <td class="value">**********</td>
-      </tr>
-    </table>
-  </div>
   <div *ngIf="message" class="success-message">
     <span>{{message}}</span>
   </div>

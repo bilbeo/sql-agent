@@ -14,6 +14,18 @@
     justify-content: flex-start;
     align-items: center;
   }
+
+  .db-connect-wrapper{
+    height: 100%;
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .db-connector {
+      flex: 1 1 400px;
+      max-width: 400px;
+    }
+  }
  
   .flex-container{
     height: 100%;
@@ -85,6 +97,35 @@
 
     .credentials {
       flex: 0 1 200px;
+      
+      .credential-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      
+        button {
+          margin-right: 5px;
+          margin-left: 5px;
+      
+          &.spinner-button {
+            margin-left: 20px;
+          }
+        }
+      }
+      
+      .label {
+        font-weight: bold;
+        font-size: 12px;
+        padding-right: 5px;
+      }
+      
+      .value {
+        font-size: 12px;
+      }
+      
+      tr {
+        padding: 0 5px 0 5px;
+      }
     }
   }
 

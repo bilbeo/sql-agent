@@ -13,14 +13,15 @@ import { DatabaseService } from '../../providers/database.service';
 export class DbConnectorComponent implements OnInit {
   @Input() localWorkspaceData: any;
   @Input() workspace;
+  @Input() updateCredentialsMode: boolean;
   @Output() localDataChange = new EventEmitter();
+  @Output() closeCredentialsPage = new EventEmitter();
   selectedDb: any;
   dbForm: FormGroup;
   message: string;
   dbConnected: boolean;
   allDbs: Array<any>;
-  connectInProgress: boolean;;
-  editMode: boolean;
+  connectInProgress: boolean;
   credentials;
   errMessage: string;
 
@@ -104,11 +105,7 @@ export class DbConnectorComponent implements OnInit {
           this.message = res;
           this.dbConnected = true;
           this.saveCredentials(credentials);
-
-          this.editMode = false;
-          setTimeout(() => {
-            this.message = '';
-          }, 3000);
+         this.closePage();
         },
         (errMessage) => {
           this.connectInProgress = false;
@@ -142,8 +139,8 @@ export class DbConnectorComponent implements OnInit {
     }
   }
 
-  editCredentials() {
-    this.editMode = true;
+  closePage() {
+    this.closeCredentialsPage.emit('close');
   }
 
   onDbSelection(event) {
