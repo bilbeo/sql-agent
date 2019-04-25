@@ -1,6 +1,10 @@
 <div class="header-flex">
   <h2>Query your database for KPI "{{selectedIndicator.name}}"</h2>
-  <button mat-flat-button color="primary" (click)="queryDB()" [disabled]="!queryString">Run Query</button>
+  <button mat-flat-button color="primary" (click)="queryDB()" [disabled]="!queryString"
+    class="spinner-button white-spinner">
+    <mat-spinner diameter="20" *ngIf="!querySucceded && requestInProgress"></mat-spinner>
+    <span>Run Query</span>
+  </button>
 </div>
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -90,4 +94,8 @@
   </table>
 </div>
 <button mat-flat-button color="primary" (click)="updateWorkspace()" *ngIf="dbOutput && querySucceded"
-  class="align-right">Update Workspace</button>
+  class="align-right spinner-button white-spinner">
+  <mat-spinner diameter="20" *ngIf="requestInProgress"></mat-spinner>
+  <span> Update Workspace </span>
+
+</button>

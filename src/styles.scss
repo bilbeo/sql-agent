@@ -78,3 +78,19 @@ body {
   color: red;
   font-size: 12px;
 }
+
+.spinner-button {
+  .mat-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  mat-spinner {
+    margin-right: 5px;
+  }
+}
+
+.light-theme-wrapper .white-spinner .mat-progress-spinner circle, .light-theme-wrapper .white-spinner .mat-spinner circle {
+  stroke:white !important;
+}

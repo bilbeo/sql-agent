@@ -31,6 +31,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
   dateColumnIndex: number;
   user: User;
   panelOpenState: boolean;
+  requestInProgress: boolean;
 
   constructor(
     private databaseServce: DatabaseService,
@@ -93,7 +94,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
         indicatorId: this.selectedIndicator._id,
         query: this.queryString
       };
-
+      this.requestInProgress = true;
       this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
         .subscribe(
           (outputResult) => {
@@ -126,8 +127,10 @@ export class QueryDbComponent implements OnInit, OnChanges {
               this.querySucceded = false;
               this.errMessage = outputResult.message || 'Something went wrongquerying the database';
             }
+            this.requestInProgress = false;
           },
           (err) => {
+            this.requestInProgress = false;
             this.querySucceded = false;
             this.errMessage = err;
           }
@@ -156,14 +159,16 @@ export class QueryDbComponent implements OnInit, OnChanges {
       params['updateMode'] = 'replace';
       params['workspaceId'] = this.workspaceId;
       params['APIKey'] = this.user.APIKey;
-
+      this.requestInProgress = true;
       this.workspaceService.updateWorkspace(params, json)
         .subscribe(
           (res) => {
+            this.requestInProgress = false;
             console.log(res);
             this.showAlert('Workspace updated. Visit the webpage to see the updated workspace', 'Visit');
           },
           (error) => {
+            this.requestInProgress = false;
             console.log(error);
             this.errMessage = error;
           }

@@ -2,8 +2,10 @@
   <div *ngIf="!localWorkspaceData" class="credential-header">
     <h4>Connect to database</h4>
 
-    <button (click)="connectToDatabase()" mat-stroked-button color="primary" *ngIf="!localWorkspaceData" class="connect-button">
-      Connect
+    <button (click)="connectToDatabase()" mat-stroked-button color="primary" *ngIf="!localWorkspaceData"
+      class="spinner-button">
+      <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+      <span>Connect</span>
     </button>
   </div>
   <!-- shown when we already have credentials -->
@@ -50,11 +52,6 @@
       <mat-form-field>
         <input matInput type="password" formControlName="dbPassword" placeholder="Password">
       </mat-form-field>
-    </div>
-    <div>
-      <mat-checkbox [(ngModel)]="saveLocal" [ngModelOptions]="{standalone: true}" color="primary">
-        Save the credentials locally
-      </mat-checkbox>
     </div>
   </form>
   <!-- create credentials -->

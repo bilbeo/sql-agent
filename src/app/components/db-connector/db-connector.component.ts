@@ -19,7 +19,7 @@ export class DbConnectorComponent implements OnInit {
   message: string;
   dbConnected: boolean;
   allDbs: Array<any>;
-  saveLocal = true;
+  connectInProgress: boolean;;
   editMode: boolean;
   credentials;
   errMessage: string;
@@ -95,19 +95,15 @@ export class DbConnectorComponent implements OnInit {
       password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null,
       type: this.selectedDb.key
     };
+    this.connectInProgress = true;
 
     this.databaseService.testConnection(credentials, this.selectedDb.key, {})
       .subscribe(
         (res: string) => {
-          console.log(res);
+          this.connectInProgress = false;
           this.message = res;
           this.dbConnected = true;
-
-          if (this.saveLocal) {
-            this.saveCredentials(credentials);
-          } else {
-            this.removeCredentials();
-          }
+          this.saveCredentials(credentials);
 
           this.editMode = false;
           setTimeout(() => {
@@ -115,6 +111,7 @@ export class DbConnectorComponent implements OnInit {
           }, 3000);
         },
         (errMessage) => {
+          this.connectInProgress = false;
           this.errMessage = errMessage || `Error when connecting to database`;
         }
       );

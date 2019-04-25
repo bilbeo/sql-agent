@@ -138,7 +138,7 @@ export class EditIndicatorComponent implements OnInit {
 
   openDialog(title, message, cancelText, confirmText) {
     const dialogRef = this.dialog.open(AlertComponent, {
-      width: '300px',
+      width: '600px',
       data: { title: title, message: message, cancelButtonText: cancelText, confirmButtonText: confirmText }
     });
     return dialogRef;

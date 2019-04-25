@@ -33,8 +33,7 @@ export class CreateWorkspaceComponent implements OnInit {
     this.workspaceData = {
       workspaceName: '',
       custom: '',
-      dataSourceName: '',
-      isPushDb: true,
+      dataSourceName: ''
     };
   }
 
