@@ -22,8 +22,8 @@ const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
       useColumnNames: true,
       // difference between sql-server.ts and azure-sql.ts in the next line -> encrypt: true/false
       encrypt: false,
-      requestTimeout: 10000,
-      connectTimeout: 5000
+      requestTimeout: 90000,
+      connectTimeout: 90000
     }
   };
 

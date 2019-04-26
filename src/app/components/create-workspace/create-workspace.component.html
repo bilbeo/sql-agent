@@ -4,12 +4,15 @@
 <div class="container">
   <div class="form-wrapper">
     <h3 class="text-center">Create A Workspace</h3>
-    <div>
-      <mat-form-field>
-        <input matInput placeholder="Workspace Name" [(ngModel)]="workspaceData.workspaceName">
-      </mat-form-field>
-    </div>
-    <button mat-stroked-button (click)="createWorkspace()" class="margin-bottom-10">Create</button>
+    <form (submit)="createWorkspace()">
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Workspace Name" [(ngModel)]="workspaceData.workspaceName" name="workspaceName">
+        </mat-form-field>
+      </div>
+      <button mat-stroked-button type="submit" class="margin-bottom-10">Create</button>
+    </form>
+
     <div class="error-message">
       <span *ngIf="errorMessage">{{errorMessage}}</span>
     </div>

@@ -46,12 +46,12 @@ const executeQueries = function (credentials: DbCredentials, queries, options, c
     password: credentials.password,
     database: credentials.db,
     port: credentials.port || 3306,
-    connectTimeout: 10000
+    connectTimeout: 90000
   });
 
   const result = [];
   async.eachSeries(queries, function (query, callback) {
-    const qu = { sql: query, timeout: 30000 };
+    const qu = { sql: query, timeout: 90000 };
 
     pool.query(qu, function (err, rows, fields) {
       console.log(err);

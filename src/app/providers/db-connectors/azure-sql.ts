@@ -20,8 +20,8 @@ const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
       readOnlyIntent: true,
       useColumnNames: true,
       encrypt: true,
-      requestTimeout: 10000,
-      connectTimeout: 5000
+      requestTimeout: 90000,
+      connectTimeout: 90000
     }
   };
 

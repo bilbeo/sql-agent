@@ -132,15 +132,9 @@
       </mat-accordion>
       <div class="margin-top-10">
         <button mat-stroked-button matStepperPrevious>Back</button>
-        <button mat-flat-button color="primary" matStepperNext class="left-margin">Next</button>
-      </div>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Save KPI</ng-template>
-      <div>
-        <button mat-stroked-button matStepperPrevious>Back</button>
         <button mat-flat-button color="primary" (click)="updateIndicator()" class="left-margin"> Save </button>
       </div>
     </mat-step>
+   
   </mat-horizontal-stepper>
 </div>
