@@ -4,38 +4,30 @@ import * as path from 'path';
 import * as url from 'url';
 import * as AutoLaunch from 'auto-launch';
 
-function sendStatusToWindow(text) {
-  win.webContents.send('message', text);
-
-  const options = {
-    type: 'info',
-    buttons: ['OK'],
-    // defaultId: 2,
-    // title: 'Question',
-    message: text,
-    // detail: 'It does not really matter',
-    // checkboxLabel: 'Remember my answer',
-    // checkboxChecked: true,
-  };
-
-  dialog.showMessageBox(win, options, (response, checkboxChecked) => {
-    console.log(response);
-    console.log(checkboxChecked);
-  });
-}
-
 // checking for app newer version
 function checkForUpdates() {
-  autoUpdater.on('update-available', (info) => {
-    sendStatusToWindow('Update available.');
-  })
 
-  autoUpdater.on('update-downloaded', (info) => {
-    sendStatusToWindow('Update downloaded, quitting the app to launch the updates!');
-    setTimeout(() => {
-      autoUpdater.quitAndInstall();
-    }, 5000);
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+
+    const dialogOpts = {
+      type: 'info',
+      buttons: ['Restart', 'Later'],
+      title: 'Application Update',
+      message: process.platform === 'win32' ? releaseNotes : releaseName,
+      detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+    };
+
+    dialog.showMessageBox(dialogOpts, (response) => {
+      if (response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
   });
+
+  autoUpdater.on('error', message => {
+    console.error('There was a problem updating the application')
+    console.error(message)
+  })
 
   autoUpdater.checkForUpdatesAndNotify();
 }
@@ -69,13 +61,10 @@ function enableAutoLaunch() {
       console.log("err", err);
     });
 }
-
+let tray = null;
 // enable tray minimizing
 function createTray() {
-  let tray = null;
-  const icon = nativeImage.createFromPath(path.join(__dirname, 'bilbeoGA.png'));
-
-  tray = new Tray(icon);
+  tray = new Tray(path.join(__dirname, 'src/favicon.png'));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Show App', click: function () {
@@ -128,6 +117,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    icon: path.join(__dirname, 'src/favicon.png')
   });
 
   if (serve) {
@@ -146,7 +136,7 @@ function createWindow() {
   // win.webContents.openDevTools();
   if (serve) {
     win.webContents.openDevTools();
-    
+
   }
 
   // Emitted when the window is closed.
@@ -159,9 +149,10 @@ function createWindow() {
 }
 
 try {
-  const gotTheLock = app.requestSingleInstanceLock();
-  console.log("gotTheLock", gotTheLock)
-  if (!gotTheLock) {
+  // run only one instance of the app
+  const isFirstInstance = app.requestSingleInstanceLock();
+
+  if (!isFirstInstance) {
     app.quit();
   } else {
     app.on('second-instance', (event, commandLine, workingDirectory) => {

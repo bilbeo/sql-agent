@@ -34,12 +34,14 @@
   },
   "mac": {
     "icon": "dist",
+    "category": "public.app-category.finance",
     "target": [
       "dmg"
     ]
   },
   "linux": {
     "icon": "dist",
+    "category": "Finance",
     "target": [
       "AppImage"
     ]
