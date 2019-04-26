@@ -7,7 +7,8 @@
   <!-- Step1: connect to DB -->
   <div *ngIf="!localWorkspaceData || updateCredentialsMode" class="db-connect-wrapper">
     <div class="db-connector">
-      <app-db-connector (closeCredentialsPage)="hideCredentialsForm($event)" [workspace]="workspace" [localWorkspaceData]="localWorkspaceData" [updateCredentialsMode]="updateCredentialsMode"></app-db-connector>
+      <app-db-connector (closeCredentialsPage)="hideCredentialsForm($event)" [workspace]="workspace"
+        [localWorkspaceData]="localWorkspaceData" [updateCredentialsMode]="updateCredentialsMode"></app-db-connector>
     </div>
   </div>
   <!-- Step2: Manage KPI-s-->
@@ -43,7 +44,7 @@
         <div *ngIf="localWorkspaceData && credentials" class="margin-bottom-10">
           <div class="credential-header">
             <h4>DB credentials </h4>
-            <button mat-icon-button  class="edit-button" (click)="editCredentials()">
+            <button mat-icon-button class="edit-button" (click)="editCredentials()">
               <mat-icon svgIcon="edit-icon"></mat-icon>
             </button>
           </div>

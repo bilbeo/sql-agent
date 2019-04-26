@@ -48,7 +48,6 @@
     }
 
     .indicators {
-      flex: 1 1 auto;
       max-height: 300px;
       overflow-y: auto;
 
@@ -96,8 +95,6 @@
     }
 
     .credentials {
-      flex: 0 1 200px;
-      
       .credential-header {
         display: flex;
         align-items: center;
@@ -120,7 +117,7 @@
       }
       
       .value {
-        font-size: 12px;
+        font-size: 10px;
       }
       
       tr {
