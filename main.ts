@@ -3,12 +3,12 @@ const { autoUpdater } = require("electron-updater");
 import * as path from 'path';
 import * as url from 'url';
 import * as AutoLaunch from 'auto-launch';
+import * as tray from "./tray";
 
 // checking for app newer version
 function checkForUpdates() {
 
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-
     const dialogOpts = {
       type: 'info',
       buttons: ['Restart', 'Later'],
@@ -16,18 +16,16 @@ function checkForUpdates() {
       message: process.platform === 'win32' ? releaseNotes : releaseName,
       detail: 'A new version has been downloaded. Restart the application to apply the updates.'
     };
-
     dialog.showMessageBox(dialogOpts, (response) => {
       if (response === 0) {
         autoUpdater.quitAndInstall();
       }
     });
   });
-
   autoUpdater.on('error', message => {
     console.error('There was a problem updating the application')
     console.error(message)
-  })
+  });
 
   autoUpdater.checkForUpdatesAndNotify();
 }
@@ -37,17 +35,17 @@ function enableAutoLaunch() {
   if (serve) {
     return;
   }
-  let alConfig = {
+  let config = {
     name: app.getName(),
     path: process.execPath,
     isHidden: true
   };
 
   if (process.env.APPIMAGE) {
-    alConfig = Object.assign(alConfig, { path: process.env.APPIMAGE });
+    config = Object.assign(config, { path: process.env.APPIMAGE });
   }
 
-  const autoLauncher = new AutoLaunch(alConfig);
+  const autoLauncher = new AutoLaunch(config);
   autoLauncher.enable();
 
   autoLauncher.isEnabled()
@@ -60,44 +58,7 @@ function enableAutoLaunch() {
     .catch(function (err) {
       console.log("err", err);
     });
-}
-let tray = null;
-// enable tray minimizing
-function createTray() {
-  tray = new Tray(path.join(__dirname, 'src/favicon.png'));
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Show App', click: function () {
-        win.show();
-      }
-    },
-    {
-      label: 'Quit', click: function () {
-        app['isQuiting'] = true;
-        tray.destroy();
-        app.quit();
-      }
-    }
-  ]);
-
-  tray.setToolTip('SQL Agent');
-  tray.setContextMenu(contextMenu);
-
-  win.on('minimize', function (event) {
-    event.preventDefault();
-    win.hide();
-  });
-
-  win.on('close', function (event) {
-    console.log("win.on.close", app['isQuiting'])
-    if (!app['isQuiting']) {
-      event.preventDefault();
-      win.hide();
-    }
-
-    return false;
-  });
-}
+  }
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -133,7 +94,7 @@ function createWindow() {
     }));
   }
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
   if (serve) {
     win.webContents.openDevTools();
 
@@ -153,14 +114,15 @@ try {
   const isFirstInstance = app.requestSingleInstanceLock();
 
   if (!isFirstInstance) {
+    console.log("not the first instance");
     app.quit();
   } else {
     app.on('second-instance', (event, commandLine, workingDirectory) => {
+      console.log("second instance")
       // Someone tried to run a second instance, we should focus our window.
       if (win) {
-        console.log("win", win.isMinimized())
-        if (win.isMinimized()) {
-          win.restore()
+        if (!win.isVisible()) {
+          win.show();
         }
         win.focus();
       }
@@ -171,8 +133,8 @@ try {
     // Some APIs can only be used after this event occurs.
     app.on('ready', () => {
       createWindow();
-      createTray();
       checkForUpdates();
+      tray.initTray(win);
     });
 
     enableAutoLaunch();
