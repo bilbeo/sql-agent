@@ -22,12 +22,11 @@ export class WorkspaceItemComponent implements OnInit {
   workspaceId: string;
   datasource: Datasource;
   selectedIndicator: any;
-  showAddIndicator: boolean;
-  showEditIndicator: boolean;
   isEditMode: boolean;
   newWorkspaceName: string;
   updateCredentialsMode: boolean;
   credentials;
+  indicatorEditMode: boolean;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -51,6 +50,8 @@ export class WorkspaceItemComponent implements OnInit {
         (err) => {
           console.log(err);
         });
+
+        this.selectedIndicator = {};
   }
 
   getDetailsFromLocalStore() {
@@ -72,22 +73,14 @@ export class WorkspaceItemComponent implements OnInit {
   }
 
   selectIndicator(index) {
-    this.showAddIndicator = false;
-    this.showEditIndicator = false;
     this.selectedIndicator = null;
     this.selectedIndicator = this.datasource.indicators[index];
-
+    this.indicatorEditMode = true;
   }
 
   newIndicator() {
-    this.selectedIndicator = null;
-    this.showAddIndicator = true;
-    this.showEditIndicator = false;
-  }
-
-  editIndicator() {
-    this.showAddIndicator = false;
-    this.showEditIndicator = true;
+    this.selectedIndicator = {};
+    this.indicatorEditMode = false;
   }
 
   onDatasourceUpdated(newDatasouceData) {
@@ -95,8 +88,7 @@ export class WorkspaceItemComponent implements OnInit {
     this.datasource = newDatasouceData.datasource;
     // when an indicator is created/updated, we want it to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
-    this.showAddIndicator = false;
-    this.showEditIndicator = false;
+   
   }
 
   toggleWorkspaceEdit(showEdit: boolean) {

@@ -26,8 +26,7 @@ import { WorkspaceItemComponent } from './components/workspace-item/workspace-it
 import { DbConnectorComponent } from './components/db-connector/db-connector.component';
 import { CreateWorkspaceComponent } from './components/create-workspace/create-workspace.component';
 import { QueryDbComponent } from './components/query-db/query-db.component';
-import { NewIndicatorComponent } from './components/new-indicator/new-indicator.component';
-import { EditIndicatorComponent } from './components/edit-indicator/edit-indicator.component';
+import { ManageIndicatorComponent } from './components/manage-indicator/manage-indicator.component';
 import { AlertComponent } from './components/alert/alert.component';
 
 // providers
@@ -56,8 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DbConnectorComponent,
     CreateWorkspaceComponent,
     QueryDbComponent,
-    NewIndicatorComponent,
-    EditIndicatorComponent,
+    ManageIndicatorComponent,
     AlertComponent
   ],
   imports: [

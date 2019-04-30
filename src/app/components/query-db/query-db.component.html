@@ -1,5 +1,5 @@
 <div class="header-flex">
-  <h2>Query your database for KPI "{{selectedIndicator.name}}"</h2>
+  <h2>Query your database for KPI "{{queryIndicator.name}}"</h2>
   <button mat-flat-button color="primary" (click)="queryDB()" [disabled]="!queryString"
     class="spinner-button white-spinner">
     <mat-spinner diameter="20" *ngIf="!querySucceded && requestInProgress"></mat-spinner>
@@ -30,7 +30,7 @@
       </li>
     </ul>
     <p>
-      For example, to see <b>{{selectedIndicator.name}}</b> by product, the query should look something like:
+      For example, to see <b>{{queryIndicator.name}}</b> by product, the query should look something like:
     </p>
     <!-- SQL query example -->
     <div class="query-example" *ngIf="credentials.type !== 'mongodb'">

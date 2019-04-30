@@ -1,5 +1,10 @@
 <div class="container">
-  <mat-horizontal-stepper [linear]="isLinear" #stepper *ngIf="newIndicator">
+    <div class="header-flex" *ngIf="editMode">
+        <h2>{{indicatorData.name}}</h2>
+        <button  mat-flat-button color="warn" (click)="removeIndicator()"> Remove</button>
+    </div>
+
+  <mat-horizontal-stepper [linear]="isLinear" #stepper *ngIf="newIndicator" #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon svgIcon="done-icon"></mat-icon>
     </ng-template>
@@ -27,25 +32,25 @@
             </mat-select>
             <mat-hint>Choose the unit and format of the KPI.</mat-hint>
           </mat-form-field>
-  
+
         </div>
-  
+
         <div class="margin-bottom-10 input-wrapper flex-item">
           <mat-form-field>
             <mat-label>Direction</mat-label>
-  
+
             <mat-select [(value)]="newIndicator.direction">
               <mat-option *ngFor="let direction of directionOptions" [value]="direction">
                 {{direction}}
               </mat-option>
             </mat-select>
-  
+
             <mat-hint>i.e: More "sales" is good, high "churn rate" is bad.</mat-hint>
           </mat-form-field>
           <mat-icon svgIcon="help-icon" [matTooltip]="hints.direction" matTooltipPosition="right"></mat-icon>
         </div>
       </div>
-    
+
       <div class="margin-top-10 input-wrapper">
 
         <p>Aggregation of breakdowns</p>
@@ -118,16 +123,30 @@
                   </mat-radio-button>
                 </mat-radio-group>
               </div>
-
             </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
       <div class="margin-top-10">
         <button mat-stroked-button matStepperPrevious>Back</button>
-        <button mat-flat-button color="primary" (click)="addIndicator()" class="left-margin"> Save </button>
+        <button *ngIf="!editMode" mat-flat-button color="primary" (click)="addIndicator()" class="left-margin"> Save </button>
+        <button *ngIf="editMode" mat-flat-button color="primary" matStepperNext class="left-margin right-margin">Next</button>
+
+        <button *ngIf="editMode" mat-stroked-button color="primary" (click)="updateIndicator()" class="left-margin"> Update </button>
       </div>
     </mat-step>
-   
+
+    <mat-step>
+      <ng-template matStepLabel>Query your database</ng-template>
+      <div class="query-tool" *ngIf="queryIndicator">
+        <app-query-db [queryIndicator]="queryIndicator" [localWorkspaceData]="localWorkspaceData"
+          [datasource]="datasource" [workspaceId]="workspace.id"></app-query-db>
+      </div>
+
+      <div class="margin-top-10">
+        <button mat-stroked-button matStepperPrevious>Back</button>
+      </div>
+    </mat-step>
+
   </mat-horizontal-stepper>
 </div>

@@ -17,7 +17,7 @@ const shell = require('electron').shell;
   styleUrls: ['./query-db.component.scss']
 })
 export class QueryDbComponent implements OnInit, OnChanges {
-  @Input() selectedIndicator;
+  @Input() queryIndicator;
   @Input() localWorkspaceData;
   @Input() datasource;
   @Input() workspaceId;
@@ -43,6 +43,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setQuery();
+    this.panelOpenState = false;
     this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
 
     this.userService.getUser()
@@ -57,7 +58,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
     this.queryString = '';
     if (this.localWorkspaceData && this.localWorkspaceData.queries.length) {
       const localIndicatorData = this.localWorkspaceData.queries.find((queryItem) => {
-        return queryItem.indicatorId === this.selectedIndicator._id;
+        return queryItem.indicatorId === this.queryIndicator._id;
       });
       if (localIndicatorData) {
         this.queryString = localIndicatorData.query;
@@ -66,8 +67,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const selectedIndicator: SimpleChange = changes.selectedIndicator;
-    if (selectedIndicator && selectedIndicator.previousValue && (selectedIndicator.previousValue._id !== selectedIndicator.currentValue._id)) {
+    const queryIndicator: SimpleChange = changes.queryIndicator;
+    if (queryIndicator && queryIndicator.previousValue && (queryIndicator.previousValue._id !== queryIndicator.currentValue._id)) {
       this.setQuery();
       return;
     }
@@ -91,7 +92,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
 
     if (this.queryString) {
       const queryObject = {
-        indicatorId: this.selectedIndicator._id,
+        indicatorId: this.queryIndicator._id,
         query: this.queryString
       };
       this.requestInProgress = true;
@@ -143,7 +144,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
       // save the query in local store
       if (this.localWorkspaceData) {
         const queryItem = {
-          indicatorId: this.selectedIndicator._id,
+          indicatorId: this.queryIndicator._id,
           query: this.queryString
         };
         this.localWorkspaceData.queries.push(queryItem);
