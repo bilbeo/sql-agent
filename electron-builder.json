@@ -1,5 +1,5 @@
 {
-  "productName": "desktop-agent",
+  "productName": "bilbeo-sql-agent",
   "directories": {
     "output": "release/"
   },
@@ -32,6 +32,10 @@
       "nsis"
     ]
   },
+  "nsis":{
+    "installerIcon": "dist/favicon.ico",
+    "uninstallerIcon": "dist/favicon.ico"
+  },
   "mac": {
     "icon": "dist",
     "category": "public.app-category.finance",
@@ -47,6 +51,6 @@
     ]
   },
   "appImage":{
-    "artifactName": "DesktopAgent.${ext}"
+    "artifactName": "BilbeoSQLAgent.${ext}"
   }
 }
