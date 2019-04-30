@@ -42,7 +42,7 @@ const testConnection = function (dbData: DbCredentials, options, cb) {
     const url = 'mongodb://' + ((dbData.user && dbData.password) ?
         (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017);
 
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+    MongoClient.connect(url, { useNewUrlParser: true, connectTimeoutMS: 90000 }, (err, client) => {
         if (err) {
             return cb(err);
         }
@@ -55,7 +55,7 @@ const testConnection = function (dbData: DbCredentials, options, cb) {
 const executeQueries = function (dbData: DbCredentials, queries, options, cb) {
     const url = 'mongodb://' + ((dbData.user && dbData.password) ?
         (dbData.user + ':' + dbData.password + '@') : '') + dbData.host + ':' + (dbData.port || 27017);
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+    MongoClient.connect(url, { useNewUrlParser: true, connectTimeoutMS: 90000 }, (err, client) => {
         if (err) {
             return cb(err);
         }

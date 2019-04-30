@@ -17,7 +17,7 @@ const shell = require('electron').shell;
   styleUrls: ['./query-db.component.scss']
 })
 export class QueryDbComponent implements OnInit, OnChanges {
-  @Input() selectedIndicator;
+  @Input() queryIndicator;
   @Input() localWorkspaceData;
   @Input() datasource;
   @Input() workspaceId;
@@ -27,11 +27,11 @@ export class QueryDbComponent implements OnInit, OnChanges {
   dbOutput: any;
   queryString: string;
   credentials: DbCredentials;
-  saveLocal: boolean;
   querySucceded: boolean;
   dateColumnIndex: number;
   user: User;
   panelOpenState: boolean;
+  requestInProgress: boolean;
 
   constructor(
     private databaseServce: DatabaseService,
@@ -42,8 +42,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.saveLocal = true;
     this.setQuery();
+    this.panelOpenState = false;
     this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
 
     this.userService.getUser()
@@ -58,7 +58,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
     this.queryString = '';
     if (this.localWorkspaceData && this.localWorkspaceData.queries.length) {
       const localIndicatorData = this.localWorkspaceData.queries.find((queryItem) => {
-        return queryItem.indicatorId === this.selectedIndicator._id;
+        return queryItem.indicatorId === this.queryIndicator._id;
       });
       if (localIndicatorData) {
         this.queryString = localIndicatorData.query;
@@ -67,8 +67,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const selectedIndicator: SimpleChange = changes.selectedIndicator;
-    if (selectedIndicator && selectedIndicator.previousValue && (selectedIndicator.previousValue._id !== selectedIndicator.currentValue._id)) {
+    const queryIndicator: SimpleChange = changes.queryIndicator;
+    if (queryIndicator && queryIndicator.previousValue && (queryIndicator.previousValue._id !== queryIndicator.currentValue._id)) {
       this.setQuery();
       return;
     }
@@ -80,7 +80,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
   }
 
   queryDB() {
-
     this.querySucceded = false;
     this.successMessage = '';
     this.errMessage = '';
@@ -93,10 +92,10 @@ export class QueryDbComponent implements OnInit, OnChanges {
 
     if (this.queryString) {
       const queryObject = {
-        indicatorId: this.selectedIndicator._id,
+        indicatorId: this.queryIndicator._id,
         query: this.queryString
       };
-
+      this.requestInProgress = true;
       this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
         .subscribe(
           (outputResult) => {
@@ -129,8 +128,10 @@ export class QueryDbComponent implements OnInit, OnChanges {
               this.querySucceded = false;
               this.errMessage = outputResult.message || 'Something went wrongquerying the database';
             }
+            this.requestInProgress = false;
           },
           (err) => {
+            this.requestInProgress = false;
             this.querySucceded = false;
             this.errMessage = err;
           }
@@ -141,9 +142,9 @@ export class QueryDbComponent implements OnInit, OnChanges {
   updateWorkspace() {
     if (this.querySucceded && this.dbOutput) {
       // save the query in local store
-      if (this.saveLocal) {
+      if (this.localWorkspaceData) {
         const queryItem = {
-          indicatorId: this.selectedIndicator._id,
+          indicatorId: this.queryIndicator._id,
           query: this.queryString
         };
         this.localWorkspaceData.queries.push(queryItem);
@@ -154,20 +155,21 @@ export class QueryDbComponent implements OnInit, OnChanges {
       const json = {
         KPIs: this.dbOutput['formatted']
       };
-
       const params = {};
       params['updatePartial'] = true;
       params['updateMode'] = 'replace';
       params['workspaceId'] = this.workspaceId;
       params['APIKey'] = this.user.APIKey;
-
+      this.requestInProgress = true;
       this.workspaceService.updateWorkspace(params, json)
         .subscribe(
           (res) => {
+            this.requestInProgress = false;
             console.log(res);
             this.showAlert('Workspace updated. Visit the webpage to see the updated workspace', 'Visit');
           },
           (error) => {
+            this.requestInProgress = false;
             console.log(error);
             this.errMessage = error;
           }
@@ -180,7 +182,6 @@ export class QueryDbComponent implements OnInit, OnChanges {
       duration: 10000
     })
       .onAction().subscribe(() => {
-
         if (action === 'Visit') {
           // open external web browser window
           shell.openExternal(this.user.webURL || 'https://www.bilbeo.net');

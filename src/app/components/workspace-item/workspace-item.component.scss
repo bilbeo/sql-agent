@@ -4,15 +4,29 @@
 }
 
 .container {
-  padding: 10px 15px;
+  padding: 10px 15px 25px 15px;
+  background: white;
+  margin: 40px 20px;
+  border-radius: 5px;
 
   .header-flex{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
   }
- 
 
+  .db-connect-wrapper{
+    height: 100%;
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .db-connector {
+      flex: 1 1 400px;
+      max-width: 400px;
+    }
+  }
+ 
   .flex-container{
     height: 100%;
     width: 100%; 
@@ -27,8 +41,13 @@
     flex-direction: column;
     padding-right: 5px;
 
+    mat-form-field {
+      &.edit-input{
+        width: calc(100% - 30px);
+      }
+    }
+
     .indicators {
-      flex: 1 1 auto;
       max-height: 300px;
       overflow-y: auto;
 
@@ -40,14 +59,15 @@
         flex-wrap: wrap;
 
         li {
-          flex: 1 1 auto;
+          flex: 1 1 25%;
+          // max-width: 50%;
           cursor: pointer;
-          border: 1px solid #efefef;
-          border-radius: 15px;
+          border: 1px solid #bcc2ce;
+          border-radius: 4px;
 
           margin-bottom: 5px;
           margin-right: 20px;
-          padding: 5px;
+          padding: 5px 10px;
           text-align: center;
           
           &.selected{
@@ -59,9 +79,15 @@
 
           &.add-button{
             flex: 2 1 100%;
-            background: #3b89f0;
+            background: #01579b;
             color: white;
             margin-bottom: 10px;
+            
+            border: 1px solid #01579b;
+            &:hover {
+              background: #0076d1;
+              border: 1px solid #0076d1;
+            }
           }
         }
 
@@ -69,7 +95,34 @@
     }
 
     .credentials {
-      flex: 0 1 200px;
+      .credential-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      
+        button {
+          margin-right: 5px;
+          margin-left: 5px;
+      
+          &.spinner-button {
+            margin-left: 20px;
+          }
+        }
+      }
+      
+      .label {
+        font-weight: bold;
+        font-size: 12px;
+        padding-right: 5px;
+      }
+      
+      .value {
+        font-size: 10px;
+      }
+      
+      tr {
+        padding: 0 5px 0 5px;
+      }
     }
   }
 

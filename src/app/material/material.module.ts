@@ -13,11 +13,12 @@ import {
   MatSlideToggleModule,
   MatExpansionModule,
   MatSnackBarModule,
-  MatIconModule
+  MatIconModule,
+  MatMenuModule,
+  MatDialogModule,
+  MatTooltipModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
-
-
 
 @NgModule({
   imports: [
@@ -35,7 +36,10 @@ import { NgModule } from '@angular/core';
     MatSlideToggleModule,
     MatExpansionModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule,
+    MatDialogModule,
+    MatTooltipModule
   ],
   exports: [
     MatButtonModule,
@@ -52,7 +56,10 @@ import { NgModule } from '@angular/core';
     MatSlideToggleModule,
     MatExpansionModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule,
+    MatDialogModule,
+    MatTooltipModule
   ],
 })
 export class MaterialModule { }

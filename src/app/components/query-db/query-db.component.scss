@@ -1,8 +1,14 @@
+.header-flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .query-example {
   font-family: monospace;
-  border: 1px solid grey;
-  // border-radius: 5px;
+  border: 1px solid #d2d2d2;
   padding: 10px 15px;
+  border-radius: 5px;
 }
 
 .redText {
@@ -19,23 +25,16 @@
 }
 
 .ace-editor {
-  min-height: 100px;
+  min-height: 150px;
   width: 100%;
   overflow: auto;
 }
 
-.error-message{
-  color: red;
-  font-size: 13px;
-}
-
-.success-message {
-  color: green;
-  font-size: 13px;
-}
-
 button {
   margin: 10px 0;
+  &.align-right{
+    float: right;
+  }
 }
 
 .output-container {

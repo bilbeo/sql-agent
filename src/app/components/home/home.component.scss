@@ -4,20 +4,15 @@
   width: 100%;
   flex-direction: column;
 
-  // background: url(../../../assets/background.jpg) no-repeat center fixed;
-  // -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  // background-size: cover; /* version standardisée */
-
   .title {
-    // color: white;
     margin: 0;
     padding: 50px 20px;
   }
 
   .topbar {
+    padding: 20px;
     flex: 0 0 60px;
-    background-color: white;
-    border-bottom: 1px solid #efefef;
+    background: #373e4a;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -31,19 +26,12 @@
       flex: 0 0 auto;
       margin-right: 20px;
       font-size: 20px;
-
-      .signout {
-        cursor: pointer;
-        display: inline-block;
-        border: 1px solid #a9a5a5;
-        border-radius: 10px;
-        padding: 5px 10px;
-        font-size: 16px;
-      }
+      color: white;
     }
   }
 
   .main-content {
+    background: #303641;
     flex: 1 0 auto;
     display: flex;
     justify-content: center;

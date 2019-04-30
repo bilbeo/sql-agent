@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 html,
 body {
@@ -7,11 +7,53 @@ body {
   padding: 0;
 
   height: 100%;
+  font-family: Roboto;
 }
 
 // [Sat] hide the vertical line in the middle of the ace-editor
 .ace-monokai .ace_print-margin {
   width: 0 !important;
+}
+
+.indicator-settings {
+  .mat-button-toggle-label-content {
+    line-height: 30px !important;
+  }
+
+  .mat-button-toggle-checked {
+    background-color: #01579b !important;
+    color: white !important;
+  }
+
+  mat-slide-toggle {
+    width: 200px;
+  }
+
+  .mat-slide-toggle-label {
+    flex-direction: row-reverse;
+
+    .mat-slide-toggle-content {
+      flex: 2 1 auto;
+      font-size: 15px;
+    }
+  }
+}
+
+// helper classes
+.text-center {
+  text-align: center;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px !important;
+}
+
+.margin-top-10 {
+  margin-top: 10px !important;
+}
+
+.margin-top-20 {
+  margin-top: 20px !important;
 }
 
 .edit-button {
@@ -22,8 +64,37 @@ body {
     width: 18px;
     color: rgb(184, 184, 184);
     &:hover {
-      color: blue;
+      color: rgb(121, 120, 120);
     }
   }
-  
 }
+
+.success-message {
+  color: green;
+  font-size: 12px;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+.spinner-button {
+  .mat-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  mat-spinner {
+    margin-right: 5px;
+  }
+}
+
+.light-theme-wrapper .white-spinner .mat-progress-spinner circle, .light-theme-wrapper .white-spinner .mat-spinner circle {
+  stroke:white !important;
+}
+
+// .mat-horizontal-stepper-header-container {
+//   width: 425px;
+// }

@@ -1,11 +1,16 @@
-<h2>Query your database for {{selectedIndicator.name}}</h2>
-
+<div class="header-flex">
+  <h2>Query your database for KPI "{{queryIndicator.name}}"</h2>
+  <button mat-flat-button color="primary" (click)="queryDB()" [disabled]="!queryString"
+    class="spinner-button white-spinner">
+    <mat-spinner diameter="20" *ngIf="!querySucceded && requestInProgress"></mat-spinner>
+    <span>Run Query</span>
+  </button>
+</div>
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
-
       <mat-panel-title>
-        {{panelOpenState ? 'Close' : 'Expand'}} instructions
+        <h4>{{panelOpenState ? 'Close' : 'Expand'}} instructions</h4>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <p>
@@ -24,24 +29,19 @@
         (also known as drill-downs). Modify the column alias to name each breakdown.
       </li>
     </ul>
-
-
     <p>
-      For example, to see your <b>{{selectedIndicator.name}}</b> by product, the query should look like:
+      For example, to see <b>{{queryIndicator.name}}</b> by product, the query should look something like:
     </p>
     <!-- SQL query example -->
-
     <div class="query-example" *ngIf="credentials.type !== 'mongodb'">
       <b class="blueText">SELECT</b>
       <br />
       <span style="margin-left: 30px">billing_amount</span>
       <b class="blueText"> AS </b>
       <span class="redText">"value"</span>,
-
       <span>billing_date</span>
       <b class="blueText"> AS </b>
       <span class="redText">"date"</span>,
-
       <span>product</span>
       <b class="blueText"> AS </b>
       <span class="redText">"breakdown_Product"</span>
@@ -49,7 +49,6 @@
       <b class="blueText">FROM</b>
       Invoice_Table
     </div>
-
     <!-- mongo query example -->
     <div class="query-example" *ngIf="credentials.type === 'mongodb'">
       <div>
@@ -70,22 +69,14 @@
           {{ '}' }}
         </div>
         ])
-
       </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-
-<ace-editor class="ace-editor" [(text)]="queryString" mode="sql"></ace-editor>
-
-
-<button mat-raised-button color="accent" (click)="queryDB()">Run Query</button>
-
+<ace-editor class="ace-editor margin-bottom-10" [(text)]="queryString" mode="sql"></ace-editor>
 <div *ngIf="errMessage" class="error-message">{{errMessage}}</div>
-
-<div *ngIf="successMessage" class="success-message">{{successMessage}}</div>
-
-<div *ngIf="tableData" class="output-container">
+<div *ngIf="successMessage" class="success-message margin-bottom-10">{{successMessage}}</div>
+<div *ngIf="tableData" [ngClass]="{'output-container' : tableData.rows.length > 0}">
   <table class="output-table">
     <thead>
       <tr>
@@ -96,21 +87,15 @@
       <tr *ngFor="let row of tableData.rows">
         <td *ngFor="let value of row; let i = index">
           <span *ngIf="i !== dateColumnIndex"> {{value}}</span>
-
           <span *ngIf="i === dateColumnIndex"> {{ value | date : 'longDate'}}</span>
-
         </td>
-
       </tr>
     </tbody>
   </table>
 </div>
+<button mat-flat-button color="primary" (click)="updateWorkspace()" *ngIf="dbOutput && querySucceded"
+  class="align-right spinner-button white-spinner">
+  <mat-spinner diameter="20" *ngIf="requestInProgress"></mat-spinner>
+  <span> Update Workspace </span>
 
-<div *ngIf="querySucceded && dbOutput">
-  <mat-checkbox [(ngModel)]="saveLocal">
-    Save the query locally
-  </mat-checkbox>
-</div>
-
-
-<button mat-raised-button color="accent" (click)="updateWorkspace()" *ngIf="dbOutput && querySucceded">Update Workspace</button>
+</button>
