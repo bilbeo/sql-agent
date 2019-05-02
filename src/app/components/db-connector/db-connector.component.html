@@ -1,11 +1,11 @@
 <div class="scroll">
-  <div *ngIf="!localWorkspaceData" >
-    <h4>Connect to database</h4>
+  <div *ngIf="!localWorkspaceData">
+    <h3>Connect to database</h3>
 
   </div>
   <!-- shown when we already have credentials -->
   <div *ngIf="localWorkspaceData && updateCredentialsMode">
-    <h4>DB credentials </h4>
+    <h3>DB credentials </h3>
 
   </div>
   <!-- create/update credentials -->
@@ -42,23 +42,23 @@
         <input matInput type="password" formControlName="dbPassword" placeholder="Password">
       </mat-form-field>
     </div>
-  
 
-  <div *ngIf="localWorkspaceData && updateCredentialsMode" class="button-group">
-    <button  [disabled]="connectInProgress" mat-stroked-button (click)="closePage()" type="button"> Cancel</button>
-    <button [disabled]="connectInProgress"  mat-flat-button color="primary"  class="spinner-button white-spinner" type="submit">
-      <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
-      <span>Update</span>
-    </button>
-  </div>
-  <div class="button-group" *ngIf="!localWorkspaceData">
-      <button  [disabled]="connectInProgress"  mat-stroked-button color="primary" 
-      class="spinner-button" type="submit">
-      <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
-      <span>Connect</span>
-    </button>
-  </div>
-</form>
+
+    <div *ngIf="localWorkspaceData && updateCredentialsMode" class="button-group">
+      <button [disabled]="connectInProgress" mat-stroked-button (click)="closePage()" type="button"> Cancel</button>
+      <button [disabled]="connectInProgress" mat-flat-button color="primary" class="spinner-button white-spinner"
+        type="submit">
+        <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+        <span>Update</span>
+      </button>
+    </div>
+    <div class="button-group" *ngIf="!localWorkspaceData">
+      <button [disabled]="connectInProgress" mat-stroked-button color="primary" class="spinner-button" type="submit">
+        <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+        <span>Connect</span>
+      </button>
+    </div>
+  </form>
 
   <div *ngIf="message" class="success-message">
     <span>{{message}}</span>
