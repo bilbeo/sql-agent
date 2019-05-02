@@ -94,7 +94,6 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
   if (serve) {
     win.webContents.openDevTools();
 
