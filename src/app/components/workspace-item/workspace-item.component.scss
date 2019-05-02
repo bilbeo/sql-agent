@@ -118,6 +118,9 @@
       
       .value {
         font-size: 10px;
+        &.capitalize{
+          text-transform: capitalize;
+        }
       }
       
       tr {

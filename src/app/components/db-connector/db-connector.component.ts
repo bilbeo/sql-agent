@@ -24,6 +24,8 @@ export class DbConnectorComponent implements OnInit {
   connectInProgress: boolean;
   credentials;
   errMessage: string;
+  autoPushOptions: Array<any>;
+  autoPushHint: string;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +35,7 @@ export class DbConnectorComponent implements OnInit {
 
   ngOnInit() {
     this.getDbTypes();
+    this.autoPushHint = 'Allow Bilbeo SQL Agent to connect and query your database on a regular basis as per the selected frequency';
   }
 
   initDbForm() {
@@ -43,7 +46,24 @@ export class DbConnectorComponent implements OnInit {
       port: [this.credentials.port || this.selectedDb.port, Validators.required],
       user: [this.credentials.user || ''],
       dbPassword: [this.credentials.password || ''],
+      autoPushing: [this.credentials.autoPushing || '']
     });
+
+    this.autoPushOptions = [
+      {
+        label: 'No Automatic Push',
+        value: 'none'
+      },
+      {
+        label: 'Hourly',
+        value: 'hourly'
+      },
+      {
+        label: 'Daily',
+        value: 'daily'
+      }
+    ];
+
     if (this.credentials.type) {
       this.selectedDb = this.allDbs.find((db) => {
         return db.key === this.credentials.type;
@@ -94,7 +114,8 @@ export class DbConnectorComponent implements OnInit {
       db: this.dbForm.controls['dbName'].value,
       user: this.dbForm.controls['user'].value ? this.dbForm.controls['user'].value : null,
       password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null,
-      type: this.selectedDb.key
+      type: this.selectedDb.key,
+      autoPushing: this.dbForm.controls['autoPushing'].value ? this.dbForm.controls['autoPushing'].value : 'none'
     };
     this.connectInProgress = true;
 
@@ -105,7 +126,7 @@ export class DbConnectorComponent implements OnInit {
           this.message = res;
           this.dbConnected = true;
           this.saveCredentials(credentials);
-         this.closePage();
+          this.closePage();
         },
         (errMessage) => {
           this.connectInProgress = false;

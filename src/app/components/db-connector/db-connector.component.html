@@ -1,5 +1,5 @@
 <div class="scroll">
-  <div *ngIf="!localWorkspaceData" >
+  <div *ngIf="!localWorkspaceData">
     <h4>Connect to database</h4>
 
   </div>
@@ -42,23 +42,32 @@
         <input matInput type="password" formControlName="dbPassword" placeholder="Password">
       </mat-form-field>
     </div>
-  
-
-  <div *ngIf="localWorkspaceData && updateCredentialsMode" class="button-group">
-    <button  [disabled]="connectInProgress" mat-stroked-button (click)="closePage()" type="button"> Cancel</button>
-    <button [disabled]="connectInProgress"  mat-flat-button color="primary"  class="spinner-button white-spinner" type="submit">
-      <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
-      <span>Update</span>
-    </button>
-  </div>
-  <div class="button-group" *ngIf="!localWorkspaceData">
-      <button  [disabled]="connectInProgress"  mat-stroked-button color="primary" 
-      class="spinner-button" type="submit">
-      <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
-      <span>Connect</span>
-    </button>
-  </div>
-</form>
+    <div class="input-wrapper">
+      <mat-form-field class="db-select">
+        <mat-label>Automatic Pushing</mat-label>
+        <mat-select formControlName="autoPushing">
+          <mat-option *ngFor="let option of autoPushOptions" [value]="option.value">
+            {{option.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-icon svgIcon="help-icon" [matTooltip]="autoPushHint" matTooltipPosition="right"></mat-icon>
+    </div>
+    <div *ngIf="localWorkspaceData && updateCredentialsMode" class="button-group">
+      <button [disabled]="connectInProgress" mat-stroked-button (click)="closePage()" type="button"> Cancel</button>
+      <button [disabled]="connectInProgress" mat-flat-button color="primary" class="spinner-button white-spinner"
+        type="submit">
+        <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+        <span>Update</span>
+      </button>
+    </div>
+    <div class="button-group" *ngIf="!localWorkspaceData">
+      <button [disabled]="connectInProgress" mat-stroked-button color="primary" class="spinner-button" type="submit">
+        <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+        <span>Connect</span>
+      </button>
+    </div>
+  </form>
 
   <div *ngIf="message" class="success-message">
     <span>{{message}}</span>

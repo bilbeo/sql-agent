@@ -7,6 +7,19 @@ mat-checkbox {
   width: 90%;
 }
 
+.input-wrapper{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  mat-icon {
+    width: 17px;
+    height: 17px;
+    margin-left: 10px;
+    color: #949ca8;
+  }
+}
+
 .button-group {
   width: 90%;
   display: flex;

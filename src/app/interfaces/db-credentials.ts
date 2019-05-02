@@ -5,4 +5,5 @@ export interface DbCredentials {
     password: string;
     db: string;
     type: string;
+    autoPushing: string;
 }
