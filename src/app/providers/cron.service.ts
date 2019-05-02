@@ -28,7 +28,8 @@ export class CronService {
       .subscribe(
         (userRes) => {
           this.user = userRes;
-          const cron = new CronJob('*/30 * * * * *', () => {
+          // run every hour on 00 minutes 00 seconds
+          const cron = new CronJob('0 0 * * * *', () => {
             if (!this.cronJobInProgress) {
               const workspaces = this.findAutoPushWorkspaces();
               if (workspaces.length) {
@@ -48,44 +49,42 @@ export class CronService {
         });
   }
 
-
   private findAutoPushWorkspaces() {
     const allWorkspaces = this.sharedService.getFromStorage('workspaces');
     const autoPushWorkspaces = [];
     for (const key in allWorkspaces) {
       if (allWorkspaces.hasOwnProperty(key)) {
         const item = allWorkspaces[key];
-
         // filter autoPush enabled workspaces
         if (item.credentials && item.credentials.autoPushing && (item.credentials.autoPushing !== 'none')) {
           autoPushWorkspaces.push(item);
         }
       }
     }
-    console.log(autoPushWorkspaces);
     return autoPushWorkspaces;
   }
 
   private startAutoPush(workspace, callback) {
-    console.log(workspace);
-    this.queryDB(workspace, callback);
-
-    if (workspace.credentials.autoPush === 'hourly') {
-      // HOURLY: just make the query
-      // this.queryDB(workspace);
-      // TODO: call the callback correctly
-    } else if (workspace.credentials.autoPush === 'daily') {
-      // DAILY: check the last query time if it was before 13:00 today, and no it is >= 13:00 make the query
+    if (workspace.credentials.autoPushing === 'hourly') {
+      // HOURLY: just make the query with every cron tick (*:00:00)
+      this.queryDB(workspace, callback);
+    } else if (workspace.credentials.autoPushing === 'daily') {
+      // DAILY: check the last query time if it was before 13:00 of today, and now it is >= 13:00 make the query
+      const processDateTime = moment().set({ 'hours': 13, 'minutes': 0 });
+      if (moment().isSameOrAfter(processDateTime) && (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDateTime)))) {
+        this.queryDB(workspace, callback);
+      } else {
+        callback();
+      }
     }
   }
 
-  queryDB(workspace, callback) {
+  private queryDB(workspace, callback) {
     const queries = [];
     workspace.queries.forEach((queryItem) => {
       queries.push({
         indicatorId: queryItem.indicatorId,
         query: queryItem.query
-
       });
     });
     this.workspaceService.getWorkspaceDetails(workspace.id)
@@ -98,7 +97,6 @@ export class CronService {
                   withFormatting: true,
                   indicators: dataRes['indicators']
                 };
-
                 this.databaseService.executeQueries(workspace.credentials.type, workspace.credentials, queries, options)
                   .subscribe(
                     (outputResult) => {
@@ -122,7 +120,7 @@ export class CronService {
         });
   }
 
-  updateWorkspace(workspace, queryResult, callback) {
+  private updateWorkspace(workspace, queryResult, callback) {
     // prepare the parameters to be sent in updateWorkspace
     const json = {
       KPIs: []
@@ -141,7 +139,9 @@ export class CronService {
     return this.workspaceService.updateWorkspace(params, json)
       .subscribe(
         (res) => {
-          // TODO: update the queryDate in localstore
+          // update the last query date in local store
+          workspace['lastQueryDate'] = moment().format();
+          this.sharedService.setInStorage(`workspaces.${workspace.id}`, workspace);
           console.log(res);
           callback();
         },
