@@ -7,24 +7,25 @@ import * as path from 'path';
 function checkLinuxTraySupport(cb) {
   const cp = require('child_process');
 
-  // Check that we're on Ubuntu (or another debian system) and that we have
-  // libappindicator1. 
+  // Check that we're on Ubuntu (or another debian system) and that we have libappindicator1.
   cp.exec('dpkg --get-selections libappindicator1', function (err, stdout) {
-    if (err) return cb(err)
+    if (err) {
+      return cb(err);
+    }
     // Unfortunately there's no cleaner way, as far as I can tell, to check
     // whether a debian package is installed:
     if (stdout.endsWith('\tinstall\n')) {
-      cb(null)
+      cb(null);
     } else {
-      cb(new Error('debian package not installed'))
+      cb(new Error('debian package not installed'));
     }
-  })
+  });
 }
 
 // enable tray minimizing
 function createTray(win) {
   let tray = null;
-  const icon = nativeImage.createFromPath(path.join(__dirname, "bilbeo-logo.png"));
+  const icon = nativeImage.createFromPath(path.join(__dirname, 'bilbeo-logo.png'));
   tray = new Tray(icon);
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -50,7 +51,7 @@ function createTray(win) {
   });
 
   win.on('close', function (event) {
-    console.log("win.on.close", app['isQuiting'])
+    console.log('win.on.close', app['isQuiting']);
     if (!app['isQuiting']) {
       event.preventDefault();
       win.hide();
@@ -76,4 +77,4 @@ function initTray(window) {
 
 export {
   initTray
-}
+};
