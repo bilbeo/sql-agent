@@ -91,15 +91,15 @@ export class CronService {
     const processDate4 = moment().set({ 'hours': 19, 'minutes': 0 });
     const now = moment();
     if (workspace.credentials.autoPushing === '24h') {
-      // once daily: 
-      // if now it is >= 7:00am and the last query was made before today 7:00am, 
+      // once daily:
+      // if now it is >= 7:00am and the last query was made before today 7:00am,
       if (now.isSameOrAfter(processDate2) && (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate2)))) {
         this.queryDB(workspace, callback);
       } else {
         callback();
       }
     } else if (workspace.credentials.autoPushing === '12h') {
-      // twice daily: 
+      // twice daily:
       // if now it is equal or after 7:00am, less than < 19:00 and the last query was made before today 7:00am, query!
       // if now it is equal or after 19:00, and the last query was made before today 19:00, query!
       if (now.isSameOrAfter(processDate2) && now.isBefore(processDate4)) {
