@@ -3,38 +3,48 @@
   "directories": {
     "output": "release/"
   },
-    "files": [
-        "**/*",
-        "!**/*.ts",
-        "!*.code-workspace",
-        "!LICENSE.md",
-        "!package.json",
-        "!package-lock.json",
-        "!src/",
-        "!e2e/",
-        "!hooks/",
-        "!angular.json",
-        "!_config.yml",
-        "!karma.conf.js",
-        "!tsconfig.json",
-        "!tslint.json"
-    ],
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "bilbeo",
-        "repo": "sql-agent"
-      }
-    ],
+  "files": [
+    "**/*",
+    "!**/*.ts",
+    "!*.code-workspace",
+    "!LICENSE.md",
+    "!package.json",
+    "!package-lock.json",
+    "!src/",
+    "!e2e/",
+    "!hooks/",
+    "!angular.json",
+    "!_config.yml",
+    "!karma.conf.js",
+    "!tsconfig.json",
+    "!tslint.json"
+  ],
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "bilbeo",
+      "repo": "sql-agent"
+    }
+  ],
+  "protocols": [
+    {
+      "name": "bilbeo",
+      "role": "Viewer",
+      "schemes": [
+        "bilbeo"
+      ]
+    }
+  ],
   "win": {
     "icon": "dist",
     "target": [
       "nsis"
     ]
   },
-  "nsis":{
+  "nsis": {
     "installerIcon": "dist/favicon.ico",
-    "uninstallerIcon": "dist/favicon.ico"
+    "uninstallerIcon": "dist/favicon.ico",
+    "perMachine": true
   },
   "mac": {
     "icon": "dist",
@@ -50,7 +60,7 @@
       "AppImage"
     ]
   },
-  "appImage":{
+  "appImage": {
     "artifactName": "BilbeoSQLAgent.${ext}"
   }
 }
