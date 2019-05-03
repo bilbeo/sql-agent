@@ -55,12 +55,16 @@ export class DbConnectorComponent implements OnInit {
         value: 'none'
       },
       {
-        label: 'Hourly',
-        value: 'hourly'
+        label: 'Daily (every 24 hours)',
+        value: '24h'
       },
       {
-        label: 'Daily',
-        value: 'daily'
+        label: 'Twice Daily (every 12 hours)',
+        value: '12h'
+      },
+      {
+        label: 'Four Times Daily (every 6 hours) ',
+        value: '6h'
       }
     ];
 
@@ -136,16 +140,16 @@ export class DbConnectorComponent implements OnInit {
   }
 
   saveCredentials(credentials) {
-    // save the credentials in app local storage if the user has not unchecked save checkbox
-    const workspaceData = {
-      id: this.workspace.id,
-      credentials: credentials,
-      queries: []
-    };
-
+    // save the credentials in app local storage
     if (!this.sharedService.getFromStorage('workspaces')) {
       this.sharedService.setInStorage('workspaces', {});
     }
+    const existingLocalData = this.sharedService.getFromStorage(`workspaces.${this.workspace.id}`);
+    const workspaceData = {
+      id: this.workspace.id,
+      credentials: credentials,
+      queries: (existingLocalData && existingLocalData.queries) ? existingLocalData.queries : []
+    };
     this.sharedService.setInStorage(`workspaces.${this.workspace.id}`, workspaceData);
     this.credentials = credentials;
     this.localWorkspaceData = {

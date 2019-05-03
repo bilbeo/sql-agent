@@ -142,6 +142,10 @@
           [datasource]="datasource" [workspaceId]="workspace.id"></app-query-db>
       </div>
 
+      <div class="query-tool" *ngIf="!queryIndicator">
+          <h4>Create an indicator or select from existing ones to query your database</h4>
+        </div>
+
       <div class="margin-top-10">
         <button mat-stroked-button matStepperPrevious>Back</button>
       </div>

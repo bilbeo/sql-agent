@@ -11,8 +11,6 @@ export class WorkspaceService {
   constructor(
     private http: HttpClient,
     private sharedService: SharedService) {
-
-
   }
 
   getWorkspaceDetails(workspaceId): Observable<Workspace> {

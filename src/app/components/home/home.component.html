@@ -22,6 +22,13 @@
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>
+
+  <div class="cron-info" *ngIf="cronInProgress">
+    <div class="flex">
+      <mat-spinner [diameter]="20"></mat-spinner>
+      <span>Auto Pushing</span>
+    </div>
+  </div>
 </div>
 
 <!-- <h1 class="title">
