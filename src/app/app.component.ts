@@ -48,6 +48,7 @@ export class AppComponent implements OnDestroy {
     this.iconRegistry.addSvgIcon('dropdown-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/drop_down_icon.svg'));
     this.iconRegistry.addSvgIcon('done-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/done_icon.svg'));
     this.iconRegistry.addSvgIcon('help-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/help_icon.svg'));
+    this.iconRegistry.addSvgIcon('offline-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/wifi_offline_icon.svg'));  
   }
 
   ngOnDestroy() {

@@ -59,7 +59,11 @@
     }
 
     .offline-message {
-      color: red;
+      color: white;
+      mat-icon {
+        height: 40px;
+        width: 40px;
+      }
     }
   }
 }

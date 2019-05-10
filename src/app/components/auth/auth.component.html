@@ -28,6 +28,8 @@
   </div>
 
   <div class="cron-info" *ngIf="!isOnline">
-    <span class="offline-message">Your computer is offline</span>
+    <span class="offline-message">
+      <mat-icon svgIcon="offline-icon"></mat-icon>
+    </span>
   </div>
 </div>
