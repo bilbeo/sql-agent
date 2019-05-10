@@ -5,7 +5,7 @@
     </button>
   </div>
   <!-- Step1: connect to DB -->
-  <div *ngIf="!localWorkspaceData || updateCredentialsMode" class="db-connect-wrapper">
+  <div *ngIf="(!localWorkspaceData || updateCredentialsMode) && workspace" class="db-connect-wrapper">
     <div class="db-connector">
       <app-db-connector (closeCredentialsPage)="hideCredentialsForm($event)" [workspace]="workspace"
         [localWorkspaceData]="localWorkspaceData" [updateCredentialsMode]="updateCredentialsMode"></app-db-connector>

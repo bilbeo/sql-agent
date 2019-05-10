@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { CronService } from '../../providers/cron.service';
 import { Subscription } from 'rxjs';
+import { SharedService } from '../../providers/shared.service';
 
 @Component({
   selector: 'app-home',
@@ -17,11 +18,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   workspaces;
   cronSubscription: Subscription;
   cronInProgress;
+  isOnline = true;
+  connectionSubs;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private cronService: CronService) { }
+    private cronService: CronService,
+    private sharedService: SharedService) { }
 
   ngOnInit() {
     this.getUserDetails();
@@ -35,6 +39,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('finished');
         this.cronInProgress = false;
       }
+    });
+    this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
+      this.isOnline = isOnlineRes;
+      setTimeout(() => {
+        this.getUserDetails();
+      }, 500);
     });
   }
 
@@ -62,5 +72,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.cronSubscription.unsubscribe();
     this.cronService.stopCron();
+    this.connectionSubs.unsubscribe();
   }
 }

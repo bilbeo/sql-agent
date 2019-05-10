@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SharedService } from '../../providers/shared.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,9 +9,12 @@ import { UserService } from '../../providers/user.service';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   message: string;
+  connectionSubs;
+  isOnline = true;
+
   constructor(
     private sharedService: SharedService,
     private router: Router,
@@ -23,6 +26,9 @@ export class AuthComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
+    });
+    this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
+      this.isOnline = isOnlineRes;
     });
   }
 
@@ -50,5 +56,9 @@ export class AuthComponent implements OnInit {
       (errMessage) => {
         this.message = errMessage;
       });
+  }
+
+  ngOnDestroy() {
+    this.connectionSubs.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { WorkspaceService } from '../../providers/workspace.service';
 import { switchMap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { AlertComponent } from '../alert/alert.component';
   templateUrl: './workspace-item.component.html',
   styleUrls: ['./workspace-item.component.scss']
 })
-export class WorkspaceItemComponent implements OnInit {
+export class WorkspaceItemComponent implements OnInit, OnDestroy {
   workspace: Workspace;
   localWorkspaceData: any;
   workspaceId: string;
@@ -27,6 +27,7 @@ export class WorkspaceItemComponent implements OnInit {
   updateCredentialsMode: boolean;
   credentials;
   indicatorEditMode: boolean;
+  connectionSubs;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -36,6 +37,16 @@ export class WorkspaceItemComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.getWorkspaceById();
+    this.selectedIndicator = {};
+    this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
+      setTimeout(() => {
+        this.getWorkspaceById();
+      }, 500);
+    });
+  }
+
+  getWorkspaceById() {
     this.route.paramMap.pipe(
       switchMap(params => {
         this.workspaceId = params.get('id');
@@ -50,8 +61,6 @@ export class WorkspaceItemComponent implements OnInit {
         (err) => {
           console.log(err);
         });
-
-    this.selectedIndicator = {};
   }
 
   getDetailsFromLocalStore() {
@@ -172,4 +181,7 @@ export class WorkspaceItemComponent implements OnInit {
     return dialogRef;
   }
 
+  ngOnDestroy() {
+    this.connectionSubs.unsubscribe();
+  }
 }

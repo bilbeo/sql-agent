@@ -3,7 +3,6 @@
     <!-- <img src="./assets/img/bilbeoNewSad.png" class="logo"> -->
     <img [src]="user.logoURL" class="logo">
     <div class="text-right">
-
       <span> {{user.firstName}} {{user.lastName}}</span>
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon svgIcon="dropdown-icon"></mat-icon>
@@ -22,12 +21,14 @@
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>
-
   <div class="cron-info" *ngIf="cronInProgress">
     <div class="flex">
       <mat-spinner [diameter]="20"></mat-spinner>
       <span>Auto Pushing</span>
     </div>
+  </div>
+  <div class="cron-info" *ngIf="!isOnline">
+    <span class="offline-message">Your computer is offline</span>
   </div>
 </div>
 
