@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "desktop-agent": {
+    "bilbeo-sql-agent": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -71,21 +71,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "desktop-agent:build"
+            "browserTarget": "bilbeo-sql-agent:build"
           },
           "configurations": {
             "dev": {
-              "browserTarget": "desktop-agent:build:dev"
+              "browserTarget": "bilbeo-sql-agent:build:dev"
             },
             "production": {
-              "browserTarget": "desktop-agent:build:production"
+              "browserTarget": "bilbeo-sql-agent:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "desktop-agent:build"
+            "browserTarget": "bilbeo-sql-agent:build"
           }
         },
         "test": {
@@ -123,7 +123,7 @@
         }
       }
     },
-    "desktop-agent-e2e": {
+    "bilbeo-sql-agent-e2e": {
       "root": "e2e",
       "projectType": "application",
       "architect": {
@@ -141,7 +141,7 @@
       }
     }
   },
-  "defaultProject": "desktop-agent",
+  "defaultProject": "bilbeo-sql-agent",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

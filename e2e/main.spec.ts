@@ -3,7 +3,7 @@ import {SpectronClient} from 'spectron';
 
 import commonSetup from './common-setup';
 
-describe('desktop-agent App', function () {
+describe('bilbeo-sql-agent App', function () {
   commonSetup.apply(this);
 
   let browser: any;

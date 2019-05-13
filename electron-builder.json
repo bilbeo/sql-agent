@@ -1,5 +1,5 @@
 {
-  "productName": "desktop-agent",
+  "productName": "bilbeo-sql-agent",
   "directories": {
     "output": "release/"
   },
@@ -19,22 +19,38 @@
         "!tsconfig.json",
         "!tslint.json"
     ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "bilbeo",
+        "repo": "sql-agent"
+      }
+    ],
   "win": {
     "icon": "dist",
     "target": [
-      "portable"
+      "nsis"
     ]
+  },
+  "nsis":{
+    "installerIcon": "dist/favicon.ico",
+    "uninstallerIcon": "dist/favicon.ico"
   },
   "mac": {
     "icon": "dist",
+    "category": "public.app-category.finance",
     "target": [
       "dmg"
     ]
   },
   "linux": {
     "icon": "dist",
+    "category": "Finance",
     "target": [
       "AppImage"
     ]
+  },
+  "appImage":{
+    "artifactName": "BilbeoSQLAgent.${ext}"
   }
 }
