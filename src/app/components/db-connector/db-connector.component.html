@@ -1,11 +1,11 @@
 <div class="scroll">
   <div *ngIf="!localWorkspaceData">
-    <h4>Connect to database</h4>
+    <h3>Connect to database</h3>
 
   </div>
   <!-- shown when we already have credentials -->
   <div *ngIf="localWorkspaceData && updateCredentialsMode">
-    <h4>DB credentials </h4>
+    <h3>DB credentials </h3>
 
   </div>
   <!-- create/update credentials -->
@@ -42,17 +42,8 @@
         <input matInput type="password" formControlName="dbPassword" placeholder="Password">
       </mat-form-field>
     </div>
-    <div class="input-wrapper">
-      <mat-form-field class="db-select">
-        <mat-label>Automatic Pushing</mat-label>
-        <mat-select formControlName="autoPushing">
-          <mat-option *ngFor="let option of autoPushOptions" [value]="option.value">
-            {{option.label}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-icon svgIcon="help-icon" [matTooltip]="autoPushHint" matTooltipPosition="right"></mat-icon>
-    </div>
+
+
     <div *ngIf="localWorkspaceData && updateCredentialsMode" class="button-group">
       <button [disabled]="connectInProgress" mat-stroked-button (click)="closePage()" type="button"> Cancel</button>
       <button [disabled]="connectInProgress" mat-flat-button color="primary" class="spinner-button white-spinner"
