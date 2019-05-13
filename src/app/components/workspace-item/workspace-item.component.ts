@@ -8,6 +8,8 @@ import { DatasourceService } from '../../providers/datasource.service';
 import { Datasource } from '../../interfaces/datasource';
 import { Workspace } from '../../interfaces/workspace';
 import { Server } from 'tls';
+import { MatDialog } from '@angular/material';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-workspace-item',
@@ -20,16 +22,18 @@ export class WorkspaceItemComponent implements OnInit {
   workspaceId: string;
   datasource: Datasource;
   selectedIndicator: any;
-  showAddIndicator: boolean;
-  showEditIndicator: boolean;
   isEditMode: boolean;
   newWorkspaceName: string;
+  updateCredentialsMode: boolean;
+  credentials;
+  indicatorEditMode: boolean;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private workspaceService: WorkspaceService,
     private datasourceService: DatasourceService,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -46,11 +50,14 @@ export class WorkspaceItemComponent implements OnInit {
         (err) => {
           console.log(err);
         });
+
+        this.selectedIndicator = {};
   }
 
   getDetailsFromLocalStore() {
     this.localWorkspaceData = this.sharedService.getFromStorage('workspaces') ?
       this.sharedService.getFromStorage('workspaces')[this.workspaceId] : null;
+    this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
   }
 
   getDatasource(name) {
@@ -66,22 +73,14 @@ export class WorkspaceItemComponent implements OnInit {
   }
 
   selectIndicator(index) {
-    this.showAddIndicator = false;
-    this.showEditIndicator = false;
     this.selectedIndicator = null;
     this.selectedIndicator = this.datasource.indicators[index];
-
+    this.indicatorEditMode = true;
   }
 
   newIndicator() {
-    this.selectedIndicator = null;
-    this.showAddIndicator = true;
-    this.showEditIndicator = false;
-  }
-
-  editIndicator() {
-    this.showAddIndicator = false;
-    this.showEditIndicator = true;
+    this.selectedIndicator = {};
+    this.indicatorEditMode = false;
   }
 
   onDatasourceUpdated(newDatasouceData) {
@@ -89,8 +88,7 @@ export class WorkspaceItemComponent implements OnInit {
     this.datasource = newDatasouceData.datasource;
     // when an indicator is created/updated, we want it to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
-    this.showAddIndicator = false;
-    this.showEditIndicator = false;
+   
   }
 
   toggleWorkspaceEdit(showEdit: boolean) {
@@ -115,18 +113,39 @@ export class WorkspaceItemComponent implements OnInit {
     }
   }
 
+  editCredentials() {
+    this.updateCredentialsMode = true;
+  }
+
+  hideCredentialsForm() {
+    this.updateCredentialsMode = false;
+    this.getDetailsFromLocalStore();
+  }
+
   removeWorkspace() {
-    this.workspaceService.deleteWorkspace(this.workspace.id)
-      .subscribe(
-        (res) => {
-          this.removeLocalData();
-          this.goBack();
-          // TODO: should we also remove the datasource?
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    const dialog = this.openDialog('Delete Workspace', 'Are you sure you want to delete this workspace? All the details will be lost including KPIs', 'Cancel', 'Remove');
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.workspaceService.deleteWorkspace(this.workspace.id)
+          .subscribe(
+            (res) => {
+              this.removeLocalData();
+              this.datasourceService.removeDatasource(this.datasource.name)
+                .subscribe(
+                  (removeRes) => {
+                    this.goBack();
+                  },
+                  (err) => {
+                    console.log(err);
+                  }
+                );
+            },
+            (errMessage) => {
+              console.log(errMessage);
+            }
+          );
+      }
+    });
   }
 
   removeLocalData() {
@@ -143,6 +162,14 @@ export class WorkspaceItemComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['../']);
+  }
+
+  openDialog(title, message, cancelText, confirmText) {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '600px',
+      data: { title: title, message: message, cancelButtonText: cancelText, confirmButtonText: confirmText }
+    });
+    return dialogRef;
   }
 
 }

@@ -1,24 +1,15 @@
 <div class="scroll">
-  <div *ngIf="!localWorkspaceData ">
-    <h4>Connect to database</h4>
-  </div>
+  <div *ngIf="!localWorkspaceData">
+    <h3>Connect to database</h3>
 
+  </div>
   <!-- shown when we already have credentials -->
-  <div class="credential-header" *ngIf="localWorkspaceData">
-    <h4>DB credentials </h4>
+  <div *ngIf="localWorkspaceData && updateCredentialsMode">
+    <h3>DB credentials </h3>
 
-    <button mat-icon-button *ngIf="!editMode" class="edit-button" (click)="editCredentials()">
-        <mat-icon svgIcon="edit-icon"></mat-icon>
-    </button>
-
-    <div *ngIf="editMode">
-      <button mat-button (click)="editMode = false"> Cancel</button>
-      <button mat-button color="accent" (click)="connectToDatabase()"> Update</button>
-    </div>
   </div>
-
   <!-- create/update credentials -->
-  <form [formGroup]="dbForm" *ngIf="dbForm && (!localWorkspaceData || editMode)">
+  <form [formGroup]="dbForm" *ngIf="dbForm" (submit)="connectToDatabase()">
     <mat-form-field class="db-select">
       <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)">
         <mat-option *ngFor="let db of allDbs" [value]="db">
@@ -26,84 +17,53 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
     <div>
       <mat-form-field>
         <input matInput type="text" formControlName="host" placeholder="Host">
       </mat-form-field>
     </div>
-
     <div>
       <mat-form-field>
         <input matInput type="text" formControlName="dbName" placeholder="Database Name">
       </mat-form-field>
     </div>
-
     <div>
       <mat-form-field>
         <input matInput type="number" formControlName="port" placeholder="Port">
       </mat-form-field>
     </div>
-
     <div>
       <mat-form-field>
         <input matInput type="text" formControlName="user" placeholder="User">
       </mat-form-field>
     </div>
-
     <div>
       <mat-form-field>
         <input matInput type="password" formControlName="dbPassword" placeholder="Password">
       </mat-form-field>
     </div>
 
-    <div>
 
-      <mat-checkbox [(ngModel)]="saveLocal" [ngModelOptions]="{standalone: true}">
-        Save the credentials locally
-      </mat-checkbox>
-
+    <div *ngIf="localWorkspaceData && updateCredentialsMode" class="button-group">
+      <button [disabled]="connectInProgress" mat-stroked-button (click)="closePage()" type="button"> Cancel</button>
+      <button [disabled]="connectInProgress" mat-flat-button color="primary" class="spinner-button white-spinner"
+        type="submit">
+        <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+        <span>Update</span>
+      </button>
     </div>
-
+    <div class="button-group" *ngIf="!localWorkspaceData">
+      <button [disabled]="connectInProgress" mat-stroked-button color="primary" class="spinner-button" type="submit">
+        <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
+        <span>Connect</span>
+      </button>
+    </div>
   </form>
 
-  <!-- create credentials -->
-  <button (click)="connectToDatabase()" mat-raised-button color="primary" *ngIf="!localWorkspaceData" class="connect-button">
-    Connect to Database
-  </button>
-
-
-  <!-- Already have credentials -->
-  <div *ngIf="localWorkspaceData && credentials && !editMode">
-    <table>
-      <tr>
-        <td class="label">Host</td>
-        <td class="value">{{credentials.host}}</td>
-      </tr>
-      <tr>
-        <td class="label">Db Name</td>
-        <td class="value">{{credentials.db}}</td>
-      </tr>
-      <tr>
-        <td class="label">Port</td>
-        <td class="value">{{credentials.port}}</td>
-      </tr>
-      <tr>
-        <td class="label">User</td>
-        <td class="value">{{credentials.user}}</td>
-      </tr>
-      <tr>
-        <td class="label">Password</td>
-        <td class="value">**********</td>
-      </tr>
-
-    </table>
-
-  </div>
-
-  <div *ngIf="message">
+  <div *ngIf="message" class="success-message">
     <span>{{message}}</span>
   </div>
-
-
+  <div *ngIf="errMessage" class="error-message">
+    <span>{{errMessage}}</span>
+  </div>
 </div>

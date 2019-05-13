@@ -1,33 +1,35 @@
-<div class="container">
-  <div >
-    
+<div class="container light-theme-wrapper">
+  <div>
     <button mat-icon-button (click)="goBack()">
-        <mat-icon svgIcon="back-icon"></mat-icon>
+      <mat-icon svgIcon="back-icon"></mat-icon>
     </button>
   </div>
-
-  <div class="flex-container">
+  <!-- Step1: connect to DB -->
+  <div *ngIf="!localWorkspaceData || updateCredentialsMode" class="db-connect-wrapper">
+    <div class="db-connector">
+      <app-db-connector (closeCredentialsPage)="hideCredentialsForm($event)" [workspace]="workspace"
+        [localWorkspaceData]="localWorkspaceData" [updateCredentialsMode]="updateCredentialsMode"></app-db-connector>
+    </div>
+  </div>
+  <!-- Step2: Manage KPI-s-->
+  <div class="flex-container" *ngIf="localWorkspaceData && !updateCredentialsMode">
     <div class="left-side">
-        <div *ngIf="!isEditMode" class="header-flex">
-            <h3 *ngIf="workspace">{{workspace.name}}</h3>
-            <button mat-icon-button class="edit-button" (click)="toggleWorkspaceEdit(true)">
-                <mat-icon svgIcon="edit-icon"></mat-icon>
-            </button>
-      
-          </div>
-      
-          <div *ngIf="isEditMode">
-            <mat-form-field>
-              <input matInput type="text" [(ngModel)]="newWorkspaceName">
-            </mat-form-field>
-            <button mat-button (click)="toggleWorkspaceEdit(false)"> Cancel</button>
-            <br>
-            <button mat-button color="primary" (click)="editWorkspaceName()"> Update</button>
-            <button mat-button color="warn" (click)="removeWorkspace()"> Remove</button>
-          </div>
-
+      <div *ngIf="!isEditMode" class="header-flex">
+        <h3 *ngIf="workspace" class="text-center">{{workspace.name}}</h3>
+        <button mat-icon-button class="edit-button" (click)="toggleWorkspaceEdit(true)">
+          <mat-icon svgIcon="edit-icon"></mat-icon>
+        </button>
+      </div>
+      <div *ngIf="isEditMode">
+        <mat-form-field class="edit-input">
+          <input matInput type="text" [(ngModel)]="newWorkspaceName">
+        </mat-form-field>
+        <br>
+        <button mat-button color="primary" (click)="editWorkspaceName()"> Update</button>
+        <button mat-button (click)="toggleWorkspaceEdit(false)"> Cancel</button>
+        <button mat-button color="warn" (click)="removeWorkspace()"> Remove</button>
+      </div>
       <div class="indicators" *ngIf="workspace && datasource">
-
         <ul class="indicator-list">
           <li (click)="newIndicator()" class="add-button">+ Add a KPI</li>
           <li *ngFor="let indicator of datasource.indicators; let i = index"
@@ -36,39 +38,47 @@
             {{indicator.name}}
           </li>
         </ul>
-
       </div>
-
       <div class="credentials">
-        <app-db-connector [workspace]="workspace" [localWorkspaceData]="localWorkspaceData"></app-db-connector>
+        <!-- Already have credentials -->
+        <div *ngIf="localWorkspaceData && credentials" class="margin-bottom-10">
+          <div class="credential-header">
+            <h4>DB credentials </h4>
+            <button mat-icon-button class="edit-button" (click)="editCredentials()">
+              <mat-icon svgIcon="edit-icon"></mat-icon>
+            </button>
+          </div>
+          <table>
+            <tr>
+              <td class="label">Host</td>
+              <td class="value">{{credentials.host}}</td>
+            </tr>
+            <tr>
+              <td class="label">Db Name</td>
+              <td class="value">{{credentials.db}}</td>
+            </tr>
+            <tr>
+              <td class="label">Port</td>
+              <td class="value">{{credentials.port}}</td>
+            </tr>
+            <tr>
+              <td class="label">User</td>
+              <td class="value">{{credentials.user}}</td>
+            </tr>
+            <tr>
+              <td class="label">Password</td>
+              <td class="value">**********</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-
     <div class="right-side">
       <div class="add-indicator">
-        <div *ngIf="showAddIndicator">
-          <app-new-indicator [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)">
-          </app-new-indicator>
+        <div >
+          <app-manage-indicator [editMode]="indicatorEditMode" [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)" [localWorkspaceData]="localWorkspaceData" [workspace]="workspace"  [indicatorData]="selectedIndicator">
+          </app-manage-indicator>
         </div>
-
-        <div *ngIf="showEditIndicator">
-          <app-edit-indicator  [workspace]="workspace" [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)"
-            [indicatorData]="selectedIndicator">
-          </app-edit-indicator>
-        </div>
-
-        <div *ngIf="selectedIndicator && !showEditIndicator" class="header-flex">
-          <b>{{selectedIndicator.name}}</b>
-
-          <button mat-icon-button class="edit-button" (click)="editIndicator()">
-              <mat-icon svgIcon="edit-icon"></mat-icon>
-          </button>
-        </div>
-      </div>
-
-      <div class="query-tool" *ngIf="selectedIndicator && !showEditIndicator">
-        <app-query-db [selectedIndicator]="selectedIndicator" [localWorkspaceData]="localWorkspaceData"
-          [datasource]="datasource" [workspaceId]="workspace.id"></app-query-db>
       </div>
     </div>
   </div>

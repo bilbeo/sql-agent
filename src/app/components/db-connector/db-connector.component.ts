@@ -5,7 +5,6 @@ import { SharedService } from '../../providers/shared.service';
 import { WorkspaceService } from '../../providers/workspace.service';
 import { DatabaseService } from '../../providers/database.service';
 
-
 @Component({
   selector: 'app-db-connector',
   templateUrl: './db-connector.component.html',
@@ -14,15 +13,17 @@ import { DatabaseService } from '../../providers/database.service';
 export class DbConnectorComponent implements OnInit {
   @Input() localWorkspaceData: any;
   @Input() workspace;
+  @Input() updateCredentialsMode: boolean;
   @Output() localDataChange = new EventEmitter();
+  @Output() closeCredentialsPage = new EventEmitter();
   selectedDb: any;
   dbForm: FormGroup;
   message: string;
   dbConnected: boolean;
   allDbs: Array<any>;
-  saveLocal = true;
-  editMode: boolean;
+  connectInProgress: boolean;
   credentials;
+  errMessage: string;
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +55,6 @@ export class DbConnectorComponent implements OnInit {
     this.workspaceService.getDatabaseTypes()
       .subscribe(
         (res) => {
-
           this.allDbs = [];
           // create array of db types
           for (const key in res) {
@@ -72,7 +72,6 @@ export class DbConnectorComponent implements OnInit {
               return 0;
             }
           });
-
           this.selectedDb = this.allDbs[0];
           this.initDbForm();
         },
@@ -84,6 +83,7 @@ export class DbConnectorComponent implements OnInit {
 
   connectToDatabase() {
     this.message = '';
+    this.errMessage = '';
     if (!this.dbForm.valid) {
       return;
     }
@@ -95,32 +95,21 @@ export class DbConnectorComponent implements OnInit {
       user: this.dbForm.controls['user'].value ? this.dbForm.controls['user'].value : null,
       password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null,
       type: this.selectedDb.key
-
     };
+    this.connectInProgress = true;
 
     this.databaseService.testConnection(credentials, this.selectedDb.key, {})
       .subscribe(
         (res: string) => {
-          console.log(res);
+          this.connectInProgress = false;
           this.message = res;
-
           this.dbConnected = true;
-          if (this.saveLocal) {
-            this.saveCredentials(credentials);
-          } else {
-            this.removeCredentials();
-          }
-
-          this.editMode = false;
-
-          setTimeout(() => {
-            this.message = '';
-          }, 3000);
-
+          this.saveCredentials(credentials);
+         this.closePage();
         },
         (errMessage) => {
-          console.log(errMessage);
-          this.message = errMessage || `Error when connecting to database`;
+          this.connectInProgress = false;
+          this.errMessage = errMessage || `Error when connecting to database`;
         }
       );
   }
@@ -148,16 +137,13 @@ export class DbConnectorComponent implements OnInit {
     if (this.sharedService.getFromStorage(`workspaces.${this.workspace.id}`)) {
       this.sharedService.removeFromStorage(`workspaces.${this.workspace.id}`);
     }
-    console.log(this.sharedService.getFromStorage('workspaces'));
   }
 
-  editCredentials() {
-    this.editMode = true;
+  closePage() {
+    this.closeCredentialsPage.emit('close');
   }
 
   onDbSelection(event) {
     this.dbForm.controls['port'].setValue(event.value.port);
-
   }
-
 }

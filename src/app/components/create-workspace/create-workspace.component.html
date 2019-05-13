@@ -1,42 +1,20 @@
-
 <button mat-icon-button (click)="backToWorkpspaces()">
-    <mat-icon svgIcon="back-icon"></mat-icon>
+  <mat-icon svgIcon="back-icon"></mat-icon>
 </button>
-
 <div class="container">
-  <div>
+  <div class="form-wrapper">
+    <h3 class="text-center">Create A Workspace</h3>
+    <form (submit)="createWorkspace()">
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Workspace Name" [(ngModel)]="workspaceData.workspaceName" name="workspaceName">
+        </mat-form-field>
+      </div>
+      <button mat-stroked-button type="submit" class="margin-bottom-10">Create</button>
+    </form>
 
-    <!-- <mat-form-field>
-      <mat-select placeholder="Select a Datasource">
-        <mat-option value="datasource1">Datasource 1</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div> -->
-    <div>
-  
-      <mat-form-field>
-        <input matInput placeholder="Datasource Name" [(ngModel)]="workspaceData.dataSourceName">
-      </mat-form-field>
+    <div class="error-message">
+      <span *ngIf="errorMessage">{{errorMessage}}</span>
     </div>
-  
-  
-    <div>
-      <mat-form-field>
-        <input matInput placeholder="Workspace Name" [(ngModel)]="workspaceData.workspaceName">
-      </mat-form-field>
-    </div>
-  
-    <div>
-  
-      <mat-checkbox [(ngModel)]="workspaceData.isPushDb">Connect to Database</mat-checkbox>
-  
-    </div>
-  
-    <button mat-raised-button color="accent" (click)="createWorkspace()"> Create</button>
-    <div>
-     
-  
-        <span *ngIf="errorMessage">{{errorMessage}}</span>
-  
-    </div>
+  </div>
 </div>

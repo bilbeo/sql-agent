@@ -20,7 +20,7 @@ export class CreateWorkspaceComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private datasourceService: DatasourceService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.userService.getUser()
@@ -33,17 +33,17 @@ export class CreateWorkspaceComponent implements OnInit {
     this.workspaceData = {
       workspaceName: '',
       custom: '',
-      dataSourceName: '',
-      isPushDb: true,
+      dataSourceName: ''
     };
-
   }
 
   createWorkspace() {
     this.errorMessage = '';
-    if (!this.workspaceData.dataSourceName || !this.workspaceData.workspaceName) {
+    if (!this.workspaceData.workspaceName) {
       return;
     }
+
+    this.workspaceData.dataSourceName = `${this.workspaceData.workspaceName}-${this.user.mail}-${new Date()}`;
 
     this.createDatasource()
       .subscribe(
@@ -61,7 +61,6 @@ export class CreateWorkspaceComponent implements OnInit {
             .subscribe(
               (result) => {
                 console.log(result);
-
                 this.router.navigate(['../']);
               },
               (errMessage) => {
@@ -72,9 +71,9 @@ export class CreateWorkspaceComponent implements OnInit {
         (err) => {
           console.log(err);
           if (err.error && err.error.name === 'MongoError') {
-            this.errorMessage = 'Datasource name already in use';
+            this.errorMessage = 'Workspace is name already in use';
           } else {
-            this.errorMessage = 'Something went wrong when creating datasource';
+            this.errorMessage = 'Something went wrong creating your workspace';
           }
         }
       );

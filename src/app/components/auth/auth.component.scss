@@ -1,11 +1,38 @@
 .container {
-    height: 100%;
-    padding: 10px;
+  background: #303641;
+  height: 100%;
+
+  .header {
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    padding: 20px 0;
+    background: #373e4a;
     align-items: center;
 
-    .login-button{
-        width: 100%;
+    img {
+      width: 200px;
     }
+  }
+
+  .main {
+    height: calc(100% - 200px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    mat-form-field {
+      width: 200px;
+    }
+
+    .login-button {
+      width: 100%;
+      color: white;
+      border: 1px solid #454a54;
+
+      &:hover {
+        background: #373e4a;
+      }
+    }
+  }
 }

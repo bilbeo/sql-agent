@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditIndicatorComponent } from './edit-indicator.component';
+import { ManageIndicatorComponent } from './manage-indicator.component';
 
-describe('EditIndicatorComponent', () => {
-  let component: EditIndicatorComponent;
-  let fixture: ComponentFixture<EditIndicatorComponent>;
+describe('ManageIndicatorComponent', () => {
+  let component: ManageIndicatorComponent;
+  let fixture: ComponentFixture<ManageIndicatorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditIndicatorComponent ]
+      declarations: [ ManageIndicatorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditIndicatorComponent);
+    fixture = TestBed.createComponent(ManageIndicatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

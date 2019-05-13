@@ -7,16 +7,14 @@ import * as moment from 'moment';
 @Injectable()
 export class DatabaseService {
 
-  constructor(private ngZone: NgZone) {
-
-  }
+  constructor(private ngZone: NgZone) { }
 
   private dbList = {
     sqlServer: {
-        name: 'Microsoft SQL Server',
-        order: 2,
-        script: require('./db-connectors/sql-server'),
-        defaultPort: 1433
+      name: 'Microsoft SQL Server',
+      order: 2,
+      script: require('./db-connectors/sql-server'),
+      defaultPort: 1433
     },
     azureSql: {
       name: 'Azure SQL',
@@ -43,16 +41,16 @@ export class DatabaseService {
       defaultPort: 5432
     },
     db2: {
-        name: 'IBM DB2',
-        order: 8,
-        script: require('./db-connectors/db2'),
-        defaultPort: 50001
+      name: 'IBM DB2',
+      order: 8,
+      script: require('./db-connectors/db2'),
+      defaultPort: 50001
     },
     mariadb: {
-        name: 'MariaDB',
-        order: 7,
-        script: require('./db-connectors/maria-db'),
-        defaultPort: 3306
+      name: 'MariaDB',
+      order: 7,
+      script: require('./db-connectors/maria-db'),
+      defaultPort: 3306
     },
     mongodb: {
       name: 'MongoDB',
@@ -61,16 +59,16 @@ export class DatabaseService {
       defaultPort: 27017
     },
     sybase: {
-        name: 'SAP ASE / Sybase',
-        order: 6,
-        script: require('./db-connectors/sybase'),
-        defaultPort: 5000
+      name: 'SAP ASE / Sybase',
+      order: 6,
+      script: require('./db-connectors/sybase'),
+      defaultPort: 5000
     },
     firebird: {
-        name: 'Firebird',
-        order: 9,
-        script: require('./db-connectors/firebird'),
-        defaultPort: 3050
+      name: 'Firebird',
+      order: 9,
+      script: require('./db-connectors/firebird'),
+      defaultPort: 3050
     }
   };
 
@@ -84,7 +82,6 @@ export class DatabaseService {
       }
       let queriesRun = [];
       let singleQuery;
-
       if (typeof queries === 'string') {
         singleQuery = true;
         queriesRun = [queries];
@@ -102,7 +99,6 @@ export class DatabaseService {
           singleQuery = true;
           queriesRun = [queries.query];
           queries = [queries];
-
         }
       }
 
@@ -115,8 +111,6 @@ export class DatabaseService {
           for (let i = 0; i < data.length; i++) {
             if (!(data[i] instanceof Error)) {
               const indicatorId = queries[i].indicatorId;
-
-
               const numberOfRows = data[i].rows.length ? data[i].rows.length : 0;
               const formatted = this.format(data[i], options.indicators, indicatorId);
               const numberOfInvalidRows = numberOfRows - data[i].rows.length;
@@ -130,7 +124,6 @@ export class DatabaseService {
             }
           }
         }
-
         if (singleQuery) {
           data = data[0];
         }
@@ -138,7 +131,6 @@ export class DatabaseService {
           if (data instanceof Error) {
             observer.error(data.message);
           }
-
           observer.next(data);
         });
       });
@@ -157,12 +149,12 @@ export class DatabaseService {
       }
 
       this.dbList[type].script.testConnection(credentials, options, (err, data) => {
-        if (err) {
-          return observer.error(err.message || err);
-        }
-
         this.ngZone.run(() => {
-          observer.next('Connection Established');
+          if (err) {
+            return observer.error(err.message || err);
+          } else {
+            observer.next('Connection Established');
+          }
         });
       });
 
@@ -176,23 +168,16 @@ export class DatabaseService {
     if (!data.rows.length) {
       return [];
     }
-
     const cols = data.columns;
     const rows = data.rows;
-
     indicators = this.pivotIndicators(indicators);
     if (!indicators[indicatorId]) {
       return [];
     }
-
-
     data = this.findColumnsAndSanitize(data);
-
-
     if (typeof data.parsedColumns.valueColumn === 'undefined' || typeof data.parsedColumns.dateColumn === 'undefined') {
       return new Error(`'value' and 'date' columns are mandatory`);
     }
-
     data = this.orderbyIdAndSanitize(data, indicators, indicatorId);
     data = this.pivotData(data);
 
@@ -268,11 +253,11 @@ export class DatabaseService {
     for (let i = 0; i < data.rows.length; i++) {
 
       // detects invalid rows
-      //[Sat] if date column is falsey value (null, undefined), or it's an invalid date or value column is not a number
-      if (!data.rows[i][dateColumn] || !this.isValidDate(new Date(data.rows[i][dateColumn])) || 
-          typeof data.rows[i][valueColumn] !== 'number' || isNaN(data.rows[i][valueColumn])) {
-          toSanitize.push(i);
-          continue;
+      // [Sat] if date column is falsey value (null, undefined), or it's an invalid date or value column is not a number
+      if (!data.rows[i][dateColumn] || !this.isValidDate(new Date(data.rows[i][dateColumn])) ||
+        typeof data.rows[i][valueColumn] !== 'number' || isNaN(data.rows[i][valueColumn])) {
+        toSanitize.push(i);
+        continue;
       }
 
       // extract dimensions
@@ -476,7 +461,4 @@ export class DatabaseService {
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());
     return (Math.round(timeDiff / (1000 * 3600 * 24)));
   };
-
-
-
 }
