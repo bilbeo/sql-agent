@@ -69,14 +69,22 @@
               <td class="label">Password</td>
               <td class="value">**********</td>
             </tr>
+            <tr>
+              <td class="label">Auto Pushing</td>
+              <td class="value capitalize">{{credentials.autoPushing}}</td>
+            </tr>
           </table>
+          <span *ngIf="localWorkspaceData.lastQueryDate" class="push-info">Last auto-push was on
+            {{localWorkspaceData.lastQueryDate | date : 'medium'}}</span>
         </div>
       </div>
     </div>
     <div class="right-side">
       <div class="add-indicator">
-        <div >
-          <app-manage-indicator [editMode]="indicatorEditMode" [datasource]="datasource" (datasourceChange)="onDatasourceUpdated($event)" [localWorkspaceData]="localWorkspaceData" [workspace]="workspace"  [indicatorData]="selectedIndicator">
+        <div>
+          <app-manage-indicator [editMode]="indicatorEditMode" [datasource]="datasource"
+            (datasourceChange)="onDatasourceUpdated($event)" [localWorkspaceData]="localWorkspaceData"
+            [workspace]="workspace" [indicatorData]="selectedIndicator">
           </app-manage-indicator>
         </div>
       </div>

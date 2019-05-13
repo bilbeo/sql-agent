@@ -51,7 +51,7 @@ export class WorkspaceItemComponent implements OnInit {
           console.log(err);
         });
 
-        this.selectedIndicator = {};
+    this.selectedIndicator = {};
   }
 
   getDetailsFromLocalStore() {
@@ -88,7 +88,7 @@ export class WorkspaceItemComponent implements OnInit {
     this.datasource = newDatasouceData.datasource;
     // when an indicator is created/updated, we want it to be the selected one
     this.selectedIndicator = newDatasouceData.indicator;
-   
+
   }
 
   toggleWorkspaceEdit(showEdit: boolean) {

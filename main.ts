@@ -1,9 +1,9 @@
 import { app, BrowserWindow, screen, Menu, Tray, nativeImage, dialog } from 'electron';
-const { autoUpdater } = require("electron-updater");
+const { autoUpdater } = require('electron-updater');
 import * as path from 'path';
 import * as url from 'url';
 import * as AutoLaunch from 'auto-launch';
-import * as tray from "./tray";
+import * as tray from './tray';
 
 // checking for app newer version
 function checkForUpdates() {
@@ -23,12 +23,16 @@ function checkForUpdates() {
     });
   });
   autoUpdater.on('error', message => {
-    console.error('There was a problem updating the application')
-    console.error(message)
+    console.error('There was a problem updating the application');
+    console.error(message);
   });
 
   autoUpdater.checkForUpdatesAndNotify();
 }
+
+let win, serve;
+const args = process.argv.slice(1);
+serve = args.some(val => val === '--serve');
 
 // auto launch on OS startup, skipped in development
 function enableAutoLaunch() {
@@ -56,13 +60,11 @@ function enableAutoLaunch() {
       autoLauncher.enable();
     })
     .catch(function (err) {
-      console.log("err", err);
+      console.log('err', err);
     });
   }
 
-let win, serve;
-const args = process.argv.slice(1);
-serve = args.some(val => val === '--serve');
+
 
 function createWindow() {
 
@@ -113,11 +115,11 @@ try {
   const isFirstInstance = app.requestSingleInstanceLock();
 
   if (!isFirstInstance) {
-    console.log("not the first instance");
+    console.log('not the first instance');
     app.quit();
   } else {
     app.on('second-instance', (event, commandLine, workingDirectory) => {
-      console.log("second instance")
+      console.log('second instance');
       // Someone tried to run a second instance, we should focus our window.
       if (win) {
         if (!win.isVisible()) {
@@ -125,7 +127,7 @@ try {
         }
         win.focus();
       }
-    })
+    });
 
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.

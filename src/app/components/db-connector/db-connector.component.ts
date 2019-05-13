@@ -24,6 +24,8 @@ export class DbConnectorComponent implements OnInit {
   connectInProgress: boolean;
   credentials;
   errMessage: string;
+  autoPushOptions: Array<any>;
+  autoPushHint: string;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +35,7 @@ export class DbConnectorComponent implements OnInit {
 
   ngOnInit() {
     this.getDbTypes();
+    this.autoPushHint = 'Allow Bilbeo SQL Agent to connect and query your database on a regular basis as per the selected frequency';
   }
 
   initDbForm() {
@@ -43,7 +46,28 @@ export class DbConnectorComponent implements OnInit {
       port: [this.credentials.port || this.selectedDb.port, Validators.required],
       user: [this.credentials.user || ''],
       dbPassword: [this.credentials.password || ''],
+      autoPushing: [this.credentials.autoPushing || '']
     });
+
+    this.autoPushOptions = [
+      {
+        label: 'No Automatic Push',
+        value: 'none'
+      },
+      {
+        label: 'Daily (every 24 hours)',
+        value: '24h'
+      },
+      {
+        label: 'Twice Daily (every 12 hours)',
+        value: '12h'
+      },
+      {
+        label: 'Four Times Daily (every 6 hours) ',
+        value: '6h'
+      }
+    ];
+
     if (this.credentials.type) {
       this.selectedDb = this.allDbs.find((db) => {
         return db.key === this.credentials.type;
@@ -94,7 +118,8 @@ export class DbConnectorComponent implements OnInit {
       db: this.dbForm.controls['dbName'].value,
       user: this.dbForm.controls['user'].value ? this.dbForm.controls['user'].value : null,
       password: this.dbForm.controls['user'].value ? this.dbForm.controls['dbPassword'].value : null,
-      type: this.selectedDb.key
+      type: this.selectedDb.key,
+      autoPushing: this.dbForm.controls['autoPushing'].value ? this.dbForm.controls['autoPushing'].value : 'none'
     };
     this.connectInProgress = true;
 
@@ -105,7 +130,7 @@ export class DbConnectorComponent implements OnInit {
           this.message = res;
           this.dbConnected = true;
           this.saveCredentials(credentials);
-         this.closePage();
+          this.closePage();
         },
         (errMessage) => {
           this.connectInProgress = false;
@@ -115,16 +140,16 @@ export class DbConnectorComponent implements OnInit {
   }
 
   saveCredentials(credentials) {
-    // save the credentials in app local storage if the user has not unchecked save checkbox
-    const workspaceData = {
-      id: this.workspace.id,
-      credentials: credentials,
-      queries: []
-    };
-
+    // save the credentials in app local storage
     if (!this.sharedService.getFromStorage('workspaces')) {
       this.sharedService.setInStorage('workspaces', {});
     }
+    const existingLocalData = this.sharedService.getFromStorage(`workspaces.${this.workspace.id}`);
+    const workspaceData = {
+      id: this.workspace.id,
+      credentials: credentials,
+      queries: (existingLocalData && existingLocalData.queries) ? existingLocalData.queries : []
+    };
     this.sharedService.setInStorage(`workspaces.${this.workspace.id}`, workspaceData);
     this.credentials = credentials;
     this.localWorkspaceData = {

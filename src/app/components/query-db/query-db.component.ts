@@ -34,7 +34,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
   requestInProgress: boolean;
 
   constructor(
-    private databaseServce: DatabaseService,
+    private databaseService: DatabaseService,
     private sharedService: SharedService,
     private workspaceService: WorkspaceService,
     private userService: UserService,
@@ -96,7 +96,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
         query: this.queryString
       };
       this.requestInProgress = true;
-      this.databaseServce.executeQueries(this.credentials.type, this.credentials, queryObject, options)
+      this.databaseService.executeQueries(this.credentials.type, this.credentials, queryObject, options)
         .subscribe(
           (outputResult) => {
             if (!(outputResult instanceof Error)) {
@@ -153,8 +153,12 @@ export class QueryDbComponent implements OnInit, OnChanges {
 
       // prepare the parameters to be sent in updateWorkspace
       const json = {
-        KPIs: this.dbOutput['formatted']
+        KPIs: []
       };
+      this.dbOutput['formatted'].forEach((formattedItem) => {
+        json.KPIs.push(formattedItem);
+      });
+
       const params = {};
       params['updatePartial'] = true;
       params['updateMode'] = 'replace';
