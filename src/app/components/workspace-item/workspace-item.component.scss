@@ -112,12 +112,14 @@
       
       .label {
         font-weight: bold;
-        font-size: 12px;
+        font-size: 15px;
         padding-right: 5px;
       }
       
       .value {
-        font-size: 10px;
+        font-size: 14px;
+        font-style: italic;
+        color: rgb(97, 94, 94);
       }
       
       tr {

@@ -4,6 +4,7 @@ import { SharedService } from '../../providers/shared.service';
 import { AlertComponent } from '../alert/alert.component';
 import { MatDialog } from '@angular/material';
 import { MatStepper } from '@angular/material/stepper';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-manage-indicator',
   templateUrl: './manage-indicator.component.html',
@@ -17,6 +18,7 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
   @Input() editMode;
   @Output() datasourceChange = new EventEmitter();
   @ViewChild('stepper') stepper: MatStepper;
+  indicatorForm: FormGroup;
   unitGroups;
   directionOptions;
   newIndicator;
@@ -26,7 +28,8 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
   constructor(
     private datasourceService: DatasourceService,
     private sharedService: SharedService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -86,6 +89,9 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
       unit: this.unitGroups[0].items[0],
       atomicUpdate: this.indicatorData.atomicUpdate ? '' + this.indicatorData.atomicUpdate : 'false',
     };
+    this.indicatorForm = this.formBuilder.group({
+      name: [this.newIndicator.name, Validators.required]
+    });
     // edit case
     if (this.indicatorData && this.indicatorData.valueSpec) {
       // set the correct unit
@@ -100,6 +106,9 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
   }
 
   addIndicator() {
+    if (!this.indicatorForm.valid) {
+      return;
+    }
     // do not overwrite the initial datasource input before saving
     const datasource = JSON.parse(JSON.stringify(this.datasource));
     datasource.indicators.push(this.formatKPIBeforeSave(this.newIndicator));
@@ -125,6 +134,9 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
   }
 
   updateIndicator() {
+    if (!this.indicatorForm.valid) {
+      return;
+    }
     // do not overwrite the initial datasource input before saving
     const datasource = JSON.parse(JSON.stringify(this.datasource));
     const indicatorIndex = datasource.indicators.findIndex((indicator) => {
@@ -213,8 +225,10 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
             kpiToUpdate.snapshot = !kpiToUpdate[prop];
             break;
           case 'name':
-            kpiToUpdate.nameI18N = { 'en_GB': kpiToUpdate[prop] };
-            kpiToUpdate.publicID = kpiToUpdate[prop].toLowerCase();
+            const nameValue = this.indicatorForm.get('name').value;
+            kpiToUpdate.name = nameValue;
+            kpiToUpdate.nameI18N = { 'en_GB': nameValue };
+            kpiToUpdate.publicID = nameValue.toLowerCase();
             break;
           case 'information':
             kpiToUpdate.information.descriptionI18N = { 'en_GB': kpiToUpdate[prop].description };

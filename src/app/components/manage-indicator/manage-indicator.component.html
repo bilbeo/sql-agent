@@ -4,15 +4,17 @@
         <button  mat-flat-button color="warn" (click)="removeIndicator()"> Remove</button>
     </div>
 
-  <mat-horizontal-stepper [linear]="isLinear" #stepper *ngIf="newIndicator" #stepper>
+  <mat-vertical-stepper linear="true" #stepper *ngIf="newIndicator" #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon svgIcon="done-icon"></mat-icon>
     </ng-template>
-    <mat-step>
+    <mat-step [stepControl]="indicatorForm">
       <ng-template matStepLabel>Name your KPI</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="KPI Name" [(ngModel)]="newIndicator.name">
-      </mat-form-field>
+      <form [formGroup]="indicatorForm">
+        <mat-form-field>
+          <input matInput placeholder="KPI Name" formControlName="name" required>
+        </mat-form-field>
+      </form>
       <div>
         <button mat-flat-button color="primary" matStepperNext>Next</button>
       </div>
@@ -130,9 +132,9 @@
       <div class="margin-top-10">
         <button mat-stroked-button matStepperPrevious>Back</button>
         <button *ngIf="!editMode" mat-flat-button color="primary" (click)="addIndicator()" class="left-margin"> Save </button>
-        <button *ngIf="editMode" mat-flat-button color="primary" matStepperNext class="left-margin right-margin">Next</button>
+        <button *ngIf="editMode" mat-stroked-button color="primary" matStepperNext class="left-margin right-margin">Next</button>
 
-        <button *ngIf="editMode" mat-stroked-button color="primary" (click)="updateIndicator()" class="left-margin"> Update </button>
+        <button *ngIf="editMode" mat-flat-button color="primary" (click)="updateIndicator()" class="left-margin"> Update </button>
       </div>
     </mat-step>
 
@@ -148,5 +150,5 @@
       </div>
     </mat-step>
 
-  </mat-horizontal-stepper>
+  </mat-vertical-stepper>
 </div>
