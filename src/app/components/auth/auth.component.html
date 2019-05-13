@@ -26,4 +26,10 @@
     </div>
 
   </div>
+
+  <div class="cron-info" *ngIf="!isOnline">
+    <span class="offline-message">
+      <mat-icon svgIcon="offline-icon"></mat-icon>
+    </span>
+  </div>
 </div>
