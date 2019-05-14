@@ -26,6 +26,7 @@ export class DbConnectorComponent implements OnInit {
   errMessage: string;
   autoPushOptions: Array<any>;
   autoPushHint: string;
+  userId;
 
   constructor(
     private fb: FormBuilder,
@@ -35,6 +36,7 @@ export class DbConnectorComponent implements OnInit {
 
   ngOnInit() {
     this.getDbTypes();
+    this.userId = this.sharedService.getFromStorage('userId');
     this.autoPushHint = 'Allow Bilbeo SQL Agent to connect and query your database on a regular basis as per the selected frequency';
   }
 
@@ -147,6 +149,7 @@ export class DbConnectorComponent implements OnInit {
     const existingLocalData = this.sharedService.getFromStorage(`workspaces.${this.workspace.id}`);
     const workspaceData = {
       id: this.workspace.id,
+      userId: this.userId,
       credentials: credentials,
       queries: (existingLocalData && existingLocalData.queries) ? existingLocalData.queries : []
     };

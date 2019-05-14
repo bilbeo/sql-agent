@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WorkspaceService } from '../../providers/workspace.service';
 import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { SharedService } from '../../providers/shared.service';
 import { DatasourceService } from '../../providers/datasource.service';
 import { Datasource } from '../../interfaces/datasource';
 import { Workspace } from '../../interfaces/workspace';
-import { Server } from 'tls';
 import { MatDialog } from '@angular/material';
 import { AlertComponent } from '../alert/alert.component';
 

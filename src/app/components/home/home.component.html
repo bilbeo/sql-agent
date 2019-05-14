@@ -21,10 +21,11 @@
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>
-  <div class="cron-info" *ngIf="cronInProgress">
+  <div class="cron-info" *ngIf="cronInProgress || cronCheckInProgress">
     <div class="flex">
       <mat-spinner [diameter]="20"></mat-spinner>
-      <span>Auto Pushing</span>
+      <span *ngIf="cronInProgress">Auto Pushing</span>
+      <span *ngIf="cronCheckInProgress">Checking For Auto Pushing</span>
     </div>
   </div>
   <div class="cron-info" *ngIf="!isOnline">
