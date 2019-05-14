@@ -117,7 +117,10 @@ export class WorkspaceService {
     return this.http.get(this.baseUrl + `/api/db/connection/types`, httpOptions)
       .pipe(
         map((result) => {
-          return { ...result['types'] };
+          const filteredTypes = result['types'].filter((type) => {
+            return (type.key !== 'db2' && type.key !== 'oracle');
+          });
+          return filteredTypes;
         }),
         catchError((error: HttpErrorResponse) => {
           return throwError(error.error.message || error.error);

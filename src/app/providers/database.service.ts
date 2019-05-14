@@ -40,12 +40,12 @@ export class DatabaseService {
       script: require('./db-connectors/postgre-sql'),
       defaultPort: 5432
     },
-    db2: {
-      name: 'IBM DB2',
-      order: 8,
-      script: require('./db-connectors/db2'),
-      defaultPort: 50001
-    },
+    // db2: {
+    //   name: 'IBM DB2',
+    //   order: 8,
+    //   script: require('./db-connectors/db2'),
+    //   defaultPort: 50001
+    // },
     mariadb: {
       name: 'MariaDB',
       order: 7,
