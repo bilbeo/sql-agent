@@ -260,4 +260,7 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
     return kpiToUpdate;
   }
 
+  onPreviousStepClick(event){
+    this.stepper.previous();
+  }
 }

@@ -141,16 +141,16 @@
       <ng-template matStepLabel>Query your database</ng-template>
       <div class="query-tool" *ngIf="queryIndicator">
         <app-query-db [queryIndicator]="queryIndicator" [localWorkspaceData]="localWorkspaceData"
-          [datasource]="datasource" [workspaceId]="workspace.id"></app-query-db>
+          [datasource]="datasource" [workspaceId]="workspace.id" (previousStepClick)="onPreviousStepClick($event)"></app-query-db>
       </div>
 
       <div class="query-tool" *ngIf="!queryIndicator">
           <h4>Create an indicator or select from existing ones to query your database</h4>
         </div>
 
-      <div class="margin-top-10">
+      <!-- <div class="margin-top-10">
         <button mat-stroked-button matStepperPrevious>Back</button>
-      </div>
+      </div> -->
     </mat-step>
 
   </mat-vertical-stepper>
