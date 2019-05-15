@@ -31,9 +31,11 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getUser();
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
-      setTimeout(() => {
-        this.getUser();
-      }, 500);
+      if (isOnlineRes) {
+        setTimeout(() => {
+          this.getUser();
+        }, 500);
+      }
     });
   }
 
@@ -56,8 +58,9 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
     this.workspaceService.getDesktopWorkspaces()
       .subscribe(
         (res) => {
-          this.loading = false;
           this.workspaces = res;
+          this.checkForUselessLocalData();
+          this.loading = false;
         },
         (err) => {
           this.loading = false;
@@ -117,6 +120,34 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
       data: { title: title, message: message, cancelButtonText: cancelText, confirmButtonText: confirmText }
     });
     return dialogRef;
+  }
+
+  checkForUselessLocalData() {
+    if (this.workspaces.length) {
+      const userWorkspaces = [];
+      const allLocalWorkspaceData = this.sharedService.getFromStorage('workspaces');
+      for (const key in allLocalWorkspaceData) {
+        if (allLocalWorkspaceData.hasOwnProperty(key)) {
+          const item = allLocalWorkspaceData[key];
+          // filter autoPush enabled workspaces of the subject user
+          if (item.userId === this.user._id) {
+            userWorkspaces.push(item);
+          }
+        }
+      }
+      // filter those items that are not found in received workspaces
+      const redundant = userWorkspaces.filter((item) => {
+        return !this.workspaces.find((ws) => {
+          return ws.id === item.id;
+        });
+      });
+      if (redundant && redundant.length) {
+        redundant.forEach((workspaceLocalData) => {
+          delete allLocalWorkspaceData[workspaceLocalData.id];
+        });
+        this.sharedService.setInStorage('workspaces', allLocalWorkspaceData);
+      }
+    }
   }
 
   ngOnDestroy() {

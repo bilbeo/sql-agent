@@ -42,6 +42,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.cronCheckInProgress = false;
       }
     });
+    this.isOnline = this.sharedService.getConnectionStatus();
+    if (this.isOnline) {
+      this.getUserDetails();
+    }
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
       this.isOnline = isOnlineRes;
       if (!this.user && isOnlineRes) {
@@ -79,5 +83,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cronSubscription.unsubscribe();
     this.cronService.stopCron();
     this.connectionSubs.unsubscribe();
+    this.sharedService.removeConnectionListeners();
   }
 }

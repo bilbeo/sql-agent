@@ -27,6 +27,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+    this.isOnline = this.sharedService.getConnectionStatus();
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
       this.isOnline = isOnlineRes;
     });
@@ -60,5 +61,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.connectionSubs.unsubscribe();
+    this.sharedService.removeConnectionListeners();
   }
 }

@@ -42,8 +42,8 @@ export class SharedService {
 
   getConnectionStatus() {
     this.isOnline = window.navigator.onLine;
-    this.emitConnectionStatus(this.isOnline);
     this.monitorConnection();
+    return window.navigator.onLine;
   }
 
   private offlineListener() {
