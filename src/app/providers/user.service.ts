@@ -45,7 +45,6 @@ export class UserService {
       this.userToken = null;
       this.sharedService.removeFromStorage('userId');
       this.sharedService.removeFromStorage('token');
-
       observer.next('Logged out!');
       observer.complete();
     });

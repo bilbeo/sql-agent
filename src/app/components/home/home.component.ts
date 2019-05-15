@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         (user) => {
           this.user = user;
-          if(!this.cronService.cronJob){
+          if (!this.cronService.cronJob) {
             this.cronService.initCron();
           }
         },

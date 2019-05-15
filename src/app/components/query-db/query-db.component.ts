@@ -22,6 +22,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
   @Input() datasource;
   @Input() workspaceId;
   @Output() previousStepClick = new EventEmitter();
+  @Output() workspaceUpdated = new EventEmitter();
   errMessage: string;
   successMessage: string;
   tableData: any;
@@ -173,8 +174,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
       this.workspaceService.updateWorkspace(params, json)
         .subscribe(
           (res) => {
+            this.workspaceUpdated.emit('updated');
             this.requestInProgress = false;
-            console.log(res);
             this.showAlert('Workspace updated. Visit the webpage to see the updated workspace', 'Visit');
           },
           (error) => {
@@ -198,7 +199,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
       });
   }
 
-  previousStep(){
+  previousStep() {
     this.previousStepClick.emit('go back');
   }
 }

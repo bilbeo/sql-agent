@@ -62,6 +62,7 @@ export class CronService {
   stopCron() {
     if (this.cronJob) {
       this.cronJob.stop();
+      this.cronJob = null;
     }
   }
 
@@ -76,7 +77,7 @@ export class CronService {
       if (allWorkspaces.hasOwnProperty(key)) {
         const item = allWorkspaces[key];
         // filter autoPush enabled workspaces of the subject user
-        if(item.userId === this.user._id && item.credentials && item.credentials.autoPushing && (item.credentials.autoPushing !== 'none')) {
+        if (item.userId === this.user._id && item.credentials && item.credentials.autoPushing && (item.credentials.autoPushing !== 'none')) {
           autoPushWorkspaces.push(item);
         }
       }
