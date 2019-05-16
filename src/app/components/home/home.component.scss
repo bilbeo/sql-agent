@@ -70,4 +70,13 @@
       }
     }
   }
+
+  .version {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 100;
+  }
 }

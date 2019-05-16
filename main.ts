@@ -4,9 +4,17 @@ import * as path from 'path';
 import * as url from 'url';
 import * as AutoLaunch from 'auto-launch';
 import * as tray from './tray';
+const logger = require("electron-log");
 
 // checking for app newer version
 function checkForUpdates() {
+  autoUpdater.on('update-available', (info) => {
+    logger.info("update available", info);
+  });
+
+  autoUpdater.on('checking-for-update', (info) => {
+    logger.info("Checking for updates");
+  });
 
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
     const dialogOpts = {
@@ -23,8 +31,8 @@ function checkForUpdates() {
     });
   });
   autoUpdater.on('error', message => {
-    console.error('There was a problem updating the application');
-    console.error(message);
+    logger.error('There was a problem updating the application');
+    logger.error(message);
   });
 
   autoUpdater.checkForUpdatesAndNotify();
@@ -60,9 +68,9 @@ function enableAutoLaunch() {
       autoLauncher.enable();
     })
     .catch(function (err) {
-      console.log('err', err);
+      logger.error('err', err);
     });
-  }
+}
 
 
 

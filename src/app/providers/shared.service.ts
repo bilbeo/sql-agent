@@ -6,7 +6,7 @@ const Store = require('electron-store');
 export class SharedService {
   isOnline;
   private storage;
-  private connectionStatusSubject = new ReplaySubject<any>();
+  private connectionStatusSubject = new Subject<any>();
   connectionStatusChange = this.connectionStatusSubject.asObservable();
 
   constructor() {

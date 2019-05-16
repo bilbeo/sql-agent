@@ -14,6 +14,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   message: string;
   connectionSubs;
   isOnline = true;
+  appVersion = require('electron').remote.app.getVersion();
 
   constructor(
     private sharedService: SharedService,

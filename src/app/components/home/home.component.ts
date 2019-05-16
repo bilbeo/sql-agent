@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   cronCheckInProgress;
   isOnline = true;
   connectionSubs;
+  appVersion = require('electron').remote.app.getVersion();
 
   constructor(
     private userService: UserService,
