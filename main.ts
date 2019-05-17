@@ -8,7 +8,17 @@ const logger = require("electron-log");
 
 // checking for app newer version
 function checkForUpdates() {
+  let isUpdateAvailable = false;
+  // autoupdater won't work correctly for unsigned dmg, 
+  // so we prompt to update manually if there is a newer release for mac
+  if (process.platform === 'darwin') {
+    setTimeout(() => {
+      win.webContents.send('check-for-update', 'Update failed!');
+    }, 5000);
+    return;
+  }
   autoUpdater.on('update-available', (info) => {
+    isUpdateAvailable = true;
     logger.info("update available", info);
   });
 
@@ -33,6 +43,10 @@ function checkForUpdates() {
   autoUpdater.on('error', message => {
     logger.error('There was a problem updating the application');
     logger.error(message);
+    if (isUpdateAvailable) {
+      win.webContents.send('check-for-update', 'Update failed!');
+    }
+
   });
 
   autoUpdater.checkForUpdatesAndNotify();
@@ -116,6 +130,8 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  checkForUpdates();
 }
 
 try {
@@ -142,7 +158,7 @@ try {
     // Some APIs can only be used after this event occurs.
     app.on('ready', () => {
       createWindow();
-      checkForUpdates();
+
       tray.initTray(win);
     });
 
