@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkForUpdates();
     this.electronService.ipcRenderer.on('check-for-update', (event, message) => {
       this.checkForUpdates();
     });

@@ -43,10 +43,10 @@ function checkForUpdates() {
   autoUpdater.on('error', message => {
     logger.error('There was a problem updating the application');
     logger.error(message);
+    // if there is an update but we hit an error while auto-updating, prompts the user to update manually
     if (isUpdateAvailable) {
       win.webContents.send('check-for-update', 'Update failed!');
     }
-
   });
 
   autoUpdater.checkForUpdatesAndNotify();
@@ -130,8 +130,6 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
-
-  checkForUpdates();
 }
 
 try {
@@ -158,7 +156,7 @@ try {
     // Some APIs can only be used after this event occurs.
     app.on('ready', () => {
       createWindow();
-
+      checkForUpdates();
       tray.initTray(win);
     });
 
