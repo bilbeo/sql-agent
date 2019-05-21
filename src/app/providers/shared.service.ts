@@ -48,11 +48,12 @@ export class SharedService {
     return window.navigator.onLine;
   }
 
+  // checking the latest version tag in github releases
   checkLatestVersion() {
     return new Promise((resolve, reject) => {
       got.head('https://github.com/bilbeo/sql-agent/releases/latest')
         .then(res => {
-          let latestTag = res.socket._httpMessage.path.split('/').pop();
+          const latestTag = res.socket._httpMessage.path.split('/').pop();
           return latestTag;
         })
         .then((tag) => {
@@ -62,23 +63,23 @@ export class SharedService {
           }
           const currentVersion = require('electron').remote.app.getVersion();
           const latestVersion = semver.clean(tag);
-          
+
           // Compare with current version.
           if (semver.lt(currentVersion, latestVersion)) {
             resolve({
               message: `There is a newer version (${tag}) of the app.`,
-              url: "https://github.com/bilbeo/sql-agent/releases/latest"
+              url: 'https://github.com/bilbeo/sql-agent/releases/latest'
             });
           } else {
-            reject('There is no newer version.');
+            reject('No new version.');
           }
         })
         .catch(err => {
           if (err) {
-            reject('Unable to get latest release tag from Github.')
+            reject('Unable to get latest release tag from Github.');
           }
         });
-    })
+    });
   }
 
   private offlineListener() {

@@ -4,29 +4,34 @@ import * as path from 'path';
 import * as url from 'url';
 import * as AutoLaunch from 'auto-launch';
 import * as tray from './tray';
-const logger = require("electron-log");
+const logger = require('electron-log');
+let win, serve;
+const args = process.argv.slice(1);
+serve = args.some(val => val === '--serve');
 
 // checking for app newer version
 function checkForUpdates() {
   let isUpdateAvailable = false;
-  // autoupdater won't work correctly for unsigned dmg, 
+  // autoupdater won't work correctly for unsigned dmg,
   // so we prompt to update manually if there is a newer release for mac
   if (process.platform === 'darwin') {
     setTimeout(() => {
+      // timeout is for app.component initialization
       win.webContents.send('check-for-update', 'Update failed!');
-    }, 5000);
+    }, 7000);
     return;
   }
   autoUpdater.on('update-available', (info) => {
     isUpdateAvailable = true;
-    logger.info("update available", info);
+    logger.info('Update is available', info);
   });
 
   autoUpdater.on('checking-for-update', (info) => {
-    logger.info("Checking for updates");
+    logger.info('Checking for updates');
   });
 
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    logger.info('Update was downloaded');
     const dialogOpts = {
       type: 'info',
       buttons: ['Restart', 'Later'],
@@ -51,10 +56,6 @@ function checkForUpdates() {
 
   autoUpdater.checkForUpdatesAndNotify();
 }
-
-let win, serve;
-const args = process.argv.slice(1);
-serve = args.some(val => val === '--serve');
 
 // auto launch on OS startup, skipped in development
 function enableAutoLaunch() {
@@ -85,8 +86,6 @@ function enableAutoLaunch() {
       logger.error('err', err);
     });
 }
-
-
 
 function createWindow() {
 
