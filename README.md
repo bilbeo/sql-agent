@@ -32,6 +32,6 @@ locally stored credentials for querying, after which the processed data will be 
 
 If you are on Windows, please download `.exe` format. The app will be automatically installed once you open the file and give the permission to run the app.
 
-If you are on Mac, please download `.dmg` format. (???Do not know what problems we may have here)
+If you are on Mac, please download `.dmg` format.
 
-If on Linux, you should select `.AppImage` format. In order to make it work, you will need to right-click on the file, select `Properties`, go to `Permissions` tab and check `Execute` checkbox. Then just open the file. Please avoid renaming or removing `.AppImage` file, the desktop app will stop working. You can move the file to your preferred location, but you will need to launch the app from there once to make it work smoothly.
+If on Linux, you should select `.AppImage` format. In order to make it work, you will need to right-click on the file, select `Properties`, go to `Permissions` tab and check `Execute` checkbox. Then just open the file. Please avoid renaming or removing `.AppImage` file, the desktop app will stop working. You can move the file to your preferred location, but you will need to launch the app from there once to make it work correctly afterwards.
