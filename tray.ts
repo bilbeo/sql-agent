@@ -41,6 +41,9 @@ function createTray(win) {
       }
     }
   ]);
+  tray.on('double-click', () => {
+    win.isVisible() ? win.hide() : win.show();
+  });
 
   tray.setToolTip('SQL Agent');
   tray.setContextMenu(contextMenu);

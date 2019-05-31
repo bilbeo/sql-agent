@@ -17,10 +17,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <div>
+    <div class="input-wrapper">
       <mat-form-field>
         <input matInput required type="text" formControlName="host" placeholder="Host">
       </mat-form-field>
+      <mat-icon svgIcon="help-icon" [matTooltip]="ipHint" matTooltipPosition="right"></mat-icon>
     </div>
     <div>
       <mat-form-field>
