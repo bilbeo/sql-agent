@@ -62,29 +62,48 @@ function enableAutoLaunch() {
   if (serve) {
     return;
   }
-  let config = {
-    name: app.getName(),
-    path: process.execPath,
-    isHidden: true
-  };
+  if (process.platform === 'linux') {
+    // On linux, we need to use an external lib, no built-in solution from electron
+    let config = {
+      name: app.getName(),
+      path: process.execPath,
+      isHidden: true
+    };
 
-  if (process.env.APPIMAGE) {
-    config = Object.assign(config, { path: process.env.APPIMAGE });
-  }
+    if (process.env.APPIMAGE) {
+      config = Object.assign(config, { path: process.env.APPIMAGE });
+    }
 
-  const autoLauncher = new AutoLaunch(config);
-  autoLauncher.enable();
+    const autoLauncher = new AutoLaunch(config);
+    autoLauncher.enable();
 
-  autoLauncher.isEnabled()
-    .then(function (isEnabled) {
-      if (isEnabled) {
-        return;
-      }
-      autoLauncher.enable();
-    })
-    .catch(function (err) {
-      logger.error('err', err);
+    autoLauncher.isEnabled()
+      .then(function (isEnabled) {
+        if (isEnabled) {
+          return;
+        }
+        autoLauncher.enable();
+      })
+      .catch(function (err) {
+        logger.error('err', err);
+      });
+  } else {
+    // if on windows or mac, use Electron built-in solution for auto-launch - setLoginItemSettings
+
+    // const appFolder = path.dirname(process.execPath)
+    // const updateExe = path.resolve(appFolder, '..', 'Update.exe')
+    const exeName = path.basename(process.execPath)
+
+    app.setLoginItemSettings({
+      openAtLogin: true,
+      openAsHidden: true,
+      path: `"${process.execPath}"`,
+      args: [
+        // '--processStart', `"${exeName}"`,
+        '--process-start-args', `'--hidden'`
+      ]
     });
+  }
 }
 
 function createWindow() {
