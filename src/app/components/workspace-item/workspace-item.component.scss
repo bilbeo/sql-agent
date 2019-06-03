@@ -66,33 +66,41 @@
         list-style: none;
         padding-left: 0;
         padding-right: 10px;
-        display: flex;
-        flex-wrap: wrap;
+      
 
         li {
-          flex: 1 1 25%;
-          // max-width: 50%;
+          color: #639ed2;
           cursor: pointer;
-          border: 1px solid #bcc2ce;
-          border-radius: 4px;
-
-          margin-bottom: 5px;
+          border: 1px solid #ebebeb;
+          border-bottom: 0;
           margin-right: 20px;
-          padding: 5px 10px;
-          text-align: center;
+          padding: 8px 10px;
+          font-size: 14px;
+
+          &:nth-child(odd) {
+            background: #f8f8f8;
+          }
+          &:last-child {
+            border-bottom: 1px solid #ebebeb;
+          }
+
+          &:hover {
+            background: #f2f2f4;
+            text-decoration: underline;
+          }
 
           &.selected {
-            background: #efefef;
+            background: #303640 !important;
+            color: white !important;
+            text-decoration: underline;
           }
-          &:hover {
-            background: #efefef;
-          }
-
+         
           &.add-button {
             flex: 2 1 100%;
             background: #01579b;
             color: white;
             margin-bottom: 10px;
+            text-align: center;
 
             border: 1px solid #01579b;
             &:hover {
