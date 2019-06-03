@@ -24,6 +24,7 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
   newIndicator;
   hints: any;
   queryIndicator;
+  isStepperCollapsed: boolean;
 
   constructor(
     private datasourceService: DatasourceService,
@@ -49,6 +50,7 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     const indicatorData: SimpleChange = changes.indicatorData;
     if (indicatorData && indicatorData.previousValue && (indicatorData.previousValue.name !== indicatorData.currentValue.name)) {
+      this.isStepperCollapsed = false;
       this.initIndicatorProperties();
       if (this.editMode) {
         // move to the query step
@@ -260,4 +262,11 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
     return kpiToUpdate;
   }
 
+  onPreviousStepClick(event) {
+    this.stepper.previous();
+  }
+
+  collapseStepper(event) {
+    this.isStepperCollapsed = true;
+  }
 }

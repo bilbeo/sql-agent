@@ -4,6 +4,9 @@ import { UserService } from '../../providers/user.service';
 import { WorkspaceService } from '../../providers/workspace.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedService } from '../../providers/shared.service';
+import { MatDialog } from '@angular/material';
+import { DatasourceService } from '../../providers/datasource.service';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-workspaces',
@@ -21,14 +24,18 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private router: Router,
     private route: ActivatedRoute,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService,
+    public dialog: MatDialog,
+    private datasourceService: DatasourceService) { }
 
   ngOnInit() {
     this.getUser();
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
-      setTimeout(() => {
-        this.getUser();
-      }, 500);
+      if (isOnlineRes) {
+        setTimeout(() => {
+          this.getUser();
+        }, 500);
+      }
     });
   }
 
@@ -51,8 +58,9 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
     this.workspaceService.getDesktopWorkspaces()
       .subscribe(
         (res) => {
-          this.loading = false;
           this.workspaces = res;
+          this.checkForUselessLocalData();
+          this.loading = false;
         },
         (err) => {
           this.loading = false;
@@ -67,6 +75,79 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
 
   newWorkspace() {
     this.router.navigate(['home/create-workspace']);
+  }
+
+  removeWorkspace(workspace) {
+    const dialog = this.openDialog('Delete Workspace', 'Are you sure you want to delete this workspace? All the details will be lost including KPIs', 'Cancel', 'Remove');
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.workspaceService.deleteWorkspace(workspace.id)
+          .subscribe(
+            (res) => {
+              this.removeLocalData(workspace);
+              this.datasourceService.removeDatasource(workspace.dataSourceType)
+                .subscribe(
+                  (removeRes) => {
+                    this.getWorkspaces();
+                  },
+                  (err) => {
+                    this.loading = false;
+                    console.log(err);
+                  }
+                );
+            },
+            (errMessage) => {
+              this.loading = false;
+              console.log(errMessage);
+            }
+          );
+      }
+    });
+  }
+
+  removeLocalData(workspace) {
+    const allLocalWorkspaceData = this.sharedService.getFromStorage('workspaces');
+    if (allLocalWorkspaceData[workspace.id]) {
+      delete allLocalWorkspaceData[workspace.id];
+      this.sharedService.setInStorage('workspaces', allLocalWorkspaceData);
+    }
+  }
+
+  openDialog(title, message, cancelText, confirmText) {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '600px',
+      data: { title: title, message: message, cancelButtonText: cancelText, confirmButtonText: confirmText }
+    });
+    return dialogRef;
+  }
+
+  checkForUselessLocalData() {
+    if (this.workspaces.length) {
+      const userWorkspaces = [];
+      const allLocalWorkspaceData = this.sharedService.getFromStorage('workspaces');
+      for (const key in allLocalWorkspaceData) {
+        if (allLocalWorkspaceData.hasOwnProperty(key)) {
+          const item = allLocalWorkspaceData[key];
+          // filter autoPush enabled workspaces of the subject user
+          if (item.userId === this.user._id) {
+            userWorkspaces.push(item);
+          }
+        }
+      }
+      // filter those items that are not found in received workspaces
+      const redundant = userWorkspaces.filter((item) => {
+        return !this.workspaces.find((ws) => {
+          return ws.id === item.id;
+        });
+      });
+      if (redundant && redundant.length) {
+        redundant.forEach((workspaceLocalData) => {
+          delete allLocalWorkspaceData[workspaceLocalData.id];
+        });
+        this.sharedService.setInStorage('workspaces', allLocalWorkspaceData);
+      }
+    }
   }
 
   ngOnDestroy() {

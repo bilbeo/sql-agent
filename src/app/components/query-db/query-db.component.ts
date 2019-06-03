@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
 
 import { DatabaseService } from '../../providers/database.service';
 import { SharedService } from '../../providers/shared.service';
@@ -21,6 +21,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
   @Input() localWorkspaceData;
   @Input() datasource;
   @Input() workspaceId;
+  @Output() previousStepClick = new EventEmitter();
+  @Output() workspaceUpdated = new EventEmitter();
   errMessage: string;
   successMessage: string;
   tableData: any;
@@ -56,6 +58,10 @@ export class QueryDbComponent implements OnInit, OnChanges {
 
   setQuery() {
     this.queryString = '';
+    this.successMessage = '';
+    this.errMessage = '';
+    this.dbOutput = null;
+    this.tableData = null;
     if (this.localWorkspaceData && this.localWorkspaceData.queries.length) {
       const localIndicatorData = this.localWorkspaceData.queries.find((queryItem) => {
         return queryItem.indicatorId === this.queryIndicator._id;
@@ -168,8 +174,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
       this.workspaceService.updateWorkspace(params, json)
         .subscribe(
           (res) => {
+            this.workspaceUpdated.emit('updated');
             this.requestInProgress = false;
-            console.log(res);
             this.showAlert('Workspace updated. Visit the webpage to see the updated workspace', 'Visit');
           },
           (error) => {
@@ -191,5 +197,9 @@ export class QueryDbComponent implements OnInit, OnChanges {
           shell.openExternal(this.user.webURL || 'https://www.bilbeo.net');
         }
       });
+  }
+
+  previousStep() {
+    this.previousStepClick.emit('go back');
   }
 }

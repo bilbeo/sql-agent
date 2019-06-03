@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
@@ -13,7 +13,7 @@ import { SharedService } from './providers/shared.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent {
   constructor(
     public electronService: ElectronService,
     private translate: TranslateService,
@@ -37,7 +37,6 @@ export class AppComponent implements OnDestroy {
     }
 
     this.registerIcons();
-    this.sharedService.getConnectionStatus();
   }
 
   registerIcons() {
@@ -48,10 +47,7 @@ export class AppComponent implements OnDestroy {
     this.iconRegistry.addSvgIcon('dropdown-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/drop_down_icon.svg'));
     this.iconRegistry.addSvgIcon('done-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/done_icon.svg'));
     this.iconRegistry.addSvgIcon('help-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/help_icon.svg'));
-    this.iconRegistry.addSvgIcon('offline-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/wifi_offline_icon.svg'));  
+    this.iconRegistry.addSvgIcon('offline-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/wifi_offline_icon.svg'));
   }
 
-  ngOnDestroy() {
-    this.sharedService.removeConnectionListeners();
-  }
 }

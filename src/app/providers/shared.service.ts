@@ -6,7 +6,7 @@ const Store = require('electron-store');
 export class SharedService {
   isOnline;
   private storage;
-  private connectionStatusSubject = new ReplaySubject<any>();
+  private connectionStatusSubject = new Subject<any>();
   connectionStatusChange = this.connectionStatusSubject.asObservable();
 
   constructor() {
@@ -42,8 +42,8 @@ export class SharedService {
 
   getConnectionStatus() {
     this.isOnline = window.navigator.onLine;
-    this.emitConnectionStatus(this.isOnline);
     this.monitorConnection();
+    return window.navigator.onLine;
   }
 
   private offlineListener() {

@@ -22,7 +22,7 @@
     align-items: center;
 
     mat-form-field {
-      width: 200px;
+      width: 250px;
     }
 
     .login-button {
@@ -55,5 +55,14 @@
         width: 40px;
       }
     }
+  }
+
+  .version {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 100;
   }
 }

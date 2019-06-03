@@ -4,7 +4,7 @@
   </div>
   <div class="main">
     <div>
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" (submit)="signin()">
         <div>
           <mat-form-field>
             <input matInput placeholder="Email address" type="text" formControlName="email">
@@ -15,11 +15,10 @@
             <input matInput placeholder="Password" type="password" formControlName="password">
           </mat-form-field>
         </div>
+        <div>
+          <button mat-stroked-button type="submit" class="login-button">Login</button>
+        </div>
       </form>
-      <div>
-        <button mat-stroked-button (click)="signin()" class="login-button">Login</button>
-      </div>
-
       <div *ngIf="message" class="error-message">
         <small>{{message}}</small>
       </div>
@@ -32,4 +31,5 @@
       <mat-icon svgIcon="offline-icon"></mat-icon>
     </span>
   </div>
+  <div class="version">Version: {{appVersion}}</div>
 </div>

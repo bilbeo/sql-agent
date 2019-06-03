@@ -18,8 +18,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   workspaces;
   cronSubscription: Subscription;
   cronInProgress;
+  cronCheckInProgress;
   isOnline = true;
   connectionSubs;
+  appVersion = require('electron').remote.app.getVersion();
 
   constructor(
     private userService: UserService,
@@ -28,23 +30,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.getUserDetails();
     // get notified when cron starts or finishes to inform the user
     this.cronSubscription = this.cronService.cronChangeObservable.subscribe((status) => {
-      if (status === 'starting') {
-        console.log('started');
-
-        this.cronInProgress = true;
-      } else {
-        console.log('finished');
+      if (status === 'checking') {
+        this.cronCheckInProgress = true;
         this.cronInProgress = false;
+      } else if (status === 'running') {
+        this.cronInProgress = true;
+        this.cronCheckInProgress = false;
+      } else {
+        this.cronInProgress = false;
+        this.cronCheckInProgress = false;
       }
     });
+    this.isOnline = this.sharedService.getConnectionStatus();
+    if (this.isOnline) {
+      this.getUserDetails();
+    }
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
       this.isOnline = isOnlineRes;
-      setTimeout(() => {
-        this.getUserDetails();
-      }, 500);
+      if (!this.user && isOnlineRes) {
+        setTimeout(() => {
+          this.getUserDetails();
+        }, 500);
+      }
     });
   }
 
@@ -53,7 +62,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         (user) => {
           this.user = user;
-          this.cronService.initCron();
+          if (!this.cronService.cronJob) {
+            this.cronService.initCron();
+          }
         },
         (err) => {
           this.message = err;
@@ -73,5 +84,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cronSubscription.unsubscribe();
     this.cronService.stopCron();
     this.connectionSubs.unsubscribe();
+    this.sharedService.removeConnectionListeners();
   }
 }

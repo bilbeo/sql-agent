@@ -1,3 +1,5 @@
+$inner-width: 360px;
+
 .container {
   height: 100%;
   display: flex;
@@ -5,25 +7,57 @@
   align-items: center;
 }
 
-.workspace-card {
-  padding: 8px 20px;
-  border: 1px solid #454a54;
-  border-radius: 3px;
+.workspace-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 15px;
-  cursor: pointer;
+  button {
+    display: none;
+    margin-left: 5px;
+    flex: 1 1 auto;
+    padding: 0;
+  }
 
   &:hover {
-    background: #373e4a;
+    button {
+      display: initial;
+    }
+  }
+
+  .workspace-card {
+    box-sizing: border-box;
+    flex: 0 1 $inner-width;
+    min-width: $inner-width;
+    max-width: $inner-width;
+    padding: 8px 20px;
+    border: 1px solid #454a54;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background: #373e4a;
+    }
   }
 }
 
 .workspaces-wrapper {
-  width: 360px;
+  width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  .create-button {
+    align-self: flex-start;
+    width: $inner-width;
+  }
+
   .full-width {
     width: 100%;
+    .inner-width {
+      display: inline-block;
+      width: $inner-width;
+    }
   }
 }

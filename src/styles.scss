@@ -94,7 +94,10 @@ body {
 .light-theme-wrapper .white-spinner .mat-progress-spinner circle, .light-theme-wrapper .white-spinner .mat-spinner circle {
   stroke:white !important;
 }
-
-// .mat-horizontal-stepper-header-container {
-//   width: 425px;
-// }
+// query-db.component
+.collapsed{
+  .mat-vertical-stepper-content {
+    visibility: hidden !important;
+    height: 0 !important;
+  }
+}

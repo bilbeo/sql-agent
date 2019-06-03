@@ -30,6 +30,15 @@
   overflow: auto;
 }
 
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  button{
+    margin-right:10px;
+  }
+}
+
 button {
   margin: 10px 0;
   &.align-right{

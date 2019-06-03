@@ -47,7 +47,7 @@ export class CronService {
     if (!this.cronJobInProgress) {
       const workspaces = this.findAutoPushWorkspaces();
       if (workspaces.length) {
-        this.emitCronChange('starting');
+        this.emitCronChange('checking');
         this.cronJobInProgress = true;
         async.eachSeries(workspaces, (workspace, callback) => {
           this.startAutoPush(workspace, callback);
@@ -62,6 +62,7 @@ export class CronService {
   stopCron() {
     if (this.cronJob) {
       this.cronJob.stop();
+      this.cronJob = null;
     }
   }
 
@@ -75,8 +76,8 @@ export class CronService {
     for (const key in allWorkspaces) {
       if (allWorkspaces.hasOwnProperty(key)) {
         const item = allWorkspaces[key];
-        // filter autoPush enabled workspaces
-        if (item.credentials && item.credentials.autoPushing && (item.credentials.autoPushing !== 'none')) {
+        // filter autoPush enabled workspaces of the subject user
+        if (item.userId === this.user._id && item.credentials && item.credentials.autoPushing && (item.credentials.autoPushing !== 'none')) {
           autoPushWorkspaces.push(item);
         }
       }
@@ -162,6 +163,7 @@ export class CronService {
   }
 
   private queryDB(workspace, callback) {
+    this.emitCronChange('running');
     const queries = [];
     workspace.queries.forEach((queryItem) => {
       queries.push({

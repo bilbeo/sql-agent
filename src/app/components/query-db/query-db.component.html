@@ -1,10 +1,5 @@
 <div class="header-flex">
   <h2>Query your database for KPI "{{queryIndicator.name}}"</h2>
-  <button mat-flat-button color="primary" (click)="queryDB()" [disabled]="!queryString"
-    class="spinner-button white-spinner">
-    <mat-spinner diameter="20" *ngIf="!querySucceded && requestInProgress"></mat-spinner>
-    <span>Run Query</span>
-  </button>
 </div>
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -74,6 +69,15 @@
   </mat-expansion-panel>
 </mat-accordion>
 <ace-editor class="ace-editor margin-bottom-10" [(text)]="queryString" mode="sql"></ace-editor>
+<div class="flex">
+    <button mat-stroked-button (click)="previousStep()">Back</button>
+    <button mat-flat-button color="primary" (click)="queryDB()" [disabled]="!queryString"
+      class="spinner-button white-spinner">
+      <mat-spinner diameter="20" *ngIf="!querySucceded && requestInProgress"></mat-spinner>
+      <span>Run Query</span>
+    </button>
+</div>
+
 <div *ngIf="errMessage" class="error-message">{{errMessage}}</div>
 <div *ngIf="successMessage" class="success-message margin-bottom-10">{{successMessage}}</div>
 <div *ngIf="tableData" [ngClass]="{'output-container' : tableData.rows.length > 0}">
@@ -96,6 +100,6 @@
 <button mat-flat-button color="primary" (click)="updateWorkspace()" *ngIf="dbOutput && querySucceded"
   class="align-right spinner-button white-spinner">
   <mat-spinner diameter="20" *ngIf="requestInProgress"></mat-spinner>
-  <span> Update Workspace </span>
+  <span> Save & Update Workspace </span>
 
 </button>
