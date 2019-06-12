@@ -5,8 +5,7 @@ import { AppConfig } from '../environments/environment';
 import dotenv from 'dotenv';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SharedService } from './providers/shared.service';
-// require('dotenv').config();
+
 
 @Component({
   selector: 'app-root',
@@ -19,7 +18,7 @@ export class AppComponent {
     private translate: TranslateService,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-    private sharedService: SharedService
+
   ) {
 
     this.translate.setDefaultLang('en');

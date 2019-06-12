@@ -39,6 +39,7 @@ import { DatasourceService } from './providers/datasource.service';
 import { DatabaseService } from './providers/database.service';
 import { HttpCacheInterceptor } from './providers/http-cache-interceptor';
 import { CronService } from './providers/cron.service';
+import { IntercomService } from './providers/intercom.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -85,6 +86,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     WorkspaceService,
     DatasourceService,
     CronService,
+    IntercomService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true }
   ],
   entryComponents: [AlertComponent],
