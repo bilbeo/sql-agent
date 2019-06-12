@@ -9,6 +9,7 @@ import { UserService } from '../../providers/user.service';
 import 'brace/mode/sql';
 import { DbCredentials } from '../../interfaces/db-credentials';
 import { MatSnackBar } from '@angular/material';
+import { IntercomService } from '../../providers/intercom.service';
 const shell = require('electron').shell;
 
 @Component({
@@ -40,7 +41,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
     private sharedService: SharedService,
     private workspaceService: WorkspaceService,
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private intercomService: IntercomService
   ) { }
 
   ngOnInit() {
@@ -130,9 +132,12 @@ export class QueryDbComponent implements OnInit, OnChanges {
               this.dateColumnIndex = this.tableData.columns.findIndex((colName) => {
                 return colName === 'date';
               });
+              this.intercomService.trackEvent("db querying succeeded", {
+                source: "sql-agent",
+              });
             } else {
               this.querySucceded = false;
-              this.errMessage = outputResult.message || 'Something went wrongquerying the database';
+              this.errMessage = outputResult.message || 'Something went wrong querying the database';
             }
             this.requestInProgress = false;
           },
@@ -140,6 +145,10 @@ export class QueryDbComponent implements OnInit, OnChanges {
             this.requestInProgress = false;
             this.querySucceded = false;
             this.errMessage = err;
+            this.intercomService.trackEvent("db querying failed", {
+              source: "sql-agent",
+              status: this.errMessage
+            });
           }
         );
     }

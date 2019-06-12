@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DatasourceService } from '../../providers/datasource.service';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../providers/user.service';
+import { IntercomService } from '../../providers/intercom.service';
 
 @Component({
   selector: 'app-create-workspace',
@@ -19,8 +20,9 @@ export class CreateWorkspaceComponent implements OnInit {
     private userService: UserService,
     private workspaceService: WorkspaceService,
     private datasourceService: DatasourceService,
+    private intercomService: IntercomService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.userService.getUser()
@@ -61,6 +63,10 @@ export class CreateWorkspaceComponent implements OnInit {
             .subscribe(
               (result) => {
                 console.log(result);
+                this.intercomService.trackEvent("created new workspace", {
+                  source: "sql-agent",
+                  workspaceName: this.workspaceData.workspaceName
+                });
                 this.router.navigate(['../']);
               },
               (errMessage) => {
