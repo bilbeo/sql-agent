@@ -26,6 +26,7 @@ export class DbConnectorComponent implements OnInit {
   errMessage: string;
   autoPushOptions: Array<any>;
   autoPushHint: string;
+  ipHint: string;
   userId;
 
   constructor(
@@ -38,6 +39,7 @@ export class DbConnectorComponent implements OnInit {
     this.getDbTypes();
     this.userId = this.sharedService.getFromStorage('userId');
     this.autoPushHint = 'Allow Bilbeo SQL Agent to connect and query your database on a regular basis as per the selected frequency';
+    this.ipHint = 'If your database is hosted locally, please type your local IP (e.g 127.0.0.1) or simply localhost';
   }
 
   initDbForm() {
@@ -48,7 +50,7 @@ export class DbConnectorComponent implements OnInit {
       port: [this.credentials.port || this.selectedDb.port, Validators.required],
       user: [this.credentials.user || ''],
       dbPassword: [this.credentials.password || ''],
-      autoPushing: [this.credentials.autoPushing || '']
+      autoPushing: [this.credentials.autoPushing || '24h']
     });
 
     this.autoPushOptions = [

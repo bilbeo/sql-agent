@@ -54,8 +54,10 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
       this.initIndicatorProperties();
       if (this.editMode) {
         // move to the query step
-        this.stepper.selectedIndex = 2;
         this.queryIndicator = this.indicatorData;
+        setTimeout(() => {
+          this.stepper.selectedIndex = 2;
+        }, 100);
       } else {
         this.queryIndicator = null;
         this.stepper.selectedIndex = 0;

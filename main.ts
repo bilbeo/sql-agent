@@ -116,10 +116,8 @@ function createWindow() {
       slashes: true
     }));
   }
-
   if (serve) {
     win.webContents.openDevTools();
-
   }
 
   // Emitted when the window is closed.
@@ -129,6 +127,15 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  // when app is launched on system startup, launch it as minimzed
+  const startMinimized = args.some(val => val === '--hidden');
+  if (startMinimized == true) {
+    win.hide();
+    logger.info('App is started by AutoLaunch');
+  } else {
+    logger.info('App is started by User');
+  }
 }
 
 try {

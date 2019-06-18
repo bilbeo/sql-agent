@@ -1,9 +1,9 @@
+<div class="back-button-wrapper">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon svgIcon="back-icon"></mat-icon>
+  </button>
+</div>
 <div class="container light-theme-wrapper">
-  <div>
-    <button mat-icon-button (click)="goBack()">
-      <mat-icon svgIcon="back-icon"></mat-icon>
-    </button>
-  </div>
   <!-- Step1: connect to DB -->
   <div *ngIf="(!localWorkspaceData || updateCredentialsMode) && workspace" class="db-connect-wrapper">
     <div class="db-connector">
