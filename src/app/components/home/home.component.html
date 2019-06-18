@@ -1,7 +1,10 @@
 <div class="container dark-theme-wrapper">
   <div *ngIf="user" class="topbar">
-    <!-- <img src="./assets/img/bilbeoNewSad.png" class="logo"> -->
-    <img [src]="user.logoURL" class="logo">
+    <div>
+      <img [src]="user.logoURL" class="logo">
+      <div class="version">{{appVersion}}</div>
+    </div>
+   
     <div class="text-right">
       <span> {{user.firstName}} {{user.lastName}}</span>
       <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -33,7 +36,7 @@
           <mat-icon svgIcon="offline-icon"></mat-icon>
         </span>
   </div>
-  <div class="version">Version: {{appVersion}}</div>
+  
 </div>
 
 <!-- <h1 class="title">

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject, ReplaySubject } from 'rxjs';
 const Store = require('electron-store');
+const got = (<any>window).require('got');
+const semver = (<any>window).require('semver');
 
 @Injectable()
 export class SharedService {
@@ -44,6 +46,40 @@ export class SharedService {
     this.isOnline = window.navigator.onLine;
     this.monitorConnection();
     return window.navigator.onLine;
+  }
+
+  // checking the latest version tag in github releases
+  checkLatestVersion() {
+    return new Promise((resolve, reject) => {
+      got.head('https://github.com/bilbeo/sql-agent/releases/latest')
+        .then(res => {
+          const latestTag = res.socket._httpMessage.path.split('/').pop();
+          return latestTag;
+        })
+        .then((tag) => {
+          // Check if tag is valid semver
+          if (!tag || !semver.valid(semver.clean(tag))) {
+            reject('Could not find a valid release tag.');
+          }
+          const currentVersion = require('electron').remote.app.getVersion();
+          const latestVersion = semver.clean(tag);
+
+          // Compare with current version.
+          if (semver.lt(currentVersion, latestVersion)) {
+            resolve({
+              message: `There is a newer version (${tag}) of the app.`,
+              url: 'https://github.com/bilbeo/sql-agent/releases/latest'
+            });
+          } else {
+            reject('No new version.');
+          }
+        })
+        .catch(err => {
+          if (err) {
+            reject('Unable to get latest release tag from Github.');
+          }
+        });
+    });
   }
 
   private offlineListener() {
