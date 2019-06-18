@@ -186,11 +186,19 @@ export class QueryDbComponent implements OnInit, OnChanges {
             this.workspaceUpdated.emit('updated');
             this.requestInProgress = false;
             this.showAlert('Workspace updated. Visit the webpage to see the updated workspace', 'Visit');
+
+            this.intercomService.trackEvent("updated a workspace", {
+              source: "sql-agent",
+            });
           },
           (error) => {
             this.requestInProgress = false;
             console.log(error);
             this.errMessage = error;
+            this.intercomService.trackEvent("failed to update a workspace", {
+              source: "sql-agent",
+              status: this.errMessage
+            });
           }
         );
     }
