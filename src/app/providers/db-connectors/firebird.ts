@@ -1,4 +1,3 @@
-// TODO: TO BE TESTED!!!!!
 const firebird = (<any>window).require('node-firebird');
 import * as async from 'async';
 

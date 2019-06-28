@@ -136,8 +136,8 @@ export class DbConnectorComponent implements OnInit {
           this.message = res;
           this.dbConnected = true;
           this.saveCredentials(credentials);
-          this.intercomService.trackEvent("connected his database", {
-            source: "sql-agent",
+          this.intercomService.trackEvent('connected his database', {
+            source: 'sql-agent',
             datbaseType: this.selectedDb.name
           });
           this.closePage();
@@ -145,8 +145,8 @@ export class DbConnectorComponent implements OnInit {
         (errMessage) => {
           this.connectInProgress = false;
           this.errMessage = errMessage || `Error when connecting to database`;
-          this.intercomService.trackEvent("failed to connect database", {
-            source: "sql-agent",
+          this.intercomService.trackEvent('failed to connect database', {
+            source: 'sql-agent',
             datbaseType: this.selectedDb.name,
             host: this.dbForm.controls['host'].value,
             status: this.errMessage

@@ -1,4 +1,3 @@
-// TODO: TO BE TESTED!!!!!
 const ibmdb = (<any>window).require('ibm_db');
 import * as async from 'async';
 

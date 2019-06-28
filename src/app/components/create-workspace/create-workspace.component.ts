@@ -63,8 +63,8 @@ export class CreateWorkspaceComponent implements OnInit {
             .subscribe(
               (result) => {
                 console.log(result);
-                this.intercomService.trackEvent("created new workspace", {
-                  source: "sql-agent",
+                this.intercomService.trackEvent('created new workspace', {
+                  source: 'sql-agent',
                   workspaceName: this.workspaceData.workspaceName
                 });
                 this.router.navigate(['../']);

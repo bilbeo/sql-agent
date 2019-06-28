@@ -32,6 +32,7 @@ function checkForUpdates() {
 
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
     logger.info('Update was downloaded');
+    win.webContents.send('app-update-success', 'Newer app release downloaded');
     const dialogOpts = {
       type: 'info',
       buttons: ['Restart', 'Later'],
@@ -46,10 +47,10 @@ function checkForUpdates() {
     });
   });
   autoUpdater.on('error', message => {
-    logger.error('There was a problem updating the application');
-    logger.error(message);
-    // if there is an update but we hit an error while auto-updating, prompts the user to update manually
+    // if there is an update but we hit an error while auto-updating, prompt the user to update manually
     if (isUpdateAvailable) {
+      logger.error('There was a problem updating the application');
+      logger.error(message);
       win.webContents.send('check-for-update', 'Update failed!');
     }
   });
@@ -130,7 +131,7 @@ function createWindow() {
 
   // when app is launched on system startup, launch it as minimzed
   const startMinimized = args.some(val => val === '--hidden');
-  if (startMinimized == true) {
+  if (startMinimized) {
     win.hide();
     logger.info('App is started by AutoLaunch');
   } else {

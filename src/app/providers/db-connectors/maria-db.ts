@@ -1,6 +1,4 @@
-// TODO: TO BE TESTED!!!!!
-// [SAT]  mysql module supports mariadb https://github.com/mysqljs/mysql/issues/1685
-
+// mysql module supports mariadb https://github.com/mysqljs/mysql/issues/1685
 // const client = (<any>window).require('mariasql');
 
 const client = (<any>window).require('mysql');

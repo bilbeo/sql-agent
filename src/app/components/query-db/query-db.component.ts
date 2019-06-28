@@ -132,8 +132,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
               this.dateColumnIndex = this.tableData.columns.findIndex((colName) => {
                 return colName === 'date';
               });
-              this.intercomService.trackEvent("db querying succeeded", {
-                source: "sql-agent",
+              this.intercomService.trackEvent('db querying succeeded', {
+                source: 'sql-agent',
               });
             } else {
               this.querySucceded = false;
@@ -145,8 +145,8 @@ export class QueryDbComponent implements OnInit, OnChanges {
             this.requestInProgress = false;
             this.querySucceded = false;
             this.errMessage = err;
-            this.intercomService.trackEvent("db querying failed", {
-              source: "sql-agent",
+            this.intercomService.trackEvent('db querying failed', {
+              source: 'sql-agent',
               status: this.errMessage
             });
           }
@@ -187,16 +187,16 @@ export class QueryDbComponent implements OnInit, OnChanges {
             this.requestInProgress = false;
             this.showAlert('Workspace updated. Visit the webpage to see the updated workspace', 'Visit');
 
-            this.intercomService.trackEvent("updated a workspace", {
-              source: "sql-agent",
+            this.intercomService.trackEvent('updated a workspace', {
+              source: 'sql-agent',
             });
           },
           (error) => {
             this.requestInProgress = false;
             console.log(error);
             this.errMessage = error;
-            this.intercomService.trackEvent("failed to update a workspace", {
-              source: "sql-agent",
+            this.intercomService.trackEvent('failed to update a workspace', {
+              source: 'sql-agent',
               status: this.errMessage
             });
           }

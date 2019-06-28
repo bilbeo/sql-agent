@@ -132,8 +132,8 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
           this.indicatorData = JSON.parse(JSON.stringify(this.datasource.indicators[lastIndex]));
           this.editMode = true;
           this.initIndicatorProperties();
-          this.intercomService.trackEvent("added a new KPI", {
-            source: "sql-agent",
+          this.intercomService.trackEvent('added a new KPI', {
+            source: 'sql-agent',
           });
         },
         (err) => {
@@ -162,8 +162,8 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
           });
           this.queryIndicator = this.datasource.indicators[indicatorIndex];
           this.stepper.next();
-          this.intercomService.trackEvent("updated a KPI", {
-            source: "sql-agent",
+          this.intercomService.trackEvent('updated a KPI', {
+            source: 'sql-agent',
           });
         },
         (err) => {
@@ -248,7 +248,6 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
             kpiToUpdate.information.hintI18N = { 'en_GB': kpiToUpdate[prop].hint };
             break;
           case 'aggregation': // set division
-            // TODO: confirm that this is the correct behaviour: changing the kpi formula,
             // when the aggregation is change (sum -> division: false, avg -> division: true)
             kpiToUpdate.division = (kpiToUpdate[prop] === 'avg') ? true : false;
             break;

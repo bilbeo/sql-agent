@@ -1,5 +1,3 @@
-
-// TODO: TO BE TESTED!!!!!
 const Sybase = (<any>window).require('sybase');
 import * as async from 'async';
 

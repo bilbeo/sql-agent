@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.getUserDetails();
         }, 500);
       }
-    }); 
+    });
   }
 
   getUserDetails() {
@@ -73,8 +73,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             name: this.user.firstName + ' ' + this.user.lastName,
             language_override: this.user.language.split('_')[0] || 'en',
             // without the below property, intercom widget is not shown
-            widget: {activator: "#IntercomDefaultWidget"}
-          }); 
+            widget: { activator: '#IntercomDefaultWidget' }
+          });
         },
         (err) => {
           this.message = err;
