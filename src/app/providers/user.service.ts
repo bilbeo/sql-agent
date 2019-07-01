@@ -4,10 +4,11 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { throwError, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../interfaces/user';
+import { AppConfig } from '../../environments/environment';
 
 @Injectable()
 export class UserService {
-  private baseUrl = process.env.BILBEO_SERVER;
+  private baseUrl;
   private userToken;
   user: User;
 
@@ -15,6 +16,11 @@ export class UserService {
     private sharedService: SharedService,
     private http: HttpClient) {
     this.userToken = this.sharedService.getFromStorage('token');
+    if(AppConfig['environment'] === 'PROD'){
+      this.baseUrl = AppConfig['server'];
+    } else {
+      this.baseUrl = process.env.BILBEO_SERVER;
+    }
   }
 
   signin(loginData) {
