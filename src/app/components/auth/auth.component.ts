@@ -3,6 +3,7 @@ import { SharedService } from '../../providers/shared.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../providers/user.service';
+import { IntercomService } from '../../providers/intercom.service';
 
 @Component({
   selector: 'app-auth',
@@ -20,7 +21,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private router: Router,
     private fb: FormBuilder,
-    private userService: UserService) { }
+    private userService: UserService,
+    private intercomService: IntercomService) { }
 
   ngOnInit() {
     this.checkUserAuthenticated();
@@ -32,6 +34,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
       this.isOnline = isOnlineRes;
     });
+    this.initIntercom();
   }
 
   checkUserAuthenticated() {
@@ -58,6 +61,10 @@ export class AuthComponent implements OnInit, OnDestroy {
       (errMessage) => {
         this.message = errMessage;
       });
+  }
+
+  initIntercom() {
+    this.intercomService.boot();
   }
 
   ngOnDestroy() {

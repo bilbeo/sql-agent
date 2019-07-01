@@ -253,7 +253,7 @@ export class DatabaseService {
     for (let i = 0; i < data.rows.length; i++) {
 
       // detects invalid rows
-      // [Sat] if date column is falsey value (null, undefined), or it's an invalid date or value column is not a number
+      // if date column is falsey (null, undefined), or it's an invalid date or value column is not a number
       if (!data.rows[i][dateColumn] || !this.isValidDate(new Date(data.rows[i][dateColumn])) ||
         typeof data.rows[i][valueColumn] !== 'number' || isNaN(data.rows[i][valueColumn])) {
         toSanitize.push(i);

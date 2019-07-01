@@ -4,6 +4,7 @@ import { DbCredentials } from '../../interfaces/db-credentials';
 import { SharedService } from '../../providers/shared.service';
 import { WorkspaceService } from '../../providers/workspace.service';
 import { DatabaseService } from '../../providers/database.service';
+import { IntercomService } from '../../providers/intercom.service';
 
 @Component({
   selector: 'app-db-connector',
@@ -33,7 +34,8 @@ export class DbConnectorComponent implements OnInit {
     private fb: FormBuilder,
     private databaseService: DatabaseService,
     private sharedService: SharedService,
-    private workspaceService: WorkspaceService) { }
+    private workspaceService: WorkspaceService,
+    private intercomService: IntercomService) { }
 
   ngOnInit() {
     this.getDbTypes();
@@ -134,11 +136,21 @@ export class DbConnectorComponent implements OnInit {
           this.message = res;
           this.dbConnected = true;
           this.saveCredentials(credentials);
+          this.intercomService.trackEvent('connected his database', {
+            source: 'sql-agent',
+            datbaseType: this.selectedDb.name
+          });
           this.closePage();
         },
         (errMessage) => {
           this.connectInProgress = false;
           this.errMessage = errMessage || `Error when connecting to database`;
+          this.intercomService.trackEvent('failed to connect database', {
+            source: 'sql-agent',
+            datbaseType: this.selectedDb.name,
+            host: this.dbForm.controls['host'].value,
+            status: this.errMessage
+          });
         }
       );
   }

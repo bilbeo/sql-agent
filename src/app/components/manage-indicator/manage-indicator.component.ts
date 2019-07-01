@@ -5,6 +5,7 @@ import { AlertComponent } from '../alert/alert.component';
 import { MatDialog } from '@angular/material';
 import { MatStepper } from '@angular/material/stepper';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { IntercomService } from '../../providers/intercom.service';
 @Component({
   selector: 'app-manage-indicator',
   templateUrl: './manage-indicator.component.html',
@@ -30,7 +31,8 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
     private datasourceService: DatasourceService,
     private sharedService: SharedService,
     public dialog: MatDialog,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private intercomService: IntercomService
   ) { }
 
   ngOnInit() {
@@ -130,6 +132,9 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
           this.indicatorData = JSON.parse(JSON.stringify(this.datasource.indicators[lastIndex]));
           this.editMode = true;
           this.initIndicatorProperties();
+          this.intercomService.trackEvent('added a new KPI', {
+            source: 'sql-agent',
+          });
         },
         (err) => {
           console.log(err);
@@ -157,6 +162,9 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
           });
           this.queryIndicator = this.datasource.indicators[indicatorIndex];
           this.stepper.next();
+          this.intercomService.trackEvent('updated a KPI', {
+            source: 'sql-agent',
+          });
         },
         (err) => {
           console.log(err);
@@ -240,7 +248,6 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
             kpiToUpdate.information.hintI18N = { 'en_GB': kpiToUpdate[prop].hint };
             break;
           case 'aggregation': // set division
-            // TODO: confirm that this is the correct behaviour: changing the kpi formula,
             // when the aggregation is change (sum -> division: false, avg -> division: true)
             kpiToUpdate.division = (kpiToUpdate[prop] === 'avg') ? true : false;
             break;

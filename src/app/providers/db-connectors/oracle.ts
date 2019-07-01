@@ -1,7 +1,4 @@
 
-// // // TODO: TO BE TESTED!!!!!
-
-
 // const oracledb = (<any>window).require('oracledb');
 // import * as async from 'async';
 

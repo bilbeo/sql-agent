@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { MatIconRegistry, MatSnackBar } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedService } from './providers/shared.service';
+import { IntercomService } from './providers/intercom.service';
 const shell = require('electron').shell;
 
 @Component({
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
     private snackBar: MatSnackBar,
-    private zone: NgZone
+    private zone: NgZone,
+    private intercomService: IntercomService
   ) {
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
@@ -39,7 +41,15 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.electronService.ipcRenderer.on('check-for-update', (event, message) => {
+      this.intercomService.trackEvent('desktop-app-auto-update-failed', {
+        source: 'sql-agent',
+      });
       this.checkForUpdates();
+    });
+    this.electronService.ipcRenderer.on('app-update-success', (event, message) => {
+      this.intercomService.trackEvent('desktop-app-auto-updated', {
+        source: 'sql-agent'
+      });
     });
   }
 
