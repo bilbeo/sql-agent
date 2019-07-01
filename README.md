@@ -34,4 +34,4 @@ If you are on Windows, please download `.exe` format. The app will be automatica
 
 If you are on Mac, please download `.dmg` format.
 
-If on Linux, you should select `.AppImage` format. In order to make it work, you will need to right-click on the file, select `Properties`, go to `Permissions` tab and check `Execute` checkbox. Then just open the file. Please avoid renaming or removing `.AppImage` file, the desktop app will stop working. You can move the file to your preferred location, but you will need to launch the app from there once to make it work correctly afterwards.
+If on Linux, you should select `.AppImage` format. After download, move the file to the desired location, right-click on the file, select `Properties`, go to `Permissions` tab and check `Execute` checkbox. Then just open the file. Please avoid renaming or removing `.AppImage` file, the desktop app will stop working. You can move the file to your other location, but you will need to launch the app from there once to make it work correctly afterwards.
