@@ -7,6 +7,9 @@
           <div class="workspace-card" (click)="showWorkspaceDetails(workspace)">
             {{ workspace.name}}
           </div>
+          <button mat-stroked-button color="primary" (click)="launchWorkspace(workspace)" title="Launch in WEB">
+            <mat-icon svgIcon="launch-icon" ></mat-icon>
+          </button>
           <button mat-stroked-button color="warn" (click)="removeWorkspace(workspace)">Remove</button>
         </div>
       </div>
