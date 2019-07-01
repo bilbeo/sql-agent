@@ -85,6 +85,8 @@ export class AppComponent implements OnInit {
     this.iconRegistry.addSvgIcon('done-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/done_icon.svg'));
     this.iconRegistry.addSvgIcon('help-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/help_icon.svg'));
     this.iconRegistry.addSvgIcon('offline-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/wifi_offline_icon.svg'));
+    this.iconRegistry.addSvgIcon('launch-icon', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/img/svg-icons/launch_icon.svg'));
+
   }
 
 }

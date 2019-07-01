@@ -7,6 +7,7 @@ import { SharedService } from '../../providers/shared.service';
 import { MatDialog } from '@angular/material';
 import { DatasourceService } from '../../providers/datasource.service';
 import { AlertComponent } from '../alert/alert.component';
+const shell = require('electron').shell;
 
 @Component({
   selector: 'app-workspaces',
@@ -75,6 +76,12 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
 
   newWorkspace() {
     this.router.navigate(['home/create-workspace']);
+  }
+
+  launchWorkspace(workspace){
+    // make the url dynamic
+    const baseUrl = this.user.webURL || 'https://www.bilbeo.net'
+    shell.openExternal(`${baseUrl}/?workspaceId=${workspace.id}&path=app/#/eye-glance`);
   }
 
   removeWorkspace(workspace) {

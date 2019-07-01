@@ -19,6 +19,9 @@
         <button mat-icon-button class="edit-button" (click)="toggleWorkspaceEdit(true)">
           <mat-icon svgIcon="edit-icon"></mat-icon>
         </button>
+        <button mat-stroked-button color="primary" (click)="launchWorkspace()" title="Launch in WEB">
+          <mat-icon svgIcon="launch-icon" ></mat-icon>
+        </button>
       </div>
       <div *ngIf="isEditMode">
         <mat-form-field class="edit-input">

@@ -4,15 +4,20 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { throwError, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Datasource } from '../interfaces/datasource';
-
+import { AppConfig } from '../../environments/environment';
 
 @Injectable()
 export class DatasourceService {
-  private baseUrl = process.env.BILBEO_SERVER;
+  private baseUrl;
 
   constructor(
     private http: HttpClient,
     private sharedService: SharedService) {
+    if (AppConfig['environment'] === 'PROD') {
+      this.baseUrl = AppConfig['server'];
+    } else {
+      this.baseUrl = process.env.BILBEO_SERVER;
+    }
   }
 
   createDatasource(datasourceName) {

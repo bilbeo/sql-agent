@@ -8,6 +8,8 @@ import { Datasource } from '../../interfaces/datasource';
 import { Workspace } from '../../interfaces/workspace';
 import { MatDialog } from '@angular/material';
 import { AlertComponent } from '../alert/alert.component';
+import { UserService } from '../../providers/user.service';
+const shell = require('electron').shell;
 
 @Component({
   selector: 'app-workspace-item',
@@ -26,15 +28,19 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
   credentials;
   indicatorEditMode: boolean;
   connectionSubs;
+  user;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService,
     private workspaceService: WorkspaceService,
     private datasourceService: DatasourceService,
     private sharedService: SharedService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.getUser();
     this.getWorkspaceById();
     this.selectedIndicator = {};
     this.connectionSubs = this.sharedService.connectionStatusChange.subscribe((isOnlineRes) => {
@@ -42,6 +48,18 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
         this.getWorkspaceById();
       }, 500);
     });
+  }
+
+  getUser() { 
+    this.userService.getUser()
+      .subscribe(
+        (userRes) => {
+          this.user = userRes;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   getWorkspaceById() {
@@ -101,6 +119,12 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
   toggleWorkspaceEdit(showEdit: boolean) {
     this.isEditMode = showEdit;
     this.newWorkspaceName = this.workspace.name;
+  }
+
+  launchWorkspace(){
+     // make the url dynamic
+     const baseUrl = this.user.webURL || 'https://www.bilbeo.net'
+     shell.openExternal(`${baseUrl}/?workspaceId=${this.workspace.id}&path=app/#/eye-glance`);
   }
 
   editWorkspaceName() {
