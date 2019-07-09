@@ -43,6 +43,7 @@
     ]
   },
   "nsis": {
+    "artifactName": "${productName}.${ext}",
     "installerIcon": "dist/favicon.ico",
     "uninstallerIcon": "dist/favicon.ico",
     "perMachine": true
@@ -54,6 +55,9 @@
       "dmg"
     ]
   },
+  "dmg": {
+    "artifactName": "${productName}.${ext}"
+  },
   "linux": {
     "icon": "dist",
     "category": "Finance",
@@ -62,6 +66,6 @@
     ]
   },
   "appImage": {
-    "artifactName": "BilbeoSQLAgent.${ext}"
+    "artifactName": "${productName}.${ext}"
   }
 }
