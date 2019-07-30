@@ -5,9 +5,12 @@
 }
 
 .back-button-wrapper {
+  position: relative;
   margin-left: 20px;
-  margin-top: 20px;
   button {
+    position: absolute;
+    top: 13px;
+    left: 0;
     width: 40px;
     mat-icon {
       width: 40px;

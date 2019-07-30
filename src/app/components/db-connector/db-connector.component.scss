@@ -2,7 +2,7 @@
   width: 90%;
 }
 
-.input-wrapper{
+.input-wrapper {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -13,6 +13,9 @@
     margin-left: 10px;
     color: #949ca8;
   }
+}
+h3.text-center {
+  width: 90%;
 }
 
 .button-group {
@@ -27,6 +30,13 @@
 
     &.spinner-button {
       margin-left: 20px;
+    }
+
+    &.connect-button {
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+      font-size: 20px;
     }
   }
 }

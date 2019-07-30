@@ -91,6 +91,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       (err) => { });
   }
 
+  goToMyWorkspaces() {
+    this.router.navigate(['/']);
+  }
+
   ngOnDestroy() {
     this.cronSubscription.unsubscribe();
     this.cronService.stopCron();
