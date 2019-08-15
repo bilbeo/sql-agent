@@ -5,6 +5,7 @@ import { throwError, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../interfaces/user';
 import { AppConfig } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,9 @@ export class UserService {
 
   constructor(
     private sharedService: SharedService,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.userToken = this.sharedService.getFromStorage('token');
     if(AppConfig['environment'] === 'PROD'){
       this.baseUrl = AppConfig['server'];
@@ -73,6 +76,9 @@ export class UserService {
             return result['user'];
           }),
           catchError((error: HttpErrorResponse) => {
+            this.sharedService.setInStorage('token', null);
+            this.sharedService.setInStorage('userId', null);
+            this.router.navigate(['/']);
             return throwError(error.error.message || error.error);
           })
         );
