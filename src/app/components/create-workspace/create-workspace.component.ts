@@ -5,6 +5,7 @@ import { DatasourceService } from '../../providers/datasource.service';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../providers/user.service';
 import { IntercomService } from '../../providers/intercom.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-workspace',
@@ -44,9 +45,8 @@ export class CreateWorkspaceComponent implements OnInit {
     if (!this.workspaceData.workspaceName) {
       return;
     }
-
-    this.workspaceData.dataSourceName = `${this.workspaceData.workspaceName}-${this.user.mail}-${new Date()}`;
-
+    // using the same naming convention for all the datasources (connector-date-time(utc))
+    this.workspaceData.dataSourceName = `DesktopAgent-${moment().utc().format("DD-MM-YY-HH:mm:ss")}`;
     this.createDatasource()
       .subscribe(
         (res) => {
@@ -77,7 +77,7 @@ export class CreateWorkspaceComponent implements OnInit {
         (err) => {
           console.log(err);
           if (err.error && err.error.name === 'MongoError') {
-            this.errorMessage = 'Workspace is name already in use';
+            this.errorMessage = 'Workspace name already in use';
           } else {
             this.errorMessage = 'Something went wrong creating your workspace';
           }

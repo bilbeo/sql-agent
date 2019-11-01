@@ -1,5 +1,3 @@
-// import { Datasource } from './datasource';
-
 export interface Workspace {
     id: string;
     name: string;
@@ -14,7 +12,7 @@ export interface Workspace {
     dimensionsIDs: any;
     indicators: Array<any>;
     indicatorsIDs: any;
-    dataSource: any;
+    dataSources: Array<any>;
     permissionGroups: Array<any>;
 }
 

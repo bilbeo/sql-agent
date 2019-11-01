@@ -50,7 +50,7 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  getUser() { 
+  getUser() {
     this.userService.getUser()
       .subscribe(
         (userRes) => {
@@ -72,7 +72,9 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
     )
       .subscribe((res) => {
         this.workspace = res;
-        this.getDatasource(this.workspace.dataSource);
+        if (this.workspace['dataSources'] && this.workspace['dataSources'][0]) {
+          this.getDatasource(this.workspace['dataSources'][0]);
+        }
       },
         (err) => {
           console.log(err);
@@ -85,8 +87,8 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
     this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
   }
 
-  getDatasource(name) {
-    this.datasourceService.getDatasourceByName(name)
+  getDatasource(ds) {
+    this.datasourceService.getDatasourceByName(ds.type)
       .subscribe(
         (dataRes) => {
           this.datasource = dataRes;
@@ -121,10 +123,10 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
     this.newWorkspaceName = this.workspace.name;
   }
 
-  launchWorkspace(){
-     // make the url dynamic
-     const baseUrl = this.user.webURL || 'https://www.bilbeo.net'
-     shell.openExternal(`${baseUrl}/?workspaceId=${this.workspace.id}&path=app/#/eye-glance`);
+  launchWorkspace() {
+    // make the url dynamic
+    const baseUrl = this.user.webURL || 'https://www.bilbeo.net'
+    shell.openExternal(`${baseUrl}/?workspaceId=${this.workspace.id}&path=app/#/eye-glance`);
   }
 
   editWorkspaceName() {
@@ -161,15 +163,7 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
           .subscribe(
             (res) => {
               this.removeLocalData();
-              this.datasourceService.removeDatasource(this.datasource.name)
-                .subscribe(
-                  (removeRes) => {
-                    this.goBack();
-                  },
-                  (err) => {
-                    console.log(err);
-                  }
-                );
+              this.goBack();
             },
             (errMessage) => {
               console.log(errMessage);

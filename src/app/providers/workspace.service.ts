@@ -83,6 +83,7 @@ export class WorkspaceService {
       );
   }
 
+  // SAT-MDS: updated! datasourceId added!
   updateWorkspace(params, jsonData) {
     const userToken = this.sharedService.getFromStorage('token');
     const httpOptions = {
@@ -95,6 +96,7 @@ export class WorkspaceService {
     const paylod = {
       APIKey: params['APIKey'],
       workspaceId: params['workspaceId'],
+      datasourceId: params['datasourceId'],
       updateMode: params['updateMode'],
       updatePartial: params['updatePartial'],
       compressed: false,
@@ -164,7 +166,6 @@ export class WorkspaceService {
         'Authorization': 'Bearer ' + userToken
       })
     };
-
     return this.http.post(this.baseUrl + `/api/workspace/${workspaceId}/delete`, {}, httpOptions)
       .pipe(
         map((result) => {

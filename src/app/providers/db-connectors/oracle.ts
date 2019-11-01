@@ -54,7 +54,6 @@
 // };
 
 // const testConnection = function (credentials: DbCredentials, options, cb) {
-//   debugger
 //   const config = {
 //     user: credentials.user,
 //     password: credentials.password,
