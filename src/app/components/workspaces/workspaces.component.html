@@ -1,29 +1,38 @@
 <div class="container">
   <div *ngIf="!loading" class="workspaces-wrapper">
-    <div *ngIf="workspaces && workspaces.length" class="full-width">
-      <h2 class="text-center inner-width">My Desktop Workspaces</h2>
-      <div *ngFor="let workspace of workspaces">
-        <div class="workspace-container">
-          <div class="workspace-card" (click)="showWorkspaceDetails(workspace)">
-            {{ workspace.name}}
+    <h2 class="text-center full-width">My Desktop Workspaces</h2>
+    <div class="list-flex">
+      <div class="list-inner">
+        <div *ngIf="workspaces && workspaces.length" class="full-width">
+          <div *ngFor="let workspace of workspaces">
+            <div class="workspace-container">
+              <div class="workspace-card" (click)="showWorkspaceDetails(workspace)">
+                {{ workspace.name}}
+              </div>
+              <button mat-stroked-button color="primary" (click)="launchWorkspace(workspace)" title="Launch in WEB">
+                Launch
+              </button>
+              <button mat-stroked-button color="primary" (click)="removeWorkspace(workspace)">
+                <mat-icon svgIcon="delete-icon"></mat-icon>
+              </button>
+            </div>
           </div>
-          <button mat-stroked-button color="primary" (click)="launchWorkspace(workspace)" title="Launch in WEB">
-            <mat-icon svgIcon="launch-icon" ></mat-icon>
-          </button>
-          <button mat-stroked-button color="warn" (click)="removeWorkspace(workspace)">Remove</button>
+          <div class="full-width text-center margin-bottom-10">
+            <span>-OR-</span>
+          </div>
         </div>
-      </div>
-      <div class="inner-width text-center margin-bottom-10">
-        <span>-OR-</span>
+        <div *ngIf="!workspaces || !workspaces.length" class="full-width">
+          <p class="text-center"> No Desktop Workspaces Found! </p>
+        </div>
+        <button mat-stroked-button color="primary" (click)="newWorkspace()" class="create-button"> Create A
+          Workspace
+        </button>
       </div>
     </div>
-    <div *ngIf="!workspaces || !workspaces.length" class="full-width">
-      <h3 class="margin-left "> No Desktop Workspaces Found! </h3>
-    </div>
-    <button mat-stroked-button color="primary" (click)="newWorkspace()" class="create-button"> Create A
-      Workspace</button>
   </div>
-  <div *ngIf="loading">
-    <mat-spinner></mat-spinner>
+  <div *ngIf="loading" class="loader-wrapper">
+    <div>
+      <mat-spinner></mat-spinner>
+    </div>
   </div>
 </div>

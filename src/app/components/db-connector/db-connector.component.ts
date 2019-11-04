@@ -47,9 +47,10 @@ export class DbConnectorComponent implements OnInit {
   initDbForm() {
     this.credentials = this.localWorkspaceData ? this.localWorkspaceData.credentials : {};
     this.dbForm = this.fb.group({
+      type: ['', Validators.required],
       host: [this.credentials.host || '', Validators.required],
       dbName: [this.credentials.db || '', Validators.required],
-      port: [this.credentials.port || this.selectedDb.port, Validators.required],
+      port: [this.credentials.port || '', Validators.required],
       user: [this.credentials.user || ''],
       dbPassword: [this.credentials.password || ''],
       autoPushing: [this.credentials.autoPushing || '24h']
@@ -78,6 +79,7 @@ export class DbConnectorComponent implements OnInit {
       this.selectedDb = this.allDbs.find((db) => {
         return db.key === this.credentials.type;
       });
+      this.dbForm.controls['type'].setValue(this.selectedDb);
     }
   }
 
@@ -102,7 +104,6 @@ export class DbConnectorComponent implements OnInit {
               return 0;
             }
           });
-          this.selectedDb = this.allDbs[0];
           this.initDbForm();
         },
         (err) => {
@@ -186,6 +187,7 @@ export class DbConnectorComponent implements OnInit {
   }
 
   onDbSelection(event) {
+    this.selectedDb = event.value;
     this.dbForm.controls['port'].setValue(event.value.port);
   }
 }

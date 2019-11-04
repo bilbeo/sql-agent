@@ -78,7 +78,7 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
     this.router.navigate(['home/create-workspace']);
   }
 
-  launchWorkspace(workspace){
+  launchWorkspace(workspace) {
     // make the url dynamic
     const baseUrl = this.user.webURL || 'https://www.bilbeo.net'
     shell.openExternal(`${baseUrl}/?workspaceId=${workspace.id}&path=app/#/eye-glance`);
@@ -107,6 +107,7 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
   removeLocalData(workspace) {
     const allLocalWorkspaceData = this.sharedService.getFromStorage('workspaces');
     if (allLocalWorkspaceData[workspace.id]) {
+      console.log("local data found for removed workspace, deleting it", allLocalWorkspaceData[workspace.id]);
       delete allLocalWorkspaceData[workspace.id];
       this.sharedService.setInStorage('workspaces', allLocalWorkspaceData);
     }
@@ -135,12 +136,17 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
       }
       // filter those items that are not found in received workspaces
       const redundant = userWorkspaces.filter((item) => {
-        return !this.workspaces.find((ws) => {
+        const found = this.workspaces.find((ws) => {
           return ws.id === item.id;
         });
+        if (found) {
+          return false;
+        }
+        return true;
       });
       if (redundant && redundant.length) {
         redundant.forEach((workspaceLocalData) => {
+          console.log("redundunt local data found, deleting it", allLocalWorkspaceData[workspaceLocalData.id])
           delete allLocalWorkspaceData[workspaceLocalData.id];
         });
         this.sharedService.setInStorage('workspaces', allLocalWorkspaceData);
