@@ -1,17 +1,17 @@
 <div class="scroll">
   <div *ngIf="!localWorkspaceData">
-    <h3>Connect to database</h3>
+    <h3 class="text-center">Connect to database</h3>
 
   </div>
   <!-- shown when we already have credentials -->
   <div *ngIf="localWorkspaceData && updateCredentialsMode">
-    <h3>DB credentials </h3>
-
+    <h3 class="text-center">DB credentials </h3>
   </div>
   <!-- create/update credentials -->
   <form [formGroup]="dbForm" *ngIf="dbForm" (submit)="connectToDatabase()">
     <mat-form-field class="db-select">
-      <mat-select [(value)]="selectedDb" (selectionChange)="onDbSelection($event)">
+      <mat-label>Select your database type</mat-label>
+      <mat-select formControlName="type" (selectionChange)="onDbSelection($event)">
         <mat-option *ngFor="let db of allDbs" [value]="db">
           {{db.name}}
         </mat-option>
@@ -63,7 +63,8 @@
       </button>
     </div>
     <div class="button-group" *ngIf="!localWorkspaceData">
-      <button [disabled]="connectInProgress" mat-stroked-button color="primary" class="spinner-button" type="submit">
+      <button [disabled]="connectInProgress" mat-flat-button color="primary" class="spinner-button connect-button"
+        type="submit">
         <mat-spinner *ngIf="connectInProgress" [diameter]="20"></mat-spinner>
         <span>Connect</span>
       </button>

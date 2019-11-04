@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../../providers/workspace.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DatasourceService } from '../../providers/datasource.service';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../providers/user.service';
@@ -21,7 +21,8 @@ export class CreateWorkspaceComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private datasourceService: DatasourceService,
     private intercomService: IntercomService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -62,12 +63,11 @@ export class CreateWorkspaceComponent implements OnInit {
           this.workspaceService.createDesktopWorkspace(data)
             .subscribe(
               (result) => {
-                console.log(result);
                 this.intercomService.trackEvent('created new workspace', {
                   source: 'sql-agent',
                   workspaceName: this.workspaceData.workspaceName
                 });
-                this.router.navigate(['../']);
+                this.router.navigate(['../', result['id']], { relativeTo: this.route });
               },
               (errMessage) => {
                 this.errorMessage = errMessage;
@@ -77,7 +77,7 @@ export class CreateWorkspaceComponent implements OnInit {
         (err) => {
           console.log(err);
           if (err.error && err.error.name === 'MongoError') {
-            this.errorMessage = 'Workspace is name already in use';
+            this.errorMessage = 'The name of workspace is already in use';
           } else {
             this.errorMessage = 'Something went wrong creating your workspace';
           }

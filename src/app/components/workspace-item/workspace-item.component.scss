@@ -3,8 +3,9 @@
 }
 
 .back-button-wrapper {
+  margin-top: 10px;
   margin-left: 20px;
-  margin-top: 20px;
+
   button {
     width: 40px;
     mat-icon {
@@ -17,7 +18,7 @@
 .container {
   padding: 10px 15px 25px 15px;
   background: white;
-  margin: 20px 20px;
+  margin: 10px 20px;
   border-radius: 5px;
 
   .header-flex {
@@ -66,7 +67,6 @@
         list-style: none;
         padding-left: 0;
         padding-right: 10px;
-      
 
         li {
           color: #639ed2;
@@ -94,7 +94,7 @@
             color: white !important;
             text-decoration: underline;
           }
-         
+
           &.add-button {
             flex: 2 1 100%;
             background: #01579b;
@@ -149,6 +149,10 @@
         color: green;
       }
     }
+  }
+
+  .launch-button {
+    margin-right: 20px;
   }
 
   .right-side {

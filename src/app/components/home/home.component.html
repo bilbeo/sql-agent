@@ -4,15 +4,19 @@
       <img [src]="user.logoURL" class="logo">
       <div class="version">{{appVersion}}</div>
     </div>
-   
+
     <div class="text-right">
       <span> {{user.firstName}} {{user.lastName}}</span>
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon svgIcon="dropdown-icon"></mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item disabled>
           <span>{{user.mail}}</span>
+        </button>
+        <button mat-menu-item (click)="goToMyWorkspaces()">
+          <mat-icon svgIcon="list-icon"></mat-icon>
+          <span>Workspaces</span>
         </button>
         <button mat-menu-item (click)="signout()">
           <mat-icon svgIcon="exit-icon"></mat-icon>
@@ -32,8 +36,8 @@
     </div>
   </div>
   <div class="cron-info" *ngIf="!isOnline">
-      <span class="offline-message">
-          <mat-icon svgIcon="offline-icon"></mat-icon>
-        </span>
+    <span class="offline-message">
+      <mat-icon svgIcon="offline-icon"></mat-icon>
+    </span>
   </div>
 </div>

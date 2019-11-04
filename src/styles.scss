@@ -91,11 +91,23 @@ body {
   }
 }
 
-.light-theme-wrapper .white-spinner .mat-progress-spinner circle, .light-theme-wrapper .white-spinner .mat-spinner circle {
-  stroke:white !important;
+.connect-button .mat-button-wrapper {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+
+  .mat-progress-spinner circle,
+  .mat-spinner circle {
+    stroke: white;
+  }
+}
+
+.light-theme-wrapper .white-spinner .mat-progress-spinner circle,
+.light-theme-wrapper .white-spinner .mat-spinner circle {
+  stroke: white !important;
 }
 // query-db.component
-.collapsed{
+.collapsed {
   .mat-vertical-stepper-content {
     visibility: hidden !important;
     height: 0 !important;
