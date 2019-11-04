@@ -49,11 +49,11 @@ export class CreateWorkspaceComponent implements OnInit {
     this.workspaceData.dataSourceName = `DesktopAgent-${moment().utc().format("DD-MM-YY-HH:mm:ss")}`;
     this.createDatasource()
       .subscribe(
-        (res) => {
-          console.log(res);
+        (dsRes) => {
           const data = {
             APIKey: this.user.APIKey,
             dataSourceName: this.workspaceData.dataSourceName,
+            datasourceId: dsRes['id'],
             workspaceName: this.workspaceData.workspaceName,
             custom: '',
             isPushDb: true

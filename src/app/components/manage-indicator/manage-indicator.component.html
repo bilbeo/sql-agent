@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="header-flex" *ngIf="editMode">
+  <div class="header-flex" *ngIf="editMode && indicatorData">
     <h2>{{indicatorData.name}}</h2>
     <button mat-flat-button color="warn" (click)="removeIndicator()"> Remove</button>
   </div>

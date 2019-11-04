@@ -113,9 +113,13 @@ export class WorkspaceItemComponent implements OnInit, OnDestroy {
   onDatasourceUpdated(newDatasouceData) {
     this.selectedIndicator = null;
     this.datasource = newDatasouceData.datasource;
-    // when an indicator is created/updated, we want it to be the selected one
-    this.selectedIndicator = newDatasouceData.indicator;
-
+    if (newDatasouceData.kpiRemoved) {
+      // if an indicator is removed, we want to start creating new indicator
+      this.newIndicator();
+    } else {
+      // when an indicator is created/updated, we want it to be the selected one
+      this.selectedIndicator = newDatasouceData.indicator;
+    }
   }
 
   toggleWorkspaceEdit(showEdit: boolean) {

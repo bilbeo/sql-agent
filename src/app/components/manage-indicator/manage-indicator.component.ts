@@ -51,9 +51,12 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const indicatorData: SimpleChange = changes.indicatorData;
+    const editMode: SimpleChange = changes.editMode;
     if (indicatorData && indicatorData.previousValue && (indicatorData.previousValue.name !== indicatorData.currentValue.name)) {
       this.isStepperCollapsed = false;
       this.initIndicatorProperties();
+    }
+    if (editMode && (editMode.currentValue !== editMode.previousValue)) {
       if (this.editMode) {
         // move to the query step
         this.queryIndicator = this.indicatorData;
@@ -188,8 +191,8 @@ export class ManageIndicatorComponent implements OnInit, OnChanges {
             (resDatasource) => {
               this.datasource = resDatasource;
               this.datasourceChange.emit({
-                indicator: this.datasource.indicators[indicatorIndex],
-                datasource: this.datasource
+                datasource: this.datasource,
+                kpiRemoved: true
               });
               this.removeQueryFromLocalStore();
             },
