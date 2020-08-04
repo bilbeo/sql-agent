@@ -5,6 +5,7 @@ import { DatasourceService } from '../../providers/datasource.service';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../providers/user.service';
 import { IntercomService } from '../../providers/intercom.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-workspace',
@@ -45,16 +46,15 @@ export class CreateWorkspaceComponent implements OnInit {
     if (!this.workspaceData.workspaceName) {
       return;
     }
-
-    this.workspaceData.dataSourceName = `${this.workspaceData.workspaceName}-${this.user.mail}-${new Date()}`;
-
+    // using the same naming convention for all the datasources (connector-date-time(utc))
+    this.workspaceData.dataSourceName = `DesktopAgent-${moment().utc().format("DD-MM-YY-HH:mm:ss")}`;
     this.createDatasource()
       .subscribe(
-        (res) => {
-          console.log(res);
+        (dsRes) => {
           const data = {
             APIKey: this.user.APIKey,
             dataSourceName: this.workspaceData.dataSourceName,
+            datasourceId: dsRes['id'],
             workspaceName: this.workspaceData.workspaceName,
             custom: '',
             isPushDb: true

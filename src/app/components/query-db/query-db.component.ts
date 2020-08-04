@@ -21,7 +21,7 @@ export class QueryDbComponent implements OnInit, OnChanges {
   @Input() queryIndicator;
   @Input() localWorkspaceData;
   @Input() datasource;
-  @Input() workspaceId;
+  @Input() workspace;
   @Output() previousStepClick = new EventEmitter();
   @Output() workspaceUpdated = new EventEmitter();
   errMessage: string;
@@ -173,12 +173,13 @@ export class QueryDbComponent implements OnInit, OnChanges {
       this.dbOutput['formatted'].forEach((formattedItem) => {
         json.KPIs.push(formattedItem);
       });
-
+      // SAT-MDS: datasourceId added in params
       const params = {};
       params['updatePartial'] = true;
       params['updateMode'] = 'replace';
-      params['workspaceId'] = this.workspaceId;
+      params['workspaceId'] = this.workspace.id;
       params['APIKey'] = this.user.APIKey;
+      params['datasourceId'] = this.workspace.dataSources[0]._id
       this.requestInProgress = true;
       this.workspaceService.updateWorkspace(params, json)
         .subscribe(

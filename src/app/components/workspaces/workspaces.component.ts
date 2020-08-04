@@ -93,16 +93,7 @@ export class WorkspacesComponent implements OnInit, OnDestroy {
           .subscribe(
             (res) => {
               this.removeLocalData(workspace);
-              this.datasourceService.removeDatasource(workspace.dataSourceType)
-                .subscribe(
-                  (removeRes) => {
-                    this.getWorkspaces();
-                  },
-                  (err) => {
-                    this.loading = false;
-                    console.log(err);
-                  }
-                );
+              this.getWorkspaces();
             },
             (errMessage) => {
               this.loading = false;

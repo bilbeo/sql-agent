@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="header-flex" *ngIf="editMode">
+  <div class="header-flex" *ngIf="editMode && indicatorData">
     <h2>{{indicatorData.name}}</h2>
     <button mat-flat-button color="warn" (click)="removeIndicator()"> Remove</button>
   </div>
@@ -137,7 +137,7 @@
         <ng-template matStepLabel>Query your database</ng-template>
         <div class="query-tool" *ngIf="queryIndicator">
           <app-query-db [queryIndicator]="queryIndicator" [localWorkspaceData]="localWorkspaceData"
-            [datasource]="datasource" [workspaceId]="workspace.id" (previousStepClick)="onPreviousStepClick($event)"
+            [datasource]="datasource" [workspace]="workspace" (previousStepClick)="onPreviousStepClick($event)"
             (workspaceUpdated)="collapseStepper($event)">
           </app-query-db>
         </div>

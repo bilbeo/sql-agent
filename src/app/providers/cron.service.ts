@@ -95,7 +95,7 @@ export class CronService {
       // once daily:
       // if now it is >= 7:00am and the last query was made before today 7:00am,
       if (now.isSameOrAfter(processDate2) && (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate2)))) {
-        this.queryDB(workspace, callback);
+        this.queryDbAndUpdateWS(workspace, callback);
       } else {
         callback();
       }
@@ -106,14 +106,14 @@ export class CronService {
       if (now.isSameOrAfter(processDate2) && now.isBefore(processDate4)) {
         // 07:00 -> 19:00
         if (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate2))) {
-          this.queryDB(workspace, callback);
+          this.queryDbAndUpdateWS(workspace, callback);
         } else {
           callback();
         }
       } else if (now.isSameOrAfter(processDate4)) {
         // 19:00 -> 23:59
         if (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate4))) {
-          this.queryDB(workspace, callback);
+          this.queryDbAndUpdateWS(workspace, callback);
         } else {
           callback();
         }
@@ -130,28 +130,28 @@ export class CronService {
       if (now.isSameOrAfter(processDate1) && now.isBefore(processDate2)) {
         // 01:00 -> 07:00
         if (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate1))) {
-          this.queryDB(workspace, callback);
+          this.queryDbAndUpdateWS(workspace, callback);
         } else {
           callback();
         }
       } else if (now.isSameOrAfter(processDate2) && now.isBefore(processDate3)) {
         // 07:00 -> 13:00
         if (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate2))) {
-          this.queryDB(workspace, callback);
+          this.queryDbAndUpdateWS(workspace, callback);
         } else {
           callback();
         }
       } else if (now.isSameOrAfter(processDate3) && now.isBefore(processDate4)) {
         // 13:00 -> 19:00
         if (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate3))) {
-          this.queryDB(workspace, callback);
+          this.queryDbAndUpdateWS(workspace, callback);
         } else {
           callback();
         }
       } else if (now.isSameOrAfter(processDate4)) {
         // 19:00 -> 23:59
         if (!workspace.lastQueryDate || (workspace.lastQueryDate && moment(workspace.lastQueryDate).isBefore(processDate4))) {
-          this.queryDB(workspace, callback);
+          this.queryDbAndUpdateWS(workspace, callback);
         } else {
           callback();
         }
@@ -162,7 +162,8 @@ export class CronService {
     }
   }
 
-  private queryDB(workspace, callback) {
+  // SAT-MDS:updated!
+  private queryDbAndUpdateWS(workspace, callback) {
     this.emitCronChange('running');
     const queries = [];
     workspace.queries.forEach((queryItem) => {
@@ -174,29 +175,34 @@ export class CronService {
     this.workspaceService.getWorkspaceDetails(workspace.id)
       .subscribe(
         (res) => {
-          this.datasourceService.getDatasourceByName(res.dataSource)
-            .subscribe(
-              (dataRes) => {
-                const options = {
-                  withFormatting: true,
-                  indicators: dataRes['indicators']
-                };
-                this.databaseService.executeQueries(workspace.credentials.type, workspace.credentials, queries, options)
-                  .subscribe(
-                    (outputResult) => {
-                      this.updateWorkspace(workspace, outputResult, callback);
-                    },
-                    (err) => {
-                      console.log(err);
-                      callback(err);
-                    }
-                  );
-              },
-              (err) => {
-                console.log(err);
-                callback(err);
-              }
-            );
+          if (res['dataSources'] && res['dataSources'][0]) {
+            const datasource = res['dataSources'][0];
+            this.datasourceService.getDatasourceByName(datasource.type)
+              .subscribe(
+                (dataRes) => {
+                  const options = {
+                    withFormatting: true,
+                    indicators: dataRes['indicators']
+                  };
+                  this.databaseService.executeQueries(workspace.credentials.type, workspace.credentials, queries, options)
+                    .subscribe(
+                      (outputResult) => {
+                        this.updateWorkspace(workspace, datasource._id, outputResult, callback);
+                      },
+                      (err) => {
+                        console.log(err);
+                        callback(err);
+                      }
+                    );
+                },
+                (err) => {
+                  console.log(err);
+                  callback(err);
+                }
+              );
+          } else {
+            callback("No datasource in the workspace");
+          }
         },
         (error) => {
           console.log(error);
@@ -204,8 +210,8 @@ export class CronService {
         });
   }
 
-  private updateWorkspace(workspace, queryResult, callback) {
-    // prepare the parameters to be sent in updateWorkspace
+  // SAT-MDS: updated!
+  private updateWorkspace(workspace, datasourceId, queryResult, callback) {
     const json = {
       KPIs: []
     };
@@ -214,11 +220,13 @@ export class CronService {
         json.KPIs.push(formattedItem);
       });
     });
+    // SAT-MDS: datasourceId added in params
     const params = {};
     params['updatePartial'] = true;
     params['updateMode'] = 'replace';
     params['workspaceId'] = workspace.id;
     params['APIKey'] = this.user.APIKey;
+    params['datasourceId'] = datasourceId;
 
     return this.workspaceService.updateWorkspace(params, json)
       .subscribe(
